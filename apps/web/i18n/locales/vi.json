@@ -213,7 +213,6 @@
     "logo": "logo app",
     "logoDesc": "chọn một icon trong vườn làm logo của bạn",
     "logoPick": "Chọn logo",
-    "logoInvert": "đảo màu nền và icon",
     "logoNoteNative": "logo hiện ở trang cài đặt và icon app ngoài màn hình chính (iOS)",
     "language": "ngôn ngữ",
     "languageDesc": "chọn ngôn ngữ hiển thị",
@@ -223,7 +222,15 @@
     "help": "trợ giúp",
     "helpDesc": "cần giúp đỡ? gửi email cho tụi mình",
     "helpAria": "Gửi email trợ giúp",
-    "errSave": "Không lưu được cài đặt"
+    "errSave": "Không lưu được cài đặt",
+    "theme": "giao diện",
+    "themeDesc": "sáng, tối hoặc theo máy",
+    "themeCurrent": "đang dùng: {name}",
+    "themes": {
+      "system": "theo máy",
+      "light": "sáng",
+      "dark": "tối"
+    }
   },
   "accents": {
     "ink": "mực xanh",
@@ -231,25 +238,7 @@
     "terracotta": "đất nung",
     "pink": "hồng",
     "violet": "tím",
-    "sea": "biển",
-    "charcoal": "than",
-    "mustard": "mù tạt",
-    "cherry": "anh đào",
-    "coral": "san hô",
-    "pumpkin": "bí ngô",
-    "honey": "mật ong",
-    "olive": "ô liu",
-    "leaf": "lá non",
-    "jade": "ngọc bích",
-    "teal": "mòng két",
-    "sky": "trời",
-    "cobalt": "coban",
-    "lavender": "oải hương",
-    "plum": "mận",
-    "rose": "hoa hồng",
-    "cocoa": "ca cao",
-    "slate": "đá phiến",
-    "forest": "rừng thông"
+    "sea": "biển"
   },
   "error": {
     "notFound": "không tìm thấy trang",

@@ -24,6 +24,8 @@
   --m-faint: #c9c6e3;
   --m-indigo: #1a0dc9;
   --m-on-indigo: #ffffff;
+  /* logo / app-icon tile */
+  --m-tile: #ffffff;
 
   /* glow follows whatever accent the user picked in Settings */
   --m-glow: color-mix(in srgb, var(--m-indigo) 45%, transparent);
@@ -61,10 +63,12 @@
     --m-faint: #3a3760;
     --m-indigo: #968eff;
     --m-on-indigo: #0f0e16;
+    --m-tile: #1f1e27;
     color-scheme: dark;
   }
 }
 .dark {
+  --m-tile: #1f1e27;
   --m-bg: #0c0c10;
   --m-paper: #15141a;
   --m-surface: #1f1e27;

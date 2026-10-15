@@ -18,24 +18,24 @@ const props = defineProps<ToasterProps>()
     v-bind="props"
   >
     <template #success-icon>
-      <Icon name="hugeicons:checkmark-circle-02" class="size-4" />
+      <HandIcon name="checkmark-circle-02" class="size-4" />
     </template>
     <template #info-icon>
-      <Icon name="hugeicons:information-circle" class="size-4" />
+      <HandIcon name="information-circle" class="size-4" />
     </template>
     <template #warning-icon>
-      <Icon name="hugeicons:alert-02" class="size-4" />
+      <HandIcon name="alert-02" class="size-4" />
     </template>
     <template #error-icon>
-      <Icon name="hugeicons:cancel-circle" class="size-4" />
+      <HandIcon name="cancel-circle" class="size-4" />
     </template>
     <template #loading-icon>
       <div>
-        <Icon name="hugeicons:loading-03" class="size-4 animate-spin" />
+        <HandIcon name="loading-03" class="size-4 animate-spin" />
       </div>
     </template>
     <template #close-icon>
-      <Icon name="hugeicons:cancel-01" class="size-4" />
+      <HandIcon name="cancel-01" class="size-4" />
     </template>
   </Sonner>
 </template>

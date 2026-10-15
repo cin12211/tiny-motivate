@@ -43,8 +43,8 @@ export interface UserSettings {
   accent: number
   /** Garden icon id used as the app logo, e.g. "forest", "p4", "m2". */
   logo: string
-  /** Swap the logo colours: light tile with an accent icon instead of an accent tile. */
-  logoInvert: boolean
+  /** Light / dark appearance, or follow the device. */
+  theme: 'system' | 'light' | 'dark'
   /** Display language. */
   lang: 'vi' | 'en'
   /** Daily reminder on/off and its time (HH:MM, local). */

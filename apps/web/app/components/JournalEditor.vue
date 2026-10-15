@@ -62,7 +62,7 @@ const tools = computed(() => {
           :title="t.label"
           @click="t.run"
         >
-          <Icon :name="`hugeicons:${t.icon}`" />
+          <HandIcon :name="t.icon" />
         </Button>
       </div>
       <slot name="actions" />

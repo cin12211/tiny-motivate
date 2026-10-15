@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toast } from 'vue-sonner'
-import { ACCENTS, LANGS, LOGOS } from '#shared/utils/settings'
+import { ACCENTS, LANGS, LOGOS, THEMES } from '#shared/utils/settings'
 import type { UserSettings } from '#shared/types'
 
 const { t } = useI18n()
@@ -11,6 +11,7 @@ const { logout } = useAuth()
 type Panel = 'color' | 'logo' | 'lang'
 const open = ref<Panel | null>(null)
 
+const THEME_ICONS: Record<UserSettings['theme'], string> = { system: 'theme-auto', light: 'sun', dark: 'g-moon' }
 const LANG_NAMES: Record<UserSettings['lang'], string> = { vi: 'Tiếng Việt', en: 'English' }
 
 async function save(patch: Partial<UserSettings>, message?: () => string) {
@@ -43,7 +44,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
     <!-- back bar (sticky under the web header on md+) -->
     <div class="sticky top-0 z-10 -mx-[22px] bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-4 pb-2.5 md:top-[58px] md:-mx-6 md:px-6 md:pt-3">
       <Button as-child variant="ghost" size="icon" class="text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" :aria-label="$t('common.back')">
-        <NuxtLink to="/"><Icon name="hugeicons:arrow-left-01" class="size-5" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
+        <NuxtLink to="/"><HandIcon name="arrow-left-01" class="size-5" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
       </Button>
     </div>
 
@@ -77,6 +78,30 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
             @click="save({ notify: !settings.notify }, () => settings.notify ? $t('settings.remindOn', { time: settings.time }) : $t('settings.remindOff'))"
           >
             {{ settings.notify ? $t('settings.turnOff') : $t('settings.turnOn') }}
+          </button>
+        </div>
+      </div>
+
+      <!-- appearance -->
+      <div class="flex items-center justify-between gap-4 py-4">
+        <div>
+          <TypographyH2 :class="rowTitle">{{ $t('settings.theme') }}</TypographyH2>
+          <TypographySmall as="p" :class="rowDesc">{{ $t('settings.themeDesc') }}<br>{{ $t('settings.themeCurrent', { name: $t(`settings.themes.${settings.theme}`) }) }}</TypographySmall>
+        </div>
+        <div :class="[tile, 'border-line grid-cols-3 gap-1 p-1.5']" role="radiogroup" :aria-label="$t('settings.theme')">
+          <button
+            v-for="theme in THEMES"
+            :key="theme"
+            type="button"
+            role="radio"
+            :aria-checked="settings.theme === theme"
+            :aria-label="$t(`settings.themes.${theme}`)"
+            :title="$t(`settings.themes.${theme}`)"
+            class="grid size-full place-items-center rounded-[9px] transition-colors"
+            :class="settings.theme === theme ? 'bg-primary text-primary-foreground' : 'text-indigo hover:bg-background'"
+            @click="save({ theme })"
+          >
+            <HandIcon :name="THEME_ICONS[theme]" class="size-[22px]" />
           </button>
         </div>
       </div>
@@ -143,23 +168,13 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
         </button>
       </div>
       <div v-if="open === 'logo'" class="-mt-1 mb-2 flex flex-col gap-3 rounded-xl border border-dashed border-faint p-3.5">
-        <label class="flex cursor-pointer items-center justify-between gap-3">
-          <TypographySmall as="span">{{ $t('settings.logoInvert') }}</TypographySmall>
-          <span class="flex items-center gap-2">
-            <LogoTile :size="28" :invert="false" />
-            <LogoTile :size="28" :invert="true" />
-            <Checkbox :model-value="settings.logoInvert" @update:model-value="v => save({ logoInvert: !!v })" />
-          </span>
-        </label>
         <div class="grid max-h-[300px] grid-cols-7 gap-1 overflow-y-auto">
           <button
             v-for="id in LOGOS"
             :key="id"
             type="button"
             class="grid aspect-square place-items-center rounded-[9px] border transition-colors"
-            :class="settings.logo === id
-              ? (settings.logoInvert ? 'border-indigo bg-surface text-indigo' : 'border-indigo bg-primary text-primary-foreground')
-              : 'border-transparent text-indigo hover:bg-surface'"
+            :class="settings.logo === id ? 'border-indigo bg-primary text-primary-foreground' : 'border-transparent text-indigo hover:bg-surface'"
             :aria-label="`logo ${id}`"
             :aria-pressed="settings.logo === id"
             @click="save({ logo: id })"
@@ -177,7 +192,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
           <TypographySmall as="p" :class="rowDesc">{{ $t('settings.reviewDesc') }}</TypographySmall>
         </div>
         <button type="button" :class="[tile, pressable, 'border-line']" :aria-label="$t('settings.review')" @click="toast($t('settings.reviewThanks'))">
-          <Icon name="hugeicons:favourite" class="size-[26px]" />
+          <HandIcon name="favourite" class="size-[26px]" />
         </button>
       </div>
 
@@ -193,7 +208,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
       </div>
 
       <Button variant="ghost" size="sm" class="mx-auto mt-[22px] flex text-[11.5px]" @click="logout">
-        <Icon name="hugeicons:logout-03" class="size-[15px]" /> {{ $t('common.logout') }}
+        <HandIcon name="logout-03" class="size-[15px]" /> {{ $t('common.logout') }}
       </Button>
     </div>
   </div>

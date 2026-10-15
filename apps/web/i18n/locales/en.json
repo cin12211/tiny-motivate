@@ -213,7 +213,6 @@
     "logo": "app logo",
     "logoDesc": "pick any garden icon as your logo",
     "logoPick": "Choose logo",
-    "logoInvert": "swap background and icon colours",
     "logoNoteNative": "shown on this page and as the home-screen app icon (iOS)",
     "language": "language",
     "languageDesc": "choose the display language",
@@ -223,7 +222,15 @@
     "help": "help",
     "helpDesc": "need help? send us an email",
     "helpAria": "Email support",
-    "errSave": "Couldn't save settings"
+    "errSave": "Couldn't save settings",
+    "theme": "appearance",
+    "themeDesc": "light, dark or follow the device",
+    "themeCurrent": "now using: {name}",
+    "themes": {
+      "system": "device",
+      "light": "light",
+      "dark": "dark"
+    }
   },
   "accents": {
     "ink": "ink blue",
@@ -231,25 +238,7 @@
     "terracotta": "terracotta",
     "pink": "pink",
     "violet": "violet",
-    "sea": "sea",
-    "charcoal": "charcoal",
-    "mustard": "mustard",
-    "cherry": "cherry",
-    "coral": "coral",
-    "pumpkin": "pumpkin",
-    "honey": "honey",
-    "olive": "olive",
-    "leaf": "leaf",
-    "jade": "jade",
-    "teal": "teal",
-    "sky": "sky",
-    "cobalt": "cobalt",
-    "lavender": "lavender",
-    "plum": "plum",
-    "rose": "rose",
-    "cocoa": "cocoa",
-    "slate": "slate",
-    "forest": "pine"
+    "sea": "sea"
   },
   "error": {
     "notFound": "page not found",

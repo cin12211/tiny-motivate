@@ -7,5 +7,5 @@ defineProps<{ reward: Pick<Reward, 'icon' | 'image' | 'title'>, iconClass?: stri
 
 <template>
   <img v-if="reward.image" :src="assetUrl(reward.image)" :alt="reward.title" class="object-cover" :class="imgClass ?? 'size-full'">
-  <Icon v-else :name="`hugeicons:${reward.icon || 'gift'}`" :class="iconClass" />
+  <HandIcon v-else :name="reward.icon || 'gift'" :class="iconClass" />
 </template>

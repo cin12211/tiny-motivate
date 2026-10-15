@@ -101,7 +101,7 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
   <div>
     <div class="sticky top-0 z-10 -mx-[22px] flex items-center justify-between bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-3.5 pb-2.5 md:top-[58px] md:-mx-6 md:px-6">
       <Button as-child variant="ghost" size="icon" class="text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" :aria-label="$t('create.cancel')">
-        <NuxtLink to="/"><Icon name="hugeicons:arrow-left-01" class="size-5" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
+        <NuxtLink to="/"><HandIcon name="arrow-left-01" class="size-5" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
       </Button>
       <Badge variant="solid" class="md:absolute md:left-1/2 md:-translate-x-1/2">{{ $t('common.newGoal') }}</Badge>
       <span class="w-9" />
@@ -131,7 +131,7 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
               :aria-label="ic"
               @click="icon = ic"
             >
-              <Icon :name="`hugeicons:${ic}`" class="size-[22px]" />
+              <HandIcon :name="ic" class="size-[22px]" />
             </button>
           </div>
         </div>
@@ -141,9 +141,9 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
           <div class="flex flex-wrap items-center gap-1.5">
             <button v-for="n in presets" :key="n" type="button" :class="pick(chip, totalDays === n)" @click="setDays(n)">{{ n }}</button>
             <div class="ml-auto flex items-center gap-1.5">
-              <button type="button" :class="chip" :aria-label="$t('create.minus')" @click="setDays(totalDays - 1)"><Icon name="hugeicons:minus-sign" class="size-4" /></button>
+              <button type="button" :class="chip" :aria-label="$t('create.minus')" @click="setDays(totalDays - 1)"><HandIcon name="minus-sign" class="size-4" /></button>
               <output class="min-w-[42px] text-center text-[18px] font-semibold text-indigo tabular-nums">{{ totalDays }}</output>
-              <button type="button" :class="chip" :aria-label="$t('create.plus')" @click="setDays(totalDays + 1)"><Icon name="hugeicons:add-01" class="size-4" /></button>
+              <button type="button" :class="chip" :aria-label="$t('create.plus')" @click="setDays(totalDays + 1)"><HandIcon name="add-01" class="size-4" /></button>
             </div>
           </div>
         </div>
@@ -169,12 +169,12 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
               >
                 <span class="grid size-full place-items-center overflow-hidden rounded-[7px]"><RewardBadge :reward="r" icon-class="size-[22px]" /></span>
                 <span class="absolute -right-1.5 -bottom-1.5 grid size-5 place-items-center rounded-full border-2 border-background bg-primary text-primary-foreground">
-                  <Icon name="hugeicons:camera-01" class="size-3" />
+                  <HandIcon name="camera-01" class="size-3" />
                 </span>
               </button>
               <Input v-model="r.title" :placeholder="$t('create.rewardPh')" class="min-w-0 flex-1" maxlength="60" :aria-label="$t('create.rewardName')" />
               <Button type="button" variant="ghost" size="icon" :aria-label="$t('create.removeMilestone')" @click="removeReward(r.key)">
-                <Icon name="hugeicons:cancel-01" />
+                <HandIcon name="cancel-01" />
               </Button>
             </div>
 
@@ -183,12 +183,12 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
               <div class="flex flex-wrap items-center gap-2">
                 <img v-if="r.image" :src="assetUrl(r.image)" :alt="$t('create.photoAlt')" class="size-14 rounded-xl border border-line object-cover">
                 <Button as="label" variant="outline" size="sm" class="h-11 cursor-pointer bg-background">
-                  <Icon :name="uploading === r.key ? 'hugeicons:loading-03' : r.image ? 'hugeicons:camera-01' : 'hugeicons:image-add-01'" :class="uploading === r.key && 'animate-spin'" />
+                  <HandIcon :name="uploading === r.key ? 'loading-03' : r.image ? 'camera-01' : 'image-add-01'" :class="uploading === r.key && 'animate-spin'" />
                   {{ r.image ? $t('create.changePhoto') : $t('create.upload') }}
                   <input type="file" accept="image/*" class="sr-only" @change="onFile(r, $event)">
                 </Button>
                 <Button v-if="r.image" type="button" variant="outline" size="sm" class="h-11 text-muted-foreground" @click="r.image = null">
-                  <Icon name="hugeicons:image-delete-02" /> {{ $t('create.removePhoto') }}
+                  <HandIcon name="image-delete-02" /> {{ $t('create.removePhoto') }}
                 </Button>
               </div>
               <TypographyMuted as="span" class="text-[11.5px]">{{ $t('create.orIcon') }}</TypographyMuted>
@@ -201,7 +201,7 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
                   :aria-label="ic"
                   @click="r.icon = ic; r.image = null; pickerFor = null"
                 >
-                  <Icon :name="`hugeicons:${ic}`" class="size-5" />
+                  <HandIcon :name="ic" class="size-5" />
                 </button>
               </div>
             </div>

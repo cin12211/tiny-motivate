@@ -15,6 +15,7 @@ export function useSettings() {
     settings.value = value
     writeCache(value)
     applyAccent(value.accent)
+    applyTheme(value.theme)
     scheduleReminder(value, askPermission)
     syncAppIcon(value)
   }
@@ -44,6 +45,20 @@ function writeCache(value: UserSettings) {
     localStorage.setItem(CACHE_KEY, JSON.stringify(value))
   }
   catch {}
+}
+
+/**
+ * Light / dark / follow the device. Sets `.light` / `.dark` on <html>
+ * (the CSS tokens key off those) plus data-theme for parity with the design.
+ */
+export function applyTheme(theme: UserSettings['theme']) {
+  if (import.meta.server) return
+  const root = document.documentElement
+  root.classList.toggle('dark', theme === 'dark')
+  root.classList.toggle('light', theme === 'light')
+  if (theme === 'system') root.removeAttribute('data-theme')
+  else root.setAttribute('data-theme', theme)
+  root.style.colorScheme = theme === 'system' ? 'light dark' : theme
 }
 
 /** Swap the app-wide accent (light + dark values) by overriding --m-indigo. */

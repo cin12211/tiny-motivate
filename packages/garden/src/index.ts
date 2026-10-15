@@ -415,3 +415,5 @@ export function iconById(id: string | null | undefined): GardenIcon | undefined 
 export function toSvg(icon: Pick<GardenIcon, 'body'>, size = 32) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${VIEWBOX}">${icon.body}</svg>`
 }
+
+export * from './hand-icons.ts'

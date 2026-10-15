@@ -1,5 +1,4 @@
 import tailwindcss from '@tailwindcss/vite'
-import { ALL_ICONS } from './app/utils/icon-names'
 
 /**
  * NUXT_MOBILE=1 → static SPA for the Capacitor shell (apps/mobile).
@@ -13,7 +12,7 @@ export default defineNuxtConfig({
   // The app is client-rendered: auth lives in a bearer token on the device,
   // and the same bundle ships inside the Capacitor app.
   ssr: false,
-  modules: ['shadcn-nuxt', '@nuxt/icon', '@nuxtjs/i18n'],
+  modules: ['shadcn-nuxt', '@nuxtjs/i18n'],
   i18n: {
     // Language is a user setting (Settings page), not part of the URL.
     strategy: 'no_prefix',
@@ -31,14 +30,6 @@ export default defineNuxtConfig({
   shadcn: {
     prefix: '',
     componentDir: '@/components/ui',
-  },
-  icon: {
-    // Bundle the Hugeicons we use into the client so icons work offline in the app.
-    clientBundle: { icons: ALL_ICONS, scan: true, sizeLimitKb: 512 },
-    serverBundle: { collections: ['hugeicons'] },
-    provider: 'none',
-    // put icon CSS in a layer so Tailwind size-* utilities can override the 1em default
-    cssLayer: 'base',
   },
   app: {
     head: {

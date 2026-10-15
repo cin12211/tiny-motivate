@@ -7,6 +7,7 @@ import { addDays, toISODate } from '#shared/utils/dates'
  * goal started. A plant grows on every day at least one goal was ticked.
  * Web shows 120 days; the mobile home shows a compact 60-day garden.
  */
+const { t } = useI18n()
 const props = withDefaults(defineProps<{ goals: Goal[], days?: number }>(), { days: 120 })
 const N = computed(() => props.days)
 const small = computed(() => props.days < 120)
@@ -32,7 +33,7 @@ const cells = computed(() =>
       future,
       firstOfMonth: iso.endsWith('-01'),
       label,
-      tip: `${isToday ? 'hôm nay · ' : ''}${label} · ${done ? `${done} mục tiêu xong` : future ? 'chưa tới' : 'chưa mọc cây'}`,
+      tip: `${isToday ? `${t('common.today')} · ` : ''}${label} · ${done ? t('forest.tipDone', { n: done }) : future ? t('forest.tipFuture') : t('forest.tipEmpty')}`,
     }
   }),
 )
@@ -42,10 +43,10 @@ const dayIndex = computed(() => cells.value.findIndex(c => c.isToday) + 1)
 
 <template>
   <section class="flex flex-col items-center" :class="small ? 'gap-2 pb-3.5' : 'gap-[18px] pt-2 pb-[34px]'">
-    <Badge v-if="small">khu vườn {{ N }} ngày</Badge>
+    <Badge v-if="small">{{ $t('forest.garden', { n: N }) }}</Badge>
     <div v-else class="flex flex-col items-center gap-1.5">
-      <Badge variant="solid">{{ weekdayLong(today) }} · {{ dotDate(today) }}</Badge>
-      <TypographyMuted as="small" class="text-[11.5px]">ngày <em>{{ dayIndex }}</em> / {{ N }}</TypographyMuted>
+      <Badge variant="solid">{{ $t(`weekdays.${weekdayIndex(today)}`) }} · {{ dotDate(today) }}</Badge>
+      <i18n-t keypath="forest.day" tag="small" scope="global" class="text-[11.5px] text-muted-foreground"><template #i><em>{{ dayIndex }}</em></template><template #n>{{ N }}</template></i18n-t>
     </div>
 
     <div class="grid w-full grid-cols-10" :class="!small && 'gap-y-1 sm:grid-cols-15'">
@@ -71,7 +72,7 @@ const dayIndex = computed(() => cells.value.findIndex(c => c.isToday) + 1)
 
     <TypographyMuted class="flex w-full justify-between gap-3" :class="small ? 'text-[11px]' : 'text-[11.5px]'">
       <span :class="!small && 'hidden sm:inline'">{{ dotShort(start) }}</span>
-      <span class="text-center">đã mọc <em>{{ grown }}</em> cây<template v-if="!small"> · mỗi cây là một ngày bạn hoàn thành ít nhất một mục tiêu</template></span>
+      <span class="text-center"><i18n-t keypath="forest.grown" tag="span" scope="global"><template #n><em>{{ grown }}</em></template></i18n-t><template v-if="!small"> · {{ $t('forest.grownNote') }}</template></span>
       <span :class="!small && 'hidden sm:inline'">{{ dotShort(addDays(start, N - 1)) }}</span>
     </TypographyMuted>
   </section>

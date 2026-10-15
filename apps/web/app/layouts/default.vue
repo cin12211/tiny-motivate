@@ -23,8 +23,8 @@ const onHome = computed(() => route.path === '/')
 <template>
   <div class="min-h-dvh bg-background">
     <header class="sticky top-0 z-20 hidden items-center justify-between gap-4 bg-background px-6 py-3 dashed-bottom md:flex">
-      <NuxtLink to="/" class="flex items-center gap-2" aria-label="Trang chủ">
-        <Mochi :size="34" />
+      <NuxtLink to="/" class="flex items-center gap-2" :aria-label="$t('common.home')">
+        <LogoTile :size="30" />
         <TypographyH4 as="span" class="text-sm font-semibold tracking-[.02em] text-indigo">motivation</TypographyH4>
       </NuxtLink>
       <Badge variant="solid" class="shadow-none">{{ dotDate(today) }}</Badge>
@@ -37,14 +37,14 @@ const onHome = computed(() => route.path === '/')
     <nav
       v-if="showSwitch"
       class="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col items-center gap-2.5 bg-gradient-to-t from-background from-60% to-transparent pt-[30px] pb-[calc(20px+env(safe-area-inset-bottom))] md:hidden"
-      aria-label="Điều hướng"
+      :aria-label="$t('common.nav')"
     >
       <div class="pointer-events-auto flex gap-1 rounded-[10px] border border-line bg-surface p-1 shadow-[0_8px_20px_-12px_var(--m-glow)]">
         <NuxtLink
           to="/"
           class="grid h-[42px] w-[46px] place-items-center rounded-[7px] text-indigo"
           :class="onHome && 'bg-primary text-primary-foreground'"
-          aria-label="Tất cả mục tiêu"
+          :aria-label="$t('common.allGoals')"
         >
           <GardenIcon forest class="size-[30px]" />
         </NuxtLink>
@@ -52,7 +52,7 @@ const onHome = computed(() => route.path === '/')
           :to="todayGoal ? `/goals/${todayGoal.id}` : '/goals/new'"
           class="grid h-[42px] w-[46px] place-items-center rounded-[7px] text-indigo"
           :class="!onHome && 'bg-primary text-primary-foreground'"
-          aria-label="Hôm nay"
+          :aria-label="$t('common.today')"
         >
           <GardenIcon :day="2" class="size-[30px]" />
         </NuxtLink>

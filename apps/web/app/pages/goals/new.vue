@@ -5,7 +5,8 @@ import { toISODate } from '#shared/utils/dates'
 import Mochi from '~/components/Mochi.vue'
 import { cn } from '@/lib/utils'
 
-useHead({ title: 'Mục tiêu mới · Motivation' })
+const { t } = useI18n()
+useHead({ title: () => `${t('create.pageTitle')} · Motivation` })
 
 const { create, upload } = useGoals()
 
@@ -17,8 +18,8 @@ const icon = ref(GOAL_ICONS[0]!)
 const totalDays = ref(30)
 const startDate = ref(toISODate())
 const rewards = ref<DraftReward[]>([
-  { key: seq++, day: 3, title: '1 ly trà sữa', icon: 'bubble-tea-01', image: null },
-  { key: seq++, day: 7, title: 'Bữa ăn nhà hàng', icon: 'restaurant-01', image: null },
+  { key: seq++, day: 3, title: t('create.defaultReward1'), icon: 'bubble-tea-01', image: null },
+  { key: seq++, day: 7, title: t('create.defaultReward2'), icon: 'restaurant-01', image: null },
   { key: seq++, day: 30, title: '', icon: 'gift', image: null },
 ])
 const presets = [7, 21, 30, 66]
@@ -47,13 +48,13 @@ async function onFile(r: DraftReward, e: Event) {
   const file = input.files?.[0]
   input.value = ''
   if (!file) return
-  if (!file.type.startsWith('image/')) return toast('File này không phải ảnh, chọn ảnh JPG hoặc PNG nhé.')
+  if (!file.type.startsWith('image/')) return toast(t('create.errImage'))
   uploading.value = r.key
   try {
     r.image = (await upload(file)).url
   }
   catch (err) {
-    toast(errorMessage(err, 'Không tải được ảnh'))
+    toast(errorMessage(err, t('create.errUpload')))
   }
   finally {
     uploading.value = null
@@ -62,11 +63,11 @@ async function onFile(r: DraftReward, e: Event) {
 
 async function submit() {
   error.value = !title.value.trim()
-    ? 'Đặt tên cho mục tiêu trước đã nhé.'
+    ? t('create.errTitle')
     : rewards.value.some(r => r.day < 1 || r.day > totalDays.value)
-      ? `Ngày nhận quà phải nằm trong 1 đến ${totalDays.value}.`
+      ? t('create.errDay', { n: totalDays.value })
       : rewards.value.some(r => !r.title.trim())
-        ? 'Có chặng chưa có tên phần quà.'
+        ? t('create.errName')
         : ''
   if (error.value) return
   saving.value = true
@@ -79,11 +80,11 @@ async function submit() {
       rewards: rewards.value.map(({ day, title, icon, image }) => ({ day, title, icon, image })),
     })
     confettiBurst()
-    toast(`Bắt đầu hành trình ${goal.totalDays} ngày!`, { icon: h(Mochi, { pose: 'cheer', size: 28, class: 'text-on-indigo' }) })
+    toast(t('create.started', { n: goal.totalDays }), { icon: h(Mochi, { pose: 'cheer', size: 28, class: 'text-on-indigo' }) })
     await navigateTo(`/goals/${goal.id}`)
   }
   catch (err) {
-    error.value = errorMessage(err, 'Không tạo được mục tiêu')
+    error.value = errorMessage(err, t('create.errCreate'))
   }
   finally {
     saving.value = false
@@ -99,27 +100,27 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
 <template>
   <div>
     <div class="sticky top-0 z-10 -mx-[22px] flex items-center justify-between bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-3.5 pb-2.5 md:top-[58px] md:-mx-6 md:px-6">
-      <Button as-child variant="ghost" size="icon" class="text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" aria-label="Huỷ">
-        <NuxtLink to="/"><Icon name="hugeicons:arrow-left-01" class="size-5" /><span class="hidden md:inline">tất cả mục tiêu</span></NuxtLink>
+      <Button as-child variant="ghost" size="icon" class="text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" :aria-label="$t('create.cancel')">
+        <NuxtLink to="/"><Icon name="hugeicons:arrow-left-01" class="size-5" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
       </Button>
-      <Badge variant="solid" class="md:absolute md:left-1/2 md:-translate-x-1/2">mục tiêu mới</Badge>
+      <Badge variant="solid" class="md:absolute md:left-1/2 md:-translate-x-1/2">{{ $t('common.newGoal') }}</Badge>
       <span class="w-9" />
     </div>
 
     <div class="mx-auto max-w-[560px]">
       <div class="flex items-center justify-center gap-2.5 pt-1 pb-5">
         <Mochi pose="gift" :size="60" />
-        <TypographyLead>chọn số ngày và tự đặt<br>quà cho từng chặng.<span class="hidden md:inline"><br>đặt chặng nhỏ ở ngày 3 và 7 để có động lực sớm.</span></TypographyLead>
+        <TypographyLead>{{ $t('create.lead1') }}<br>{{ $t('create.lead2') }}<span class="hidden md:inline"><br>{{ $t('create.lead3') }}</span></TypographyLead>
       </div>
 
       <form novalidate @submit.prevent="submit">
         <div class="mb-[22px]">
-          <Label for="c-title" class="mb-2 block"><TypographyH3 as="span">Bạn muốn duy trì điều gì?</TypographyH3></Label>
-          <Input id="c-title" v-model="title" placeholder="VD: Học tiếng Anh mỗi ngày" maxlength="80" />
+          <Label for="c-title" class="mb-2 block"><TypographyH3 as="span">{{ $t('create.what') }}</TypographyH3></Label>
+          <Input id="c-title" v-model="title" :placeholder="$t('create.whatPh')" maxlength="80" />
         </div>
 
         <div class="mb-[22px]">
-          <TypographyH3 class="mb-2">Biểu tượng</TypographyH3>
+          <TypographyH3 class="mb-2">{{ $t('create.icon') }}</TypographyH3>
           <div class="flex flex-wrap gap-1.5">
             <button
               v-for="ic in GOAL_ICONS"
@@ -136,34 +137,34 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
         </div>
 
         <div class="mb-[22px]">
-          <TypographyH3 class="mb-2">Trong bao nhiêu ngày?</TypographyH3>
+          <TypographyH3 class="mb-2">{{ $t('create.howLong') }}</TypographyH3>
           <div class="flex flex-wrap items-center gap-1.5">
             <button v-for="n in presets" :key="n" type="button" :class="pick(chip, totalDays === n)" @click="setDays(n)">{{ n }}</button>
             <div class="ml-auto flex items-center gap-1.5">
-              <button type="button" :class="chip" aria-label="Bớt 1 ngày" @click="setDays(totalDays - 1)"><Icon name="hugeicons:minus-sign" class="size-4" /></button>
+              <button type="button" :class="chip" :aria-label="$t('create.minus')" @click="setDays(totalDays - 1)"><Icon name="hugeicons:minus-sign" class="size-4" /></button>
               <output class="min-w-[42px] text-center text-[18px] font-semibold text-indigo tabular-nums">{{ totalDays }}</output>
-              <button type="button" :class="chip" aria-label="Thêm 1 ngày" @click="setDays(totalDays + 1)"><Icon name="hugeicons:add-01" class="size-4" /></button>
+              <button type="button" :class="chip" :aria-label="$t('create.plus')" @click="setDays(totalDays + 1)"><Icon name="hugeicons:add-01" class="size-4" /></button>
             </div>
           </div>
         </div>
 
         <div class="mb-[22px]">
-          <Label for="c-start" class="mb-2 block"><TypographyH3 as="span">Bắt đầu từ</TypographyH3></Label>
+          <Label for="c-start" class="mb-2 block"><TypographyH3 as="span">{{ $t('create.start') }}</TypographyH3></Label>
           <Input id="c-start" v-model="startDate" type="date" />
         </div>
 
         <div class="mb-[22px]">
-          <TypographyH3 class="mb-2">Phần thưởng theo chặng</TypographyH3>
-          <TypographyMuted class="-mt-1 mb-2.5">Bấm vào ô hình bên trái để chọn icon hoặc tải ảnh món quà bạn thích.</TypographyMuted>
+          <TypographyH3 class="mb-2">{{ $t('create.rewards') }}</TypographyH3>
+          <TypographyMuted class="-mt-1 mb-2.5">{{ $t('create.rewardsHint') }}</TypographyMuted>
 
           <template v-for="r in rewards" :key="r.key">
             <div class="mb-2 flex items-center gap-2">
-              <Input v-model.number="r.day" type="number" min="1" :max="totalDays" class="w-[62px] shrink-0 px-1 text-center" aria-label="Ngày nhận quà" />
+              <Input v-model.number="r.day" type="number" min="1" :max="totalDays" class="w-[62px] shrink-0 px-1 text-center" :aria-label="$t('create.rewardDay')" />
               <button
                 type="button"
                 class="relative grid size-[42px] shrink-0 place-items-center rounded-lg border bg-surface text-indigo"
                 :class="pickerFor === r.key ? 'border-indigo' : 'border-line'"
-                aria-label="Đổi hình phần quà"
+                :aria-label="$t('create.changePic')"
                 @click="pickerFor = pickerFor === r.key ? null : r.key"
               >
                 <span class="grid size-full place-items-center overflow-hidden rounded-[7px]"><RewardBadge :reward="r" icon-class="size-[22px]" /></span>
@@ -171,26 +172,26 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
                   <Icon name="hugeicons:camera-01" class="size-3" />
                 </span>
               </button>
-              <Input v-model="r.title" placeholder="Phần quà..." class="min-w-0 flex-1" maxlength="60" aria-label="Tên phần quà" />
-              <Button type="button" variant="ghost" size="icon" aria-label="Xoá chặng" @click="removeReward(r.key)">
+              <Input v-model="r.title" :placeholder="$t('create.rewardPh')" class="min-w-0 flex-1" maxlength="60" :aria-label="$t('create.rewardName')" />
+              <Button type="button" variant="ghost" size="icon" :aria-label="$t('create.removeMilestone')" @click="removeReward(r.key)">
                 <Icon name="hugeicons:cancel-01" />
               </Button>
             </div>
 
-            <div v-if="pickerFor === r.key" class="-mt-0.5 mb-2.5 flex flex-col gap-2 rounded-lg border border-line bg-surface p-2.5" role="group" aria-label="Chọn hình cho phần quà">
-              <TypographyMuted as="span" class="text-[11.5px]">Ảnh của bạn</TypographyMuted>
+            <div v-if="pickerFor === r.key" class="-mt-0.5 mb-2.5 flex flex-col gap-2 rounded-lg border border-line bg-surface p-2.5" role="group" :aria-label="$t('create.picker')">
+              <TypographyMuted as="span" class="text-[11.5px]">{{ $t('create.yourPhoto') }}</TypographyMuted>
               <div class="flex flex-wrap items-center gap-2">
-                <img v-if="r.image" :src="assetUrl(r.image)" alt="Ảnh phần quà" class="size-14 rounded-xl border border-line object-cover">
+                <img v-if="r.image" :src="assetUrl(r.image)" :alt="$t('create.photoAlt')" class="size-14 rounded-xl border border-line object-cover">
                 <Button as="label" variant="outline" size="sm" class="h-11 cursor-pointer bg-background">
                   <Icon :name="uploading === r.key ? 'hugeicons:loading-03' : r.image ? 'hugeicons:camera-01' : 'hugeicons:image-add-01'" :class="uploading === r.key && 'animate-spin'" />
-                  {{ r.image ? 'Đổi ảnh khác' : 'Tải ảnh lên' }}
+                  {{ r.image ? $t('create.changePhoto') : $t('create.upload') }}
                   <input type="file" accept="image/*" class="sr-only" @change="onFile(r, $event)">
                 </Button>
                 <Button v-if="r.image" type="button" variant="outline" size="sm" class="h-11 text-muted-foreground" @click="r.image = null">
-                  <Icon name="hugeicons:image-delete-02" /> Bỏ ảnh
+                  <Icon name="hugeicons:image-delete-02" /> {{ $t('create.removePhoto') }}
                 </Button>
               </div>
-              <TypographyMuted as="span" class="text-[11.5px]">Hoặc chọn icon</TypographyMuted>
+              <TypographyMuted as="span" class="text-[11.5px]">{{ $t('create.orIcon') }}</TypographyMuted>
               <div class="flex flex-wrap gap-1.5">
                 <button
                   v-for="ic in REWARD_ICONS"
@@ -206,7 +207,7 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
             </div>
           </template>
 
-          <Button type="button" variant="dashed" class="h-[42px] w-full" @click="addReward">+ Thêm chặng thưởng</Button>
+          <Button type="button" variant="dashed" class="h-[42px] w-full" @click="addReward">{{ $t('create.addMilestone') }}</Button>
 
           <!-- reward track preview -->
           <div class="relative mx-1.5 mt-2 h-14" aria-hidden="true">
@@ -227,7 +228,7 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
 
         <TypographySmall v-if="error" as="p" class="mb-3 rounded-lg border border-indigo px-3 py-2.5 text-indigo" role="alert">{{ error }}</TypographySmall>
 
-        <Button type="submit" size="lg" class="w-full" :disabled="saving">{{ saving ? 'đang gieo mầm…' : 'bắt đầu hành trình' }}</Button>
+        <Button type="submit" size="lg" class="w-full" :disabled="saving">{{ saving ? $t('create.busy') : $t('create.submit') }}</Button>
       </form>
     </div>
   </div>

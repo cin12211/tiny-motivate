@@ -13,7 +13,17 @@ export default defineNuxtConfig({
   // The app is client-rendered: auth lives in a bearer token on the device,
   // and the same bundle ships inside the Capacitor app.
   ssr: false,
-  modules: ['shadcn-nuxt', '@nuxt/icon'],
+  modules: ['shadcn-nuxt', '@nuxt/icon', '@nuxtjs/i18n'],
+  i18n: {
+    // Language is a user setting (Settings page), not part of the URL.
+    strategy: 'no_prefix',
+    defaultLocale: 'vi',
+    locales: [
+      { code: 'vi', language: 'vi-VN', name: 'Tiếng Việt', file: 'vi.json' },
+      { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
+    ],
+    detectBrowserLanguage: false,
+  },
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()],

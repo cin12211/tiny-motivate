@@ -14,14 +14,14 @@ const open = defineModel<boolean>('open', { default: false })
         <span class="grid size-[120px] place-items-center overflow-hidden rounded-2xl border border-line bg-surface text-indigo">
           <RewardBadge :reward="reward" icon-class="size-14" />
         </span>
-        <DialogTitle class="text-[18px]">mở quà rồi!</DialogTitle>
+        <DialogTitle class="text-[18px]">{{ $t('reward.opened') }}</DialogTitle>
         <DialogDescription as-child>
           <TypographyP class="text-[13px]">
-            Bạn đã giữ nhịp {{ reward.day }} ngày. Tự thưởng ngay: <b class="font-semibold">{{ reward.title }}</b>
+            <i18n-t keypath="reward.kept" tag="span" scope="global"><template #n>{{ reward.day }}</template><template #reward><b class="font-semibold">{{ reward.title }}</b></template></i18n-t>
           </TypographyP>
         </DialogDescription>
       </template>
-      <Button class="mt-2 w-full" @click="open = false">nhận quà</Button>
+      <Button class="mt-2 w-full" @click="open = false">{{ $t('reward.claim') }}</Button>
     </DialogContent>
   </Dialog>
 </template>

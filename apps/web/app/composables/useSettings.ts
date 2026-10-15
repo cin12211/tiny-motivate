@@ -48,7 +48,7 @@ function writeCache(value: UserSettings) {
 /** Swap the app-wide accent (light + dark values) by overriding --m-indigo. */
 export function applyAccent(index: number) {
   if (import.meta.server) return
-  const [, light, dark] = ACCENTS[index] ?? ACCENTS[0]!
+  const { light, dark } = ACCENTS[index] ?? ACCENTS[0]!
   let el = document.getElementById('accent-style') as HTMLStyleElement | null
   if (!el) {
     el = document.createElement('style')

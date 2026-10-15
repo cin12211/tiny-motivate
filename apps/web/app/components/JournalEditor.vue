@@ -9,10 +9,8 @@ import Placeholder from '@tiptap/extension-placeholder'
  * Slots: `between` (under the text, e.g. the mood picker) and `actions`
  * (right side of the footer, next to the formatting toolbar).
  */
-const props = withDefaults(defineProps<{ placeholder?: string, label?: string }>(), {
-  placeholder: 'ghi lại một chút về hôm nay...',
-  label: 'Nhật ký',
-})
+const { t } = useI18n()
+const props = defineProps<{ placeholder?: string, label?: string }>()
 const html = defineModel<string>({ default: '' })
 
 const editor = useEditor({
@@ -21,9 +19,9 @@ const editor = useEditor({
   extensions: [
     StarterKit.configure({ heading: false, link: false }),
     Highlight,
-    Placeholder.configure({ placeholder: () => props.placeholder }),
+    Placeholder.configure({ placeholder: () => props.placeholder ?? t('journal.placeholder') }),
   ],
-  editorProps: { attributes: { 'class': 'journal-prose', 'aria-label': props.label } },
+  editorProps: { attributes: { 'class': 'journal-prose', 'aria-label': props.label ?? t('journal.label') } },
   onUpdate: ({ editor }) => {
     html.value = editor.isEmpty ? '' : editor.getHTML()
   },
@@ -38,10 +36,10 @@ onBeforeUnmount(() => editor.value?.destroy())
 const tools = computed(() => {
   const e = editor.value
   return [
-    { icon: 'text-bold', label: 'In đậm', active: e?.isActive('bold'), run: () => e?.chain().focus().toggleBold().run() },
-    { icon: 'text-italic', label: 'In nghiêng', active: e?.isActive('italic'), run: () => e?.chain().focus().toggleItalic().run() },
-    { icon: 'text-underline', label: 'Gạch chân', active: e?.isActive('underline'), run: () => e?.chain().focus().toggleUnderline().run() },
-    { icon: 'left-to-right-list-bullet', label: 'Danh sách', active: e?.isActive('bulletList'), run: () => e?.chain().focus().toggleBulletList().run() },
+    { icon: 'text-bold', label: t('journal.bold'), active: e?.isActive('bold'), run: () => e?.chain().focus().toggleBold().run() },
+    { icon: 'text-italic', label: t('journal.italic'), active: e?.isActive('italic'), run: () => e?.chain().focus().toggleItalic().run() },
+    { icon: 'text-underline', label: t('journal.underline'), active: e?.isActive('underline'), run: () => e?.chain().focus().toggleUnderline().run() },
+    { icon: 'left-to-right-list-bullet', label: t('journal.list'), active: e?.isActive('bulletList'), run: () => e?.chain().focus().toggleBulletList().run() },
   ]
 })
 </script>
@@ -51,7 +49,7 @@ const tools = computed(() => {
     <EditorContent :editor="editor" class="min-h-[150px] flex-1" />
     <slot name="between" />
     <div class="mt-3.5 flex items-center justify-between gap-2.5">
-      <div class="flex gap-0.5" role="toolbar" aria-label="Định dạng">
+      <div class="flex gap-0.5" role="toolbar" :aria-label="$t('journal.format')">
         <Button
           v-for="t in tools"
           :key="t.icon"

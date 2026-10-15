@@ -8,16 +8,16 @@ const s = computed(() => goalStats(props.goal))
 
 <template>
   <section class="flex flex-col items-center gap-1.5 pt-[22px]">
-    <Badge class="mb-2">phần quà</Badge>
+    <Badge class="mb-2">{{ $t('goal.rewards') }}</Badge>
     <div
       v-for="r in s.rewards"
       :key="r.id"
       class="flex w-full items-center justify-between gap-3 px-0.5 py-2.5"
     >
       <div class="min-w-0">
-        <TypographyH3 as="b" class="block">ngày {{ pad2(r.day) }}</TypographyH3>
+        <TypographyH3 as="b" class="block">{{ $t('goal.rewardDay', { n: pad2(r.day) }) }}</TypographyH3>
         <TypographySmall as="span" class="block truncate">{{ r.title }}</TypographySmall>
-        <TypographyMuted as="small" class="text-[11.5px]">{{ s.doneCount >= r.day ? (r.openedAt ? 'đã nhận' : 'đã mở khoá') : `còn ${r.day - s.doneCount} ngày` }}</TypographyMuted>
+        <TypographyMuted as="small" class="text-[11.5px]">{{ s.doneCount >= r.day ? (r.openedAt ? $t('goal.received') : $t('goal.unlocked')) : $t('goal.daysLeft', { n: r.day - s.doneCount }) }}</TypographyMuted>
       </div>
       <span
         class="grid h-[52px] w-16 shrink-0 place-items-center overflow-hidden rounded-lg border shadow-[0_6px_14px_-10px_var(--m-glow)]"
@@ -26,6 +26,6 @@ const s = computed(() => goalStats(props.goal))
         <RewardBadge :reward="r" icon-class="size-6" />
       </span>
     </div>
-    <TypographyMuted v-if="!s.rewards.length">Mục tiêu này chưa có phần quà nào.</TypographyMuted>
+    <TypographyMuted v-if="!s.rewards.length">{{ $t('goal.noRewards') }}</TypographyMuted>
   </section>
 </template>

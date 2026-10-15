@@ -21,8 +21,8 @@ const dots = computed(() =>
     <div class="mb-3 flex items-center gap-2">
       <Icon :name="`hugeicons:${goal.icon}`" class="size-[18px] text-indigo" />
       <TypographyH3 as="b" class="min-w-0 flex-1 truncate text-sm group-hover:underline group-hover:underline-offset-[3px]">{{ goal.title }}</TypographyH3>
-      <Badge v-if="s.active" size="sm" :variant="s.todayDone ? 'solid' : 'default'">{{ s.todayDone ? 'đã tick' : 'chưa tick' }}</Badge>
-      <Badge v-else-if="s.finished" size="sm" variant="outline">xong</Badge>
+      <Badge v-if="s.active" size="sm" :variant="s.todayDone ? 'solid' : 'default'">{{ s.todayDone ? $t('goal.ticked') : $t('goal.notTicked') }}</Badge>
+      <Badge v-else-if="s.finished" size="sm" variant="outline">{{ $t('goal.finished') }}</Badge>
     </div>
 
     <div class="grid grid-cols-15 place-items-center gap-y-[9px]" aria-hidden="true">
@@ -43,9 +43,9 @@ const dots = computed(() =>
     </div>
 
     <TypographyMuted class="mt-3">
-      {{ pad2(s.doneCount) }}/{{ goal.totalDays }} ngày ·
-      <template v-if="s.nextReward">còn {{ s.daysToNext }} ngày tới {{ s.nextReward.title }}</template>
-      <template v-else>đã mở hết quà</template>
+      {{ $t('goal.progress', { done: pad2(s.doneCount), total: goal.totalDays }) }} ·
+      <template v-if="s.nextReward">{{ $t('goal.toNext', { n: s.daysToNext, reward: s.nextReward.title }) }}</template>
+      <template v-else>{{ $t('goal.allOpened') }}</template>
     </TypographyMuted>
   </NuxtLink>
 </template>

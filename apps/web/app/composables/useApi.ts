@@ -52,6 +52,6 @@ export function assetUrl(path?: string | null) {
 }
 
 /** Pull the friendly message out of an H3 error. */
-export function errorMessage(err: any, fallback = 'Có lỗi xảy ra, thử lại nhé') {
-  return err?.data?.statusMessage || err?.statusMessage || fallback
+export function errorMessage(err: any, fallback?: string) {
+  return err?.data?.statusMessage || err?.statusMessage || fallback || useNuxtApp().$i18n.t('common.errorGeneric')
 }

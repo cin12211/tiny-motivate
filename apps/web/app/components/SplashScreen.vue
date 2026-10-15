@@ -30,7 +30,7 @@ function skip() {
         <Mochi pose="wave" :size="112" />
       </div>
       <TypographyLarge as="h1" class="mt-3.5 flex items-center gap-2.5"><LogoTile :size="30" />motivation</TypographyLarge>
-      <TypographyHand as="p">mỗi ngày một mầm nhỏ</TypographyHand>
+      <TypographyHand as="p">{{ $t('splash.tagline') }}</TypographyHand>
 
       <div class="mt-6.5 flex gap-1.5" aria-hidden="true">
         <span v-for="(n, i) in seeds" :key="n" class="relative grid size-[30px] place-items-center" :style="{ '--d': `${(i * 0.28).toFixed(2)}s` }">
@@ -39,10 +39,10 @@ function skip() {
         </span>
       </div>
       <TypographyMuted as="small" class="mt-3.5 text-[11.5px]">
-        đang tưới vườn cho bạn<b class="animate-blink font-normal">.</b><b class="animate-blink font-normal [animation-delay:.2s]">.</b><b class="animate-blink font-normal [animation-delay:.4s]">.</b>
+        {{ $t('splash.loading') }}<b class="animate-blink font-normal">.</b><b class="animate-blink font-normal [animation-delay:.2s]">.</b><b class="animate-blink font-normal [animation-delay:.4s]">.</b>
       </TypographyMuted>
     </div>
-    <TypographyMuted as="small" class="absolute bottom-[calc(26px+env(safe-area-inset-bottom))] text-[11px] text-faint">chạm để bỏ qua</TypographyMuted>
+    <TypographyMuted as="small" class="absolute bottom-[calc(26px+env(safe-area-inset-bottom))] text-[11px] text-faint">{{ $t('splash.skip') }}</TypographyMuted>
   </div>
 </template>
 

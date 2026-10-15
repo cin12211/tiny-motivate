@@ -109,12 +109,12 @@ export function overallStats(goals: Goal[]) {
   return { bestStreak, rewardsUnlocked, pending }
 }
 
-const WEEKDAYS = ['chủ nhật', 'thứ hai', 'thứ ba', 'thứ tư', 'thứ năm', 'thứ sáu', 'thứ bảy']
 const pad = (n: number) => String(n).padStart(2, '0')
 
 export const pad2 = (n: number) => pad(Math.max(0, n))
-export function weekdayLong(iso: string) {
-  return WEEKDAYS[parseISODate(iso).getDay()]!
+/** 0 (Sunday) .. 6 — translate with t(`weekdays.${i}`). */
+export function weekdayIndex(iso: string) {
+  return parseISODate(iso).getDay()
 }
 /** dd.mm.yyyy — the date chip format from the design. */
 export function dotDate(iso: string) {

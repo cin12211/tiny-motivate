@@ -8,6 +8,11 @@ useNativeShell()
 // Use the accent cached on this device right away (the server copy loads with the user).
 const { settings } = useSettings()
 onMounted(() => applyAccent(settings.value.accent))
+
+// Language follows the user's setting (cached on the device, synced from the server).
+const { setLocale } = useI18n()
+watch(() => settings.value.lang, lang => setLocale(lang), { immediate: true })
+useHead({ htmlAttrs: { lang: () => settings.value.lang } })
 </script>
 
 <template>

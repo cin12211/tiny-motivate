@@ -42,7 +42,7 @@ watch(selected, () => nextTick(() => center()))
     ref="scroller"
     class="scrollbar-none relative -mx-[22px] flex snap-x snap-proximity gap-1.5 overflow-x-auto px-[40%] pt-3.5 pb-2.5 md:-mx-6 md:px-[45%]"
     role="listbox"
-    aria-label="Các ngày"
+    :aria-label="$t('goal.days')"
   >
     <button
       v-for="d in days"
@@ -50,7 +50,7 @@ watch(selected, () => nextTick(() => center()))
       :data-day="d.n"
       role="option"
       :aria-selected="selected === d.n"
-      :aria-label="`Ngày ${d.n}, ${d.date}${d.status === 'done' ? ', đã xong' : ''}${d.reward ? `, quà ${d.reward.title}` : ''}`"
+      :aria-label="$t('goal.dayAria', { n: d.n, date: d.date }) + (d.status === 'done' ? $t('goal.dayDone') : '') + (d.reward ? $t('goal.dayReward', { reward: d.reward.title }) : '')"
       class="grid h-[52px] w-11 shrink-0 snap-center place-items-center text-indigo transition-[opacity,transform] duration-150 hover:opacity-70"
       :class="selected === d.n ? 'scale-[1.18] opacity-100 hover:opacity-100' : d.reward && !d.got ? 'opacity-20' : 'opacity-30'"
       @click="selected = d.n"

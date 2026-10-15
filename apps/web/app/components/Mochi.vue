@@ -10,13 +10,8 @@ const props = withDefaults(defineProps<{ pose?: MochiPose, size?: number | strin
   size: 76,
 })
 
-const label = computed(() => ({
-  idle: 'Mochi',
-  wave: 'Mochi vẫy tay',
-  cheer: 'Mochi đang vui',
-  gift: 'Mochi cầm quà',
-  sleepy: 'Mochi buồn ngủ',
-}[props.pose]))
+const { t } = useI18n()
+const label = computed(() => t(`mochi.${props.pose}`))
 </script>
 
 <template>

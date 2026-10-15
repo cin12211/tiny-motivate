@@ -9,7 +9,7 @@ const s = computed(() => goalStats(props.goal))
 
 <template>
   <section class="flex flex-col items-center gap-4 pt-5 pb-2 dashed-top">
-    <Badge variant="solid">{{ goal.totalDays }} ngày</Badge>
+    <Badge variant="solid">{{ $t('common.days', { n: goal.totalDays }) }}</Badge>
     <div class="grid w-full max-w-[460px] grid-cols-10 gap-y-1.5">
       <button
         v-for="n in goal.totalDays"
@@ -19,7 +19,7 @@ const s = computed(() => goalStats(props.goal))
           selected === n && 'bg-surface shadow-[inset_0_0_0_1px_var(--m-indigo)]',
           rewardAt(goal, n) && s.doneCount < n && 'opacity-35',
         ]"
-        :aria-label="`Ngày ${n}`"
+        :aria-label="$t('goal.dayN', { n })"
         @click="selected = n"
       >
         <span class="absolute inset-0 grid place-items-center">

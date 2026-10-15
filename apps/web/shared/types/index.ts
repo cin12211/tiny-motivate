@@ -37,14 +37,27 @@ export interface Goal {
   createdAt: string
 }
 
+/** Per-user preferences from the Settings page. */
+export interface UserSettings {
+  /** Index into ACCENTS (shared/utils/settings.ts). */
+  accent: number
+  /** Garden icon id used as the app logo, e.g. "forest", "p4", "m2". */
+  logo: string
+  /** Daily reminder on/off and its time (HH:MM, local). */
+  notify: boolean
+  time: string
+}
+
 export interface User {
   id: string
   name: string
   email: string
   createdAt: string
+  settings: UserSettings
 }
 
-export interface StoredUser extends User {
+export interface StoredUser extends Omit<User, 'settings'> {
+  settings?: UserSettings
   passwordHash: string
   salt: string
 }

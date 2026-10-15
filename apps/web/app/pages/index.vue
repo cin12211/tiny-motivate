@@ -11,14 +11,13 @@ const name = computed(() => user.value?.name || 'bạn')
 </script>
 
 <template>
-  <div>
-    <!-- mobile: date chip + longest streak on top (the web shows the date in the top bar) -->
-    <div class="flex items-center justify-between pt-5 md:hidden">
-      <Badge variant="solid">{{ dotDate(today) }}</Badge>
-      <TypographyMuted as="span" class="inline-flex items-center gap-1.5">
-        <Icon name="hugeicons:fire" class="size-4 text-indigo" />
-        <span>chuỗi dài nhất <b class="font-semibold text-indigo">{{ pad2(stats.bestStreak) }}</b> ngày</span>
-      </TypographyMuted>
+  <div class="relative">
+    <!-- top row: date chip (phones; the web shows it in the header) + settings link -->
+    <div class="flex items-center justify-between pt-5 md:absolute md:top-[18px] md:right-6 md:pt-0">
+      <Badge variant="solid" class="md:hidden">{{ dotDate(today) }}</Badge>
+      <Button as-child variant="link" size="xs" class="-mr-1.5 gap-1.5 px-1.5 text-xs">
+        <NuxtLink to="/settings"><Icon name="hugeicons:settings-01" class="size-[15px]" />cài đặt</NuxtLink>
+      </Button>
     </div>
 
     <!-- phones: small Mochi beside the greeting; web: big Mochi above it -->
@@ -28,7 +27,12 @@ const name = computed(() => user.value?.name || 'bạn')
       <TypographyLead class="max-md:text-[13px] max-md:leading-normal">
         <span class="md:hidden">chào {{ name }} :)<br></span>
         <template v-if="stats.pending.length">hôm nay còn <em>{{ stats.pending.length }} mục tiêu</em> chưa tick</template>
-        <template v-else>hôm nay xong hết rồi. <em>mỗi ngày đều đáng giá</em></template>
+        <template v-else>hôm nay xong hết rồi.</template>
+        <br>
+        <span class="mt-1 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Icon name="hugeicons:fire" class="size-3.5 text-indigo" />
+          chuỗi dài nhất <b class="font-semibold text-indigo">{{ pad2(stats.bestStreak) }}</b> ngày
+        </span>
       </TypographyLead>
     </div>
 

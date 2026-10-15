@@ -402,6 +402,15 @@ export function moodById(id: string | null | undefined) {
   return MOODS.find(m => m.id === id)
 }
 
+/** Look up any icon by id: "forest", "p1".."p55" (plants) or "m1".."m5" (moods). */
+export function iconById(id: string | null | undefined): GardenIcon | undefined {
+  if (!id) return undefined
+  if (id === 'forest') return FOREST
+  if (id.startsWith('m')) return moodById(id)
+  const n = Number(id.replace(/^p/, ''))
+  return Number.isInteger(n) && n >= 1 && n <= PLANTS.length ? PLANTS[n - 1] : undefined
+}
+
 /** Full standalone SVG string (handy for favicons, native splash assets, etc.). */
 export function toSvg(icon: Pick<GardenIcon, 'body'>, size = 32) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${VIEWBOX}">${icon.body}</svg>`

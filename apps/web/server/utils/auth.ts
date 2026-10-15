@@ -1,6 +1,7 @@
 import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto'
 import type { H3Event } from 'h3'
 import type { StoredUser, User } from '#shared/types'
+import { sanitizeSettings } from '#shared/utils/settings'
 
 /**
  * Minimal token auth for the JSON-file backend.
@@ -22,8 +23,8 @@ export function newToken() {
   return randomBytes(32).toString('base64url')
 }
 
-export function publicUser({ id, name, email, createdAt }: StoredUser): User {
-  return { id, name, email, createdAt }
+export function publicUser({ id, name, email, createdAt, settings }: StoredUser): User {
+  return { id, name, email, createdAt, settings: sanitizeSettings(settings) }
 }
 
 export function bearerToken(event: H3Event) {

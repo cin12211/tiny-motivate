@@ -16,7 +16,7 @@ const today = toISODate()
 
 // "Today" opens the first goal still waiting for a tick (or the first goal).
 const todayGoal = computed(() => stats.value.pending[0] ?? goals.value[0])
-const showSwitch = computed(() => !route.path.startsWith('/goals/new'))
+const showSwitch = computed(() => !route.path.startsWith('/goals/new') && route.path !== '/settings')
 const onHome = computed(() => route.path === '/')
 </script>
 

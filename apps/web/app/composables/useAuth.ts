@@ -9,6 +9,7 @@ export function useAuth() {
     if (!token.value) return null
     try {
       user.value = await api<User>('/api/auth/me')
+      useSettings().apply(user.value.settings)
     }
     catch {
       user.value = null
@@ -19,6 +20,7 @@ export function useAuth() {
   function accept(res: AuthResponse) {
     setToken(res.token)
     user.value = res.user
+    useSettings().apply(res.user.settings)
     useGoals().reset()
   }
 

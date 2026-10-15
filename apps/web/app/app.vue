@@ -4,6 +4,10 @@ import 'vue-sonner/style.css'
 // The splash plays once per app start (web reload or native launch).
 const splash = ref(true)
 useNativeShell()
+
+// Use the accent cached on this device right away (the server copy loads with the user).
+const { settings } = useSettings()
+onMounted(() => applyAccent(settings.value.accent))
 </script>
 
 <template>

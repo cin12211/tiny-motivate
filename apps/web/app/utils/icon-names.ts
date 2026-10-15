@@ -16,7 +16,7 @@ export const REWARD_ICONS = [
 /** Icons used directly in templates or seed data. */
 const UI_ICONS = [
   'add-01', 'add-circle', 'alert-02', 'apple', 'arrow-left-01', 'arrow-right-01', 'camera-01', 'cancel-01', 'cancel-circle',
-  'checkmark-circle-02', 'delete-02', 'favourite', 'fire', 'google', 'image-add-01', 'image-delete-02',
+  'checkmark-circle-02', 'delete-02', 'favourite', 'fire', 'settings-01', 'google', 'image-add-01', 'image-delete-02',
   'information-circle', 'loading-03', 'lock-password', 'logout-03', 'mail-01', 'minus-sign', 'user', 'view', 'view-off',
   'text-bold', 'text-italic', 'text-underline', 'left-to-right-list-bullet', 'soft-drink-01',
 ]

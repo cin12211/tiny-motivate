@@ -24,7 +24,9 @@
   --m-faint: #c9c6e3;
   --m-indigo: #1a0dc9;
   --m-on-indigo: #ffffff;
-  --m-glow: rgba(26, 13, 201, 0.45);
+
+  /* glow follows whatever accent the user picked in Settings */
+  --m-glow: color-mix(in srgb, var(--m-indigo) 45%, transparent);
 
   --background: var(--m-paper);
   --foreground: var(--m-ink);
@@ -59,7 +61,6 @@
     --m-faint: #3a3760;
     --m-indigo: #968eff;
     --m-on-indigo: #0f0e16;
-    --m-glow: rgba(150, 142, 255, 0.35);
     color-scheme: dark;
   }
 }
@@ -73,7 +74,6 @@
   --m-faint: #3a3760;
   --m-indigo: #968eff;
   --m-on-indigo: #0f0e16;
-  --m-glow: rgba(150, 142, 255, 0.35);
   color-scheme: dark;
 }
 

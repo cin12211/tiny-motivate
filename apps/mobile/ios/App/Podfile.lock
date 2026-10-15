@@ -6,6 +6,8 @@ PODS:
   - CapacitorCordova (6.2.2)
   - CapacitorKeyboard (6.0.4):
     - Capacitor
+  - CapacitorLocalNotifications (6.1.3):
+    - Capacitor
   - CapacitorStatusBar (6.0.3):
     - Capacitor
 
@@ -14,6 +16,7 @@ DEPENDENCIES:
   - "CapacitorApp (from `../../../../node_modules/.pnpm/@capacitor+app@6.0.3_@capacitor+core@6.2.2/node_modules/@capacitor/app`)"
   - "CapacitorCordova (from `../../../../node_modules/.pnpm/@capacitor+ios@6.2.2_@capacitor+core@6.2.2/node_modules/@capacitor/ios`)"
   - "CapacitorKeyboard (from `../../../../node_modules/.pnpm/@capacitor+keyboard@6.0.4_@capacitor+core@6.2.2/node_modules/@capacitor/keyboard`)"
+  - "CapacitorLocalNotifications (from `../../../../node_modules/.pnpm/@capacitor+local-notifications@6.1.3_@capacitor+core@6.2.2/node_modules/@capacitor/local-notifications`)"
   - "CapacitorStatusBar (from `../../../../node_modules/.pnpm/@capacitor+status-bar@6.0.3_@capacitor+core@6.2.2/node_modules/@capacitor/status-bar`)"
 
 EXTERNAL SOURCES:
@@ -25,6 +28,8 @@ EXTERNAL SOURCES:
     :path: "../../../../node_modules/.pnpm/@capacitor+ios@6.2.2_@capacitor+core@6.2.2/node_modules/@capacitor/ios"
   CapacitorKeyboard:
     :path: "../../../../node_modules/.pnpm/@capacitor+keyboard@6.0.4_@capacitor+core@6.2.2/node_modules/@capacitor/keyboard"
+  CapacitorLocalNotifications:
+    :path: "../../../../node_modules/.pnpm/@capacitor+local-notifications@6.1.3_@capacitor+core@6.2.2/node_modules/@capacitor/local-notifications"
   CapacitorStatusBar:
     :path: "../../../../node_modules/.pnpm/@capacitor+status-bar@6.0.3_@capacitor+core@6.2.2/node_modules/@capacitor/status-bar"
 
@@ -33,8 +38,9 @@ SPEC CHECKSUMS:
   CapacitorApp: a19ccb4f5f32d2534be5c6f524d5a9b614a1e8a7
   CapacitorCordova: c2c76283b5c00cf6073bab0b1311e3b10bd17254
   CapacitorKeyboard: e8cd50fd5cbdd023a5947a5c0f5cca6e5aa5a253
+  CapacitorLocalNotifications: 801867e687c42dd2b33c1e22e08f48e6738d2f72
   CapacitorStatusBar: 149cde8f1328ec3aa6cbdd872a55137ae3f98b16
 
-PODFILE CHECKSUM: e710f7d38cedc858ac2e888e7a4f968b7969ff38
+PODFILE CHECKSUM: 3eb0058e82d27233215672da8167bcc96ae3eb97
 
 COCOAPODS: 1.16.2

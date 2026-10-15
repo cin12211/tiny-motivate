@@ -29,7 +29,7 @@ function skip() {
       <div class="animate-bob">
         <Mochi pose="wave" :size="112" />
       </div>
-      <TypographyLarge as="h1" class="mt-3.5 flex items-center gap-2.5"><LogoTile :size="30" />motivation</TypographyLarge>
+      <TypographyLarge as="h1" class="mt-3.5">motivation</TypographyLarge>
       <TypographyHand as="p">{{ $t('splash.tagline') }}</TypographyHand>
 
       <div class="mt-6.5 flex gap-1.5" aria-hidden="true">

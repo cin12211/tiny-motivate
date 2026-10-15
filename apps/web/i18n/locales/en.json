@@ -214,7 +214,7 @@
     "logoDesc": "pick any garden icon as your logo",
     "logoPick": "Choose logo",
     "logoInvert": "swap background and icon colours",
-    "logoNoteNative": "shown inside the app (loading screen, header, settings)",
+    "logoNoteNative": "shown on this page and as the home-screen app icon (iOS)",
     "language": "language",
     "languageDesc": "choose the display language",
     "review": "review",

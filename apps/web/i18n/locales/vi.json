@@ -214,7 +214,7 @@
     "logoDesc": "chọn một icon trong vườn làm logo của bạn",
     "logoPick": "Chọn logo",
     "logoInvert": "đảo màu nền và icon",
-    "logoNoteNative": "logo hiện trong app (màn loading, header, cài đặt)",
+    "logoNoteNative": "logo hiện ở trang cài đặt và icon app ngoài màn hình chính (iOS)",
     "language": "ngôn ngữ",
     "languageDesc": "chọn ngôn ngữ hiển thị",
     "review": "đánh giá",

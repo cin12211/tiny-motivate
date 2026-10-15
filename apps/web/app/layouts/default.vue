@@ -24,7 +24,7 @@ const onHome = computed(() => route.path === '/')
   <div class="min-h-dvh bg-background">
     <header class="sticky top-0 z-20 hidden items-center justify-between gap-4 bg-background px-6 py-3 dashed-bottom md:flex">
       <NuxtLink to="/" class="flex items-center gap-2" :aria-label="$t('common.home')">
-        <LogoTile :size="30" />
+        <Mochi :size="34" />
         <TypographyH4 as="span" class="text-sm font-semibold tracking-[.02em] text-indigo">motivation</TypographyH4>
       </NuxtLink>
       <Badge variant="solid" class="shadow-none">{{ dotDate(today) }}</Badge>

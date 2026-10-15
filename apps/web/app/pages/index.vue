@@ -15,10 +15,7 @@ const name = computed(() => user.value?.name || t('home.you'))
   <div class="relative">
     <!-- top row: date chip (phones; the web shows it in the header) + settings link -->
     <div class="flex items-center justify-between pt-5 md:absolute md:top-[18px] md:right-6 md:pt-0">
-      <span class="flex items-center gap-2 md:hidden">
-        <LogoTile :size="28" />
-        <Badge variant="solid">{{ dotDate(today) }}</Badge>
-      </span>
+      <Badge variant="solid" class="md:hidden">{{ dotDate(today) }}</Badge>
       <Button as-child variant="link" size="xs" class="-mr-1.5 gap-1.5 px-1.5 text-xs">
         <NuxtLink to="/settings"><Icon name="hugeicons:settings-01" class="size-[15px]" />{{ $t('common.settings') }}</NuxtLink>
       </Button>

@@ -5,11 +5,11 @@ import { addDays, toISODate } from '#shared/utils/dates'
 /**
  * Forest on the home screen: one cell per calendar day since the earliest
  * goal started. A plant grows on every day at least one goal was ticked.
- * Web shows 120 days; the mobile home shows a compact 30-day garden.
+ * Web shows 120 days; the mobile home shows a compact 60-day garden.
  */
 const props = withDefaults(defineProps<{ goals: Goal[], days?: number }>(), { days: 120 })
 const N = computed(() => props.days)
-const small = computed(() => props.days <= 31)
+const small = computed(() => props.days < 120)
 const today = toISODate()
 
 const start = computed(() => props.goals.reduce((m, g) => (g.startDate < m ? g.startDate : m), today))
@@ -41,14 +41,14 @@ const dayIndex = computed(() => cells.value.findIndex(c => c.isToday) + 1)
 </script>
 
 <template>
-  <section class="flex flex-col items-center" :class="small ? 'gap-3 pb-[22px]' : 'gap-[18px] pt-2 pb-[34px]'">
+  <section class="flex flex-col items-center" :class="small ? 'gap-2 pb-3.5' : 'gap-[18px] pt-2 pb-[34px]'">
     <Badge v-if="small">khu vườn {{ N }} ngày</Badge>
     <div v-else class="flex flex-col items-center gap-1.5">
       <Badge variant="solid">{{ weekdayLong(today) }} · {{ dotDate(today) }}</Badge>
       <TypographyMuted as="small" class="text-[11.5px]">ngày <em>{{ dayIndex }}</em> / {{ N }}</TypographyMuted>
     </div>
 
-    <div class="grid w-full grid-cols-10 gap-y-1" :class="!small && 'sm:grid-cols-15'">
+    <div class="grid w-full grid-cols-10" :class="!small && 'gap-y-1 sm:grid-cols-15'">
       <span
         v-for="c in cells"
         :key="c.n"
@@ -58,7 +58,7 @@ const dayIndex = computed(() => cells.value.findIndex(c => c.isToday) + 1)
       >
         <!-- padding-box square + absolute centre: aspect-ratio grid items size unreliably in iOS WebKit -->
         <span class="absolute inset-0 grid place-items-center">
-          <GardenIcon v-if="c.done" :day="c.n" class="size-[92%] transition-transform duration-200 group-hover:-translate-y-px group-hover:scale-[1.18]" />
+          <GardenIcon v-if="c.done" :day="c.n" :class="small ? 'size-[88%]' : 'size-[92%]'" class="transition-transform duration-200 group-hover:-translate-y-px group-hover:scale-[1.18]" />
           <i
             v-else
             class="block rounded-full transition-transform group-hover:scale-[1.6]"

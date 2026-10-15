@@ -13,7 +13,7 @@ const name = computed(() => user.value?.name || 'bạn')
 <template>
   <div>
     <!-- mobile: date chip + longest streak on top (the web shows the date in the top bar) -->
-    <div class="flex items-center justify-between pt-[26px] pb-1.5 md:hidden">
+    <div class="flex items-center justify-between pt-5 md:hidden">
       <Badge variant="solid">{{ dotDate(today) }}</Badge>
       <TypographyMuted as="span" class="inline-flex items-center gap-1.5">
         <Icon name="hugeicons:fire" class="size-4 text-indigo" />
@@ -21,19 +21,20 @@ const name = computed(() => user.value?.name || 'bạn')
       </TypographyMuted>
     </div>
 
-    <div class="flex flex-col items-center gap-2.5 pt-2.5 pb-[26px] text-center md:gap-1.5 md:pt-12 md:pb-7">
-      <Mochi pose="wave" :size="96" class="max-md:size-[76px]" />
+    <!-- phones: small Mochi beside the greeting; web: big Mochi above it -->
+    <div class="flex items-center justify-center gap-3.5 pt-1.5 pb-3.5 text-left md:flex-col md:gap-1.5 md:pt-12 md:pb-7 md:text-center">
+      <Mochi pose="wave" :size="96" class="max-md:size-16" />
       <TypographyH1 class="hidden md:block">chào {{ name }} :)</TypographyH1>
-      <TypographyLead>
+      <TypographyLead class="max-md:text-[13px] max-md:leading-normal">
         <span class="md:hidden">chào {{ name }} :)<br></span>
         <template v-if="stats.pending.length">hôm nay còn <em>{{ stats.pending.length }} mục tiêu</em> chưa tick</template>
         <template v-else>hôm nay xong hết rồi. <em>mỗi ngày đều đáng giá</em></template>
       </TypographyLead>
     </div>
 
-    <!-- 30-day garden on phones, 120-day forest on the web -->
+    <!-- 60-day garden on phones, 120-day forest on the web -->
     <template v-if="goals.length">
-      <Forest :goals="goals" :days="30" class="md:hidden" />
+      <Forest :goals="goals" :days="60" class="md:hidden" />
       <Forest :goals="goals" class="hidden md:flex" />
     </template>
 

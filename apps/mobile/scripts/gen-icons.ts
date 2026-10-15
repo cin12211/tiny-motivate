@@ -3,7 +3,7 @@
  *
  * iOS can only switch the home-screen icon between images bundled in the
  * app, so we pre-render one icon per logo choice:
- *   AppIcon.appiconset            – primary icon (forest, accent tile)
+ *   AppIcon.appiconset            – primary icon (default logo p2 "mầm đôi", accent tile)
  *   AppIcon-<id>.appiconset       – accent tile + light icon
  *   AppIcon-<id>-inv.appiconset   – light tile + accent icon
  *
@@ -49,7 +49,7 @@ async function writeSet(name: string, body: string, invert: boolean) {
   }, null, 2))
 }
 
-await writeSet('AppIcon', FOREST.body, false)
+await writeSet('AppIcon', PLANTS[1]!.body, false) // p2, the default logo
 for (const icon of icons) {
   await writeSet(`AppIcon-${icon.id}`, icon.body, false)
   await writeSet(`AppIcon-${icon.id}-inv`, icon.body, true)

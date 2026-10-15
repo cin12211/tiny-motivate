@@ -1,7 +1,8 @@
 /**
  * Mochi garden icons (generated from the "Mochi Garden Icons" design sheet).
  *
- * 55 hand-drawn plants (one grows on each completed day) and 5 mood flowers.
+ * 55 hand-drawn plants (one grows on each completed day), 5 mood flowers
+ * and the forest icon used for the "all goals" tab.
  * Each `body` is the inner markup of a 32x32 SVG drawn with `currentColor`,
  * so it can be dropped into `<svg viewBox="0 0 32 32">` and tinted with CSS.
  */
@@ -383,6 +384,14 @@ export const MOODS: ReadonlyArray<GardenIcon & { id: MoodId, label: string }> = 
     "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 28c2.5-.9 4.5.6 7 0s4.6-.8 7-.1 4.6.6 8 0\"/><path d=\"M16 27.6V15.6\"/><path d=\"M16 23.4c-1.6-2.4-4-3.2-6.2-2.6c1 2.4 3.6 3.4 6.2 2.6z\"/><path d=\"M16 23.4c1.6-2.4 4-3.2 6.2-2.6c-1 2.4-3.6 3.4-6.2 2.6z\"/><circle cx=\"16\" cy=\"11\" r=\"4.6\"/><g transform=\"translate(16 11)\"><path d=\"M-1.5 -5.2L0 -8.2L1.5 -5.2\" transform=\"rotate(0)\"/><path d=\"M-1.5 -5.2L0 -8.2L1.5 -5.2\" transform=\"rotate(36)\"/><path d=\"M-1.5 -5.2L0 -8.2L1.5 -5.2\" transform=\"rotate(72)\"/><path d=\"M-1.5 -5.2L0 -8.2L1.5 -5.2\" transform=\"rotate(108)\"/><path d=\"M-1.5 -5.2L0 -8.2L1.5 -5.2\" transform=\"rotate(144)\"/><path d=\"M-1.5 -5.2L0 -8.2L1.5 -5.2\" transform=\"rotate(180)\"/><path d=\"M-1.5 -5.2L0 -8.2L1.5 -5.2\" transform=\"rotate(216)\"/><path d=\"M-1.5 -5.2L0 -8.2L1.5 -5.2\" transform=\"rotate(252)\"/><path d=\"M-1.5 -5.2L0 -8.2L1.5 -5.2\" transform=\"rotate(288)\"/><path d=\"M-1.5 -5.2L0 -8.2L1.5 -5.2\" transform=\"rotate(324)\"/></g><g stroke-width=\"1.4\"><path d=\"M13.9 10.2q.8-1 1.6 0M16.5 10.2q.8-1 1.6 0\"/><path d=\"M14 12h4c0 1.4-.9 2.2-2 2.2s-2-.8-2-2.2z\"/></g><path d=\"M0 -2.2L.5 -.5L2.2 0L.5 .5L0 2.2L-.5 .5L-2.2 0L-.5 -.5z\" transform=\"translate(4.8 5.4) scale(1)\"/><path d=\"M0 -2.2L.5 -.5L2.2 0L.5 .5L0 2.2L-.5 .5L-2.2 0L-.5 -.5z\" transform=\"translate(27.4 4.8) scale(0.8)\"/><path d=\"M0 -2.2L.5 -.5L2.2 0L.5 .5L0 2.2L-.5 .5L-2.2 0L-.5 -.5z\" transform=\"translate(27 19.4) scale(0.9)\"/></g>"
   }
 ] as const
+
+/** Hand-drawn forest (big pine, small pine, round tree on one ground line) — the "all goals" tab icon. */
+export const FOREST: GardenIcon = {
+  id: 'forest',
+  name: 'khu rừng',
+  description: 'thông lớn ở giữa, thông nhỏ bên phải, cây tròn bên trái',
+  body: '<g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 28c3-.8 5.5.6 8.5 0s5.6-.8 9-.1 5.4.6 8.5 0"/><path d="M16 3.6l-3.6 5.6h2.1l-4.1 6.2h3l-3.6 5.4h12.4l-3.6-5.4h3l-4.1-6.2h2.1z"/><path d="M16 20.8v6.6"/><circle cx="6.6" cy="17.2" r="3.6"/><path d="M6.6 20.8v6.6"/><path d="M25.4 11.4l-3.4 6h1.8l-2.6 4.6h8.4l-2.6-4.6h1.8z"/><path d="M25.4 22v5.4"/><circle cx="5.4" cy="16.4" r=".2" stroke-width="1.2"/><circle cx="7.8" cy="18" r=".2" stroke-width="1.2"/></g>',
+}
 
 /** Plant for the n-th day (1-based). Cycles after 55 so long journeys never run out. */
 export function plantForDay(day: number) {

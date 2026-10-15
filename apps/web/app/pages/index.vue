@@ -12,9 +12,13 @@ const name = computed(() => user.value?.name || 'bạn')
 
 <template>
   <div>
-    <!-- mobile: date chip on top (the web shows it in the top bar) -->
-    <div class="flex justify-center pt-[26px] pb-2.5 md:hidden">
+    <!-- mobile: date chip + longest streak on top (the web shows the date in the top bar) -->
+    <div class="flex items-center justify-between pt-[26px] pb-1.5 md:hidden">
       <Badge variant="solid">{{ dotDate(today) }}</Badge>
+      <TypographyMuted as="span" class="inline-flex items-center gap-1.5">
+        <Icon name="hugeicons:fire" class="size-4 text-indigo" />
+        <span>chuỗi dài nhất <b class="font-semibold text-indigo">{{ pad2(stats.bestStreak) }}</b> ngày</span>
+      </TypographyMuted>
     </div>
 
     <div class="flex flex-col items-center gap-2.5 pt-2.5 pb-[26px] text-center md:gap-1.5 md:pt-12 md:pb-7">
@@ -27,8 +31,11 @@ const name = computed(() => user.value?.name || 'bạn')
       </TypographyLead>
     </div>
 
-    <!-- web: 120-day forest -->
-    <Forest v-if="goals.length" :goals="goals" class="hidden md:flex" />
+    <!-- 30-day garden on phones, 120-day forest on the web -->
+    <template v-if="goals.length">
+      <Forest :goals="goals" :days="30" class="md:hidden" />
+      <Forest :goals="goals" class="hidden md:flex" />
+    </template>
 
     <section class="flex flex-col md:pt-[26px] md:dashed-top">
       <Badge class="mb-2.5 hidden self-center md:inline-flex">mục tiêu của bạn</Badge>

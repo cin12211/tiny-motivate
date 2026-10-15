@@ -2,7 +2,8 @@
 /**
  * Mini layout: one centred column on every screen size.
  * md+ gets the sticky top bar (Mochi + wordmark + date chip);
- * phones get the floating bottom switch (all goals / today) instead.
+ * phones get the floating bottom switch (all goals / today) instead;
+ * the longest streak lives at the top of the mobile home.
  */
 import { toISODate } from '#shared/utils/dates'
 
@@ -45,7 +46,7 @@ const onHome = computed(() => route.path === '/')
           :class="onHome && 'bg-primary text-primary-foreground'"
           aria-label="Tất cả mục tiêu"
         >
-          <Icon name="hugeicons:grid-view" class="size-6" />
+          <GardenIcon forest class="size-[30px]" />
         </NuxtLink>
         <NuxtLink
           :to="todayGoal ? `/goals/${todayGoal.id}` : '/goals/new'"
@@ -53,10 +54,9 @@ const onHome = computed(() => route.path === '/')
           :class="!onHome && 'bg-primary text-primary-foreground'"
           aria-label="Hôm nay"
         >
-          <Icon name="hugeicons:flower" class="size-6" />
+          <GardenIcon :day="2" class="size-[30px]" />
         </NuxtLink>
       </div>
-      <TypographyMuted as="small">chuỗi dài nhất <b class="font-semibold text-indigo">{{ pad2(stats.bestStreak) }}</b> ngày</TypographyMuted>
     </nav>
   </div>
 </template>

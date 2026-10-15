@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toast } from 'vue-sonner'
 
-/** Login / signup card from the Mini design. Tabs switch routes. */
+/** Login / signup card from the Mini design. The link under the form switches between them. */
 const props = defineProps<{ mode: 'login' | 'signup' }>()
 const up = computed(() => props.mode === 'signup')
 const { login, signup } = useAuth()
@@ -49,7 +49,7 @@ const soon = (what: string) => toast(`${what} sẽ có sớm thôi, Mochi đang 
 
 <template>
   <div class="flex w-full max-w-[360px] flex-col gap-[18px]">
-    <div class="flex flex-col items-center gap-1 text-center">
+    <div class="mb-1.5 flex flex-col items-center gap-1 text-center">
       <Mochi :pose="up ? 'gift' : 'wave'" :size="up ? 84 : 78" />
       <TypographyH1 class="mt-2 text-[19px] font-semibold">{{ up ? 'bắt đầu khu vườn' : 'chào mừng trở lại' }}</TypographyH1>
       <TypographyLead class="text-[12.5px] opacity-75">
@@ -57,13 +57,6 @@ const soon = (what: string) => toast(`${what} sẽ có sớm thôi, Mochi đang 
         <template v-else>khu vườn của bạn vẫn đang chờ.<br>đăng nhập để tưới tiếp nhé.</template>
       </TypographyLead>
     </div>
-
-    <Tabs :model-value="mode" @update:model-value="v => navigateTo(`/${v}`)">
-      <TabsList>
-        <TabsTrigger value="login">đăng nhập</TabsTrigger>
-        <TabsTrigger value="signup">đăng ký</TabsTrigger>
-      </TabsList>
-    </Tabs>
 
     <form class="flex flex-col gap-2.5" novalidate @submit.prevent="submit">
       <label v-if="up" class="auth-field">

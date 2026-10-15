@@ -9,7 +9,7 @@ Giao diện theo bản design **Mini Style** (nền xám, chữ IBM Plex Mono, m
 ```
 apps/
   web/        Nuxt 4.6.1 + Tailwind v4 + shadcn-vue, kèm backend Nitro (JSON file DB)
-  mobile/     Capacitor 8 (iOS + Android) bọc bản build tĩnh của apps/web
+  mobile/     Capacitor 6 (iOS + Android, chạy được với Xcode 15) bọc bản build tĩnh của apps/web
 packages/
   garden/     @motivation/garden: 55 icon cây + 5 icon cảm xúc (SVG currentColor)
 ```

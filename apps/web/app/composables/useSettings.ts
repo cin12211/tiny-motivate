@@ -16,6 +16,7 @@ export function useSettings() {
     writeCache(value)
     applyAccent(value.accent)
     scheduleReminder(value, askPermission)
+    syncAppIcon(value)
   }
 
   async function update(patch: Partial<UserSettings>) {

@@ -10,7 +10,8 @@
     "open:ios": "cap open ios",
     "open:android": "cap open android",
     "run:ios": "cap run ios",
-    "run:android": "cap run android"
+    "run:android": "cap run android",
+    "icons": "node scripts/gen-icons.ts"
   },
   "dependencies": {
     "@capacitor/android": "6.2.2",
@@ -23,6 +24,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "6.2.2",
+    "@motivation/garden": "workspace:*",
+    "sharp": "~0.34.5",
     "typescript": "^5.9.3"
   }
 }

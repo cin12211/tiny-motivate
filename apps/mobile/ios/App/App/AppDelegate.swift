@@ -47,3 +47,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
+
+// MARK: - App icon switching
+
+/// Root view controller: registers the app's own (local) Capacitor plugins.
+class MainViewController: CAPBridgeViewController {
+    override open func capacitorDidLoad() {
+        bridge?.registerPluginInstance(AppIconPlugin())
+    }
+}
+
+/// `AppIcon.setIcon({ name })` from JS. `name` is an alternate icon set in
+/// Assets.xcassets (e.g. "AppIcon-p4-inv"); omit it to restore the primary icon.
+@objc(AppIconPlugin)
+public class AppIconPlugin: CAPPlugin, CAPBridgedPlugin {
+    public let identifier = "AppIconPlugin"
+    public let jsName = "AppIcon"
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "setIcon", returnType: CAPPluginReturnPromise)
+    ]
+
+    @objc func setIcon(_ call: CAPPluginCall) {
+        let name = call.getString("name")
+        DispatchQueue.main.async {
+            let app = UIApplication.shared
+            guard app.supportsAlternateIcons else {
+                call.reject("Alternate icons are not supported on this device")
+                return
+            }
+            if app.alternateIconName == name {
+                call.resolve()
+                return
+            }
+            app.setAlternateIconName(name) { error in
+                if let error = error {
+                    call.reject(error.localizedDescription)
+                } else {
+                    call.resolve()
+                }
+            }
+        }
+    }
+}

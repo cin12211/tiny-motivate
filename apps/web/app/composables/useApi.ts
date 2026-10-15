@@ -1,0 +1,57 @@
+const TOKEN_KEY = 'motivation-token'
+
+/** Bearer token kept on the device (localStorage works in the Capacitor WebView too). */
+export function useToken() {
+  const token = useState<string | null>('auth-token', () => {
+    if (import.meta.server) return null
+    try {
+      return localStorage.getItem(TOKEN_KEY)
+    }
+    catch {
+      return null
+    }
+  })
+  function setToken(value: string | null) {
+    token.value = value
+    try {
+      if (value) localStorage.setItem(TOKEN_KEY, value)
+      else localStorage.removeItem(TOKEN_KEY)
+    }
+    catch {}
+  }
+  return { token, setToken }
+}
+
+/** $fetch bound to the API base URL with the auth header. 401 → back to login. */
+export function useApi() {
+  const { public: { apiBase } } = useRuntimeConfig()
+  const { token, setToken } = useToken()
+  return $fetch.create({
+    baseURL: apiBase || undefined,
+    onRequest({ options }) {
+      if (token.value) {
+        const headers = new Headers(options.headers as HeadersInit | undefined)
+        headers.set('Authorization', `Bearer ${token.value}`)
+        options.headers = headers
+      }
+    },
+    async onResponseError({ response, request }) {
+      if (response.status === 401 && !String(request).includes('/api/auth/')) {
+        setToken(null)
+        await navigateTo('/login')
+      }
+    },
+  })
+}
+
+/** Uploaded photos are served by the API server; prefix them on mobile. */
+export function assetUrl(path?: string | null) {
+  if (!path) return ''
+  if (/^(https?:|data:|blob:)/.test(path)) return path
+  return `${useRuntimeConfig().public.apiBase}${path}`
+}
+
+/** Pull the friendly message out of an H3 error. */
+export function errorMessage(err: any, fallback = 'Có lỗi xảy ra, thử lại nhé') {
+  return err?.data?.statusMessage || err?.statusMessage || fallback
+}

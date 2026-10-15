@@ -1,0 +1,12 @@
+<!-- Shown while the JS bundle loads (before the in-app splash takes over). -->
+<style>
+  #mochi-boot{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#E6E5EA;color:#1A0DC9;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+  #mochi-boot svg{animation:mb 2.4s ease-in-out infinite}
+  #mochi-boot b{font-size:22px;font-weight:600;letter-spacing:.06em}
+  @keyframes mb{50%{transform:translateY(-6px)}}
+  @media (prefers-color-scheme:dark){#mochi-boot{background:#15141A;color:#968EFF}}
+</style>
+<div id="mochi-boot">
+  <svg width="112" height="112" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M43 31q-4-12-10-17M57 31q4-12 10-17"/><path d="M33 14c-2-3-7-1-5 3l5 4 5-4c2-4-3-6-5-3zM67 14c-2-3-7-1-5 3l5 4 5-4c2-4-3-6-5-3z" stroke-width="1.8"/><path d="M80 62a11 11 0 1 1-2 18"/><ellipse cx="50" cy="58" rx="29" ry="25"/><circle cx="40" cy="54" r="2.6" fill="currentColor" stroke="none"/><circle cx="60" cy="54" r="2.6" fill="currentColor" stroke="none"/><path d="M45 63q2.5 3 5 0q2.5 3 5 0"/><path d="M38 82l-2 7M50 83v7M62 82l2 7"/><path d="M77 54q9-4 11-15"/><path d="M85 36l3 3"/></svg>
+  <b>motivation</b>
+</div>

@@ -24,6 +24,6 @@ logs
 !.env.example
 
 # Local JSON database + uploaded photos (seeded automatically on first run)
-data/db.json
-data/uploads/*
-!data/uploads/.gitkeep
+apps/web/data/db.json
+apps/web/data/uploads/*
+!apps/web/data/uploads/.gitkeep

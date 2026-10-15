@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Motivation</string>
+    <string name="title_activity_main">Motivation</string>
+    <string name="package_name">app.motivation.mochi</string>
+    <string name="custom_url_scheme">app.motivation.mochi</string>
+</resources>

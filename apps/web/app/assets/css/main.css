@@ -1,0 +1,200 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/ibm-plex-mono/600.css";
+@import "@fontsource/caveat/500.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Motivation — "Mini" theme.
+ * Quiet grey paper, monospace text and a single indigo accent.
+ * Brand tokens (--m-*) feed the shadcn-vue semantic variables, so every
+ * shadcn component picks up the design automatically. Fonts are bundled
+ * (@fontsource) so the Capacitor app works offline.
+ */
+:root {
+  --m-bg: #d9d8de;
+  --m-paper: #e6e5ea;
+  --m-surface: #eeedf3;
+  --m-line: #d3d1dc;
+  --m-ink: #1f1f27;
+  --m-muted: #8f8ac0;
+  --m-faint: #c9c6e3;
+  --m-indigo: #1a0dc9;
+  --m-on-indigo: #ffffff;
+  --m-glow: rgba(26, 13, 201, 0.45);
+
+  --background: var(--m-paper);
+  --foreground: var(--m-ink);
+  --card: var(--m-surface);
+  --card-foreground: var(--m-ink);
+  --popover: var(--m-paper);
+  --popover-foreground: var(--m-ink);
+  --primary: var(--m-indigo);
+  --primary-foreground: var(--m-on-indigo);
+  --secondary: var(--m-surface);
+  --secondary-foreground: var(--m-indigo);
+  --muted: var(--m-surface);
+  --muted-foreground: var(--m-muted);
+  --accent: var(--m-surface);
+  --accent-foreground: var(--m-indigo);
+  --destructive: var(--m-indigo);
+  --destructive-foreground: var(--m-on-indigo);
+  --border: var(--m-line);
+  --input: var(--m-line);
+  --ring: var(--m-indigo);
+  --radius: 0.4375rem; /* 7px */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --m-bg: #0c0c10;
+    --m-paper: #15141a;
+    --m-surface: #1f1e27;
+    --m-line: #2d2b38;
+    --m-ink: #e7e6ee;
+    --m-muted: #7c77b8;
+    --m-faint: #3a3760;
+    --m-indigo: #968eff;
+    --m-on-indigo: #0f0e16;
+    --m-glow: rgba(150, 142, 255, 0.35);
+    color-scheme: dark;
+  }
+}
+.dark {
+  --m-bg: #0c0c10;
+  --m-paper: #15141a;
+  --m-surface: #1f1e27;
+  --m-line: #2d2b38;
+  --m-ink: #e7e6ee;
+  --m-muted: #7c77b8;
+  --m-faint: #3a3760;
+  --m-indigo: #968eff;
+  --m-on-indigo: #0f0e16;
+  --m-glow: rgba(150, 142, 255, 0.35);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-hand: "Caveat", "Comic Sans MS", cursive;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-paper: var(--m-paper);
+  --color-surface: var(--m-surface);
+  --color-line: var(--m-line);
+  --color-ink: var(--m-ink);
+  --color-faint: var(--m-faint);
+  --color-indigo: var(--m-indigo);
+  --color-on-indigo: var(--m-on-indigo);
+
+  --radius-sm: 5px;
+  --radius-md: 6px;
+  --radius-lg: var(--radius);
+  --radius-xl: 10px;
+  --radius-2xl: 14px;
+
+  --shadow-glow: 0 8px 18px -10px var(--m-glow);
+  --shadow-glow-lg: 0 10px 22px -12px var(--m-glow);
+
+  --animate-bob: bob 2.4s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 1.8s ease-out infinite;
+  --animate-blink: blink 1.2s infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes pulse-ring {
+  0% { opacity: 0.7; transform: scale(0.9); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body {
+    @apply min-h-full;
+  }
+  html {
+    background: var(--m-paper);
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-foreground font-sans text-[13px] leading-normal antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--m-indigo);
+    outline-offset: 2px;
+  }
+  /* Accent words inside running text */
+  em {
+    @apply font-semibold not-italic text-indigo;
+  }
+}
+
+@utility dashed-top {
+  border-top: 1px dashed var(--m-faint);
+}
+@utility dashed-bottom {
+  border-bottom: 1px dashed var(--m-faint);
+}
+
+@layer components {
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Rich-text journal (TipTap) — borderless, indigo ink */
+  .journal-prose {
+    @apply min-h-36 text-[14.5px] leading-[1.55] text-indigo outline-none;
+  }
+  .journal-prose p { @apply my-0.5; }
+  .journal-prose ul { @apply my-1 list-disc pl-5; }
+  .journal-prose ol { @apply my-1 list-decimal pl-5; }
+  .journal-prose mark { @apply rounded-sm bg-faint px-0.5 text-inherit; }
+  .journal-prose p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    @apply pointer-events-none float-left h-0 text-muted-foreground;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

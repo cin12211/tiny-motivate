@@ -44,7 +44,7 @@ export const LOGOS: readonly string[] = ['forest', ...PLANTS.map(p => `p${p.id}`
 
 export const LANGS = ['vi', 'en'] as const
 
-export const DEFAULT_SETTINGS: UserSettings = { accent: 0, logo: 'p2', logoInvert: false, notify: true, time: '20:00', lang: 'vi' }
+export const DEFAULT_SETTINGS: UserSettings = { accent: 0, logo: 'p2', logoInvert: true, notify: true, time: '20:00', lang: 'vi' }
 
 /** Merge untrusted input over current settings, keeping only valid values. */
 export function sanitizeSettings(input: Partial<UserSettings> | undefined, base: UserSettings = DEFAULT_SETTINGS): UserSettings {

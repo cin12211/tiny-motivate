@@ -3,7 +3,7 @@
  *
  * iOS can only switch the home-screen icon between images bundled in the
  * app, so we pre-render one icon per logo choice:
- *   AppIcon.appiconset            – primary icon (default logo p2 "mầm đôi", accent tile)
+ *   AppIcon.appiconset            – primary icon (default logo p2 "mầm đôi", white tile + accent icon)
  *   AppIcon-<id>.appiconset       – accent tile + light icon
  *   AppIcon-<id>-inv.appiconset   – light tile + accent icon
  *
@@ -16,7 +16,7 @@ import { FOREST, MOODS, PLANTS } from '@motivation/garden'
 
 const SIZE = 1024
 const ACCENT = '#1A0DC9' // "mực xanh", the default accent
-const LIGHT = '#EEEDF3' // surface colour of the Mini theme
+const LIGHT = '#FFFFFF' // white tile for the inverted style
 const ASSETS = join(import.meta.dirname, '..', 'ios', 'App', 'App', 'Assets.xcassets')
 
 const icons = [
@@ -49,7 +49,7 @@ async function writeSet(name: string, body: string, invert: boolean) {
   }, null, 2))
 }
 
-await writeSet('AppIcon', PLANTS[1]!.body, false) // p2, the default logo
+await writeSet('AppIcon', PLANTS[1]!.body, true) // p2 inverted, the default logo
 for (const icon of icons) {
   await writeSet(`AppIcon-${icon.id}`, icon.body, false)
   await writeSet(`AppIcon-${icon.id}-inv`, icon.body, true)

@@ -62,7 +62,7 @@ const tools = computed(() => {
           :title="t.label"
           @click="t.run"
         >
-          <HandIcon :name="t.icon" />
+          <HandIcon :name="t.icon" class="size-5" />
         </Button>
       </div>
       <slot name="actions" />

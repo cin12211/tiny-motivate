@@ -131,7 +131,7 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
               :aria-label="ic"
               @click="icon = ic"
             >
-              <HandIcon :name="ic" class="size-[22px]" />
+              <HandIcon :name="ic" class="size-[26px]" />
             </button>
           </div>
         </div>
@@ -141,9 +141,9 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
           <div class="flex flex-wrap items-center gap-1.5">
             <button v-for="n in presets" :key="n" type="button" :class="pick(chip, totalDays === n)" @click="setDays(n)">{{ n }}</button>
             <div class="ml-auto flex items-center gap-1.5">
-              <button type="button" :class="chip" :aria-label="$t('create.minus')" @click="setDays(totalDays - 1)"><HandIcon name="minus-sign" class="size-4" /></button>
+              <button type="button" :class="chip" :aria-label="$t('create.minus')" @click="setDays(totalDays - 1)"><HandIcon name="minus-sign" class="size-[22px]" /></button>
               <output class="min-w-[42px] text-center text-[18px] font-semibold text-indigo tabular-nums">{{ totalDays }}</output>
-              <button type="button" :class="chip" :aria-label="$t('create.plus')" @click="setDays(totalDays + 1)"><HandIcon name="add-01" class="size-4" /></button>
+              <button type="button" :class="chip" :aria-label="$t('create.plus')" @click="setDays(totalDays + 1)"><HandIcon name="add-01" class="size-[22px]" /></button>
             </div>
           </div>
         </div>
@@ -169,12 +169,12 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
               >
                 <span class="grid size-full place-items-center overflow-hidden rounded-[7px]"><RewardBadge :reward="r" icon-class="size-[22px]" /></span>
                 <span class="absolute -right-1.5 -bottom-1.5 grid size-5 place-items-center rounded-full border-2 border-background bg-primary text-primary-foreground">
-                  <HandIcon name="camera-01" class="size-3" />
+                  <HandIcon name="camera-01" class="size-3.5" />
                 </span>
               </button>
               <Input v-model="r.title" :placeholder="$t('create.rewardPh')" class="min-w-0 flex-1" maxlength="60" :aria-label="$t('create.rewardName')" />
               <Button type="button" variant="ghost" size="icon" :aria-label="$t('create.removeMilestone')" @click="removeReward(r.key)">
-                <HandIcon name="cancel-01" />
+                <HandIcon name="cancel-01" class="size-[22px]" />
               </Button>
             </div>
 
@@ -183,12 +183,12 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
               <div class="flex flex-wrap items-center gap-2">
                 <img v-if="r.image" :src="assetUrl(r.image)" :alt="$t('create.photoAlt')" class="size-14 rounded-xl border border-line object-cover">
                 <Button as="label" variant="outline" size="sm" class="h-11 cursor-pointer bg-background">
-                  <HandIcon :name="uploading === r.key ? 'loading-03' : r.image ? 'camera-01' : 'image-add-01'" :class="uploading === r.key && 'animate-spin'" />
+                  <HandIcon :name="uploading === r.key ? 'loading-03' : r.image ? 'camera-01' : 'image-add-01'" :class="['size-6', uploading === r.key && 'animate-spin']" />
                   {{ r.image ? $t('create.changePhoto') : $t('create.upload') }}
                   <input type="file" accept="image/*" class="sr-only" @change="onFile(r, $event)">
                 </Button>
                 <Button v-if="r.image" type="button" variant="outline" size="sm" class="h-11 text-muted-foreground" @click="r.image = null">
-                  <HandIcon name="image-delete-02" /> {{ $t('create.removePhoto') }}
+                  <HandIcon name="image-delete-02" class="size-6" /> {{ $t('create.removePhoto') }}
                 </Button>
               </div>
               <TypographyMuted as="span" class="text-[11.5px]">{{ $t('create.orIcon') }}</TypographyMuted>
@@ -201,7 +201,7 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
                   :aria-label="ic"
                   @click="r.icon = ic; r.image = null; pickerFor = null"
                 >
-                  <HandIcon :name="ic" class="size-5" />
+                  <HandIcon :name="ic" class="size-6" />
                 </button>
               </div>
             </div>

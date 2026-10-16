@@ -101,7 +101,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
             :class="settings.theme === theme ? 'bg-primary text-primary-foreground' : 'text-indigo hover:bg-background'"
             @click="save({ theme })"
           >
-            <HandIcon :name="THEME_ICONS[theme]" class="size-[22px]" />
+            <HandIcon :name="THEME_ICONS[theme]" class="size-[26px]" />
           </button>
         </div>
       </div>
@@ -192,7 +192,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
           <TypographySmall as="p" :class="rowDesc">{{ $t('settings.reviewDesc') }}</TypographySmall>
         </div>
         <button type="button" :class="[tile, pressable, 'border-line']" :aria-label="$t('settings.review')" @click="toast($t('settings.reviewThanks'))">
-          <HandIcon name="favourite" class="size-[26px]" />
+          <HandIcon name="favourite" class="size-[30px]" />
         </button>
       </div>
 
@@ -208,7 +208,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
       </div>
 
       <Button variant="ghost" size="sm" class="mx-auto mt-[22px] flex text-[11.5px]" @click="logout">
-        <HandIcon name="logout-03" class="size-[15px]" /> {{ $t('common.logout') }}
+        <HandIcon name="logout-03" class="size-[18px]" /> {{ $t('common.logout') }}
       </Button>
     </div>
   </div>

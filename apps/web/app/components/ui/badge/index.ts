@@ -5,7 +5,7 @@ export { default as Badge } from "./Badge.vue"
 
 // "Chip" from the Mini design: small mono label in a 5px box.
 export const badgeVariants = cva(
-  "inline-flex w-fit shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-[5px] border font-medium overflow-hidden [&_.iconify]:size-3.5",
+  "inline-flex w-fit shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-[5px] border font-medium overflow-hidden [&_.iconify]:size-4",
   {
     variants: {
       variant: {

@@ -107,14 +107,14 @@ async function onDelete() {
         </Button>
         <Badge class="md:absolute md:left-1/2 md:-translate-x-1/2">{{ dayLabel }}</Badge>
         <span class="grid w-9 place-items-center text-indigo md:invisible">
-          <HandIcon :name="goal.icon" class="size-5" />
+          <HandIcon :name="goal.icon" class="size-6" />
         </span>
       </div>
     </div>
 
     <DayStrip v-model="selected" :goal="goal" />
     <TypographyH2 class="mt-0.5 flex items-center justify-center gap-1.5 text-center text-[13px] text-muted-foreground">
-      <HandIcon :name="goal.icon" class="hidden size-[18px] md:inline" />{{ goal.title }}
+      <HandIcon :name="goal.icon" class="hidden size-[22px] md:inline" />{{ goal.title }}
     </TypographyH2>
 
     <!-- journal -->
@@ -140,7 +140,7 @@ async function onDelete() {
           :title="isToday ? $t('goal.untickHint') : undefined"
           @click="toggleDone"
         >
-          <HandIcon name="checkmark-circle-02" /> {{ $t('goal.done') }}
+          <HandIcon name="checkmark-circle-02" class="size-[22px]" /> {{ $t('goal.done') }}
         </Button>
         <Button v-else variant="hand" class="h-10 px-[18px] text-[22px]" :disabled="ticking" @click="toggleDone">done</Button>
       </template>
@@ -167,7 +167,7 @@ async function onDelete() {
     <RewardList :goal="goal" />
 
     <Button variant="ghost" size="sm" class="mx-auto mt-8 flex text-[11.5px]" @click="onDelete">
-      <HandIcon name="delete-02" class="size-[15px]" /> {{ $t('goal.delete') }}
+      <HandIcon name="delete-02" class="size-[18px]" /> {{ $t('goal.delete') }}
     </Button>
 
     <RewardDialog v-model:open="rewardOpen" :reward="unlockedReward" />

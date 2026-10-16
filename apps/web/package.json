@@ -9,6 +9,7 @@
     "generate:mobile": "NUXT_MOBILE=1 nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "gen:loading": "node scripts/gen-loading-template.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",

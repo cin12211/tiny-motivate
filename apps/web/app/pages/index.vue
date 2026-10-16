@@ -29,8 +29,8 @@ const name = computed(() => user.value?.name || t('home.you'))
         <span class="md:hidden">{{ $t('home.hello', { name }) }}<br></span>
         <i18n-t v-if="stats.pending.length" keypath="home.pending" tag="span" scope="global"><template #goals><em>{{ $t('home.pendingGoals', stats.pending.length, { n: stats.pending.length }) }}</em></template></i18n-t>
         <template v-else>{{ $t('home.allDone') }}</template>
-        <br>
-        <span class="mt-1 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+        <br class="md:hidden">
+        <span class="mt-1 inline-flex items-center gap-1.5 text-xs text-muted-foreground md:hidden">
           <HandIcon name="fire" class="size-3.5 text-indigo" />
           <i18n-t keypath="home.streak" tag="span" scope="global"><template #n><b class="font-semibold text-indigo">{{ pad2(stats.bestStreak) }}</b></template></i18n-t>
         </span>

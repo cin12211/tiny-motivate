@@ -11,5 +11,5 @@ defineProps<{ name: string }>()
 
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -->
-  <svg :viewBox="HAND_VIEWBOX" aria-hidden="true" class="iconify inline-block size-[1em] shrink-0" v-html="HAND_ICONS[name] ?? ''" />
+  <svg :viewBox="HAND_VIEWBOX" aria-hidden="true" class="iconify inline-block size-[1em] shrink-0 overflow-visible" v-html="HAND_ICONS[name] ?? ''" />
 </template>

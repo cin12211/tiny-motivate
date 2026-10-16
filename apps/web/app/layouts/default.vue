@@ -1,18 +1,16 @@
 <script setup lang="ts">
 /**
  * Mini layout: one centred column on every screen size.
- * md+ gets the sticky top bar (Mochi + wordmark + date chip);
- * phones get the floating bottom switch (all goals / today) instead;
+ * No top bar (per the Mini design): each page carries its own back bar.
+ * Phones get the floating bottom switch (all goals / today);
  * the longest streak lives at the top of the mobile home.
  */
-import { toISODate } from '#shared/utils/dates'
 
 const route = useRoute()
 const { goals, ensureLoaded } = useGoals()
 await ensureLoaded()
 
 const stats = computed(() => overallStats(goals.value))
-const today = toISODate()
 
 // "Today" opens the first goal still waiting for a tick (or the first goal).
 const todayGoal = computed(() => stats.value.pending[0] ?? goals.value[0])
@@ -22,13 +20,6 @@ const onHome = computed(() => route.path === '/')
 
 <template>
   <div class="min-h-dvh bg-background">
-    <header class="sticky top-0 z-20 hidden items-center justify-between gap-4 bg-background px-6 py-3 dashed-bottom md:flex">
-      <NuxtLink to="/" class="flex items-center gap-2" :aria-label="$t('common.home')">
-        <Mochi :size="34" />
-        <TypographyH4 as="span" class="text-sm font-semibold tracking-[.02em] text-indigo">motivation</TypographyH4>
-      </NuxtLink>
-      <Badge variant="solid" class="shadow-none">{{ dotDate(today) }}</Badge>
-    </header>
 
     <main class="mx-auto w-full max-w-[680px] px-[22px] pt-[max(env(safe-area-inset-top),0px)] pb-[150px] md:px-6 md:pb-16">
       <slot />

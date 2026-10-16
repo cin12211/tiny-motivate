@@ -4,7 +4,9 @@
  * `currentColor`, 1.6px round strokes. The `g-*` icons are extra goal icons.
  */
 
-export const HAND_VIEWBOX = '0 0 24 24'
+// Cropped 2px each side: the hand-drawn strokes sit in a ~20px box, so this
+// renders them at the same optical size as the old 24px icon set.
+export const HAND_VIEWBOX = '2 2 20 20'
 
 export const HAND_ICONS: Readonly<Record<string, string>> = {
   "add-01": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 4.8c.1 4.8-.1 9.6 0 14.4M4.8 12c4.8-.1 9.6.1 14.4 0\"/></g>",

@@ -85,13 +85,27 @@
     "sign": "Every day counts,"
   },
   "forest": {
-    "garden": "{n}-day garden",
-    "day": "Day {i} / {n}",
     "grown": "{n} plants grown",
     "grownNote": "Each plant is a day you finished at least one goal",
     "tipDone": "{n} goals done",
     "tipFuture": "Not yet",
-    "tipEmpty": "Nothing grew"
+    "tipEmpty": "Nothing grew",
+    "pickDate": "Pick a day for the garden",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "show": "Show",
+    "monthsAria": "Months shown",
+    "months": "{n} mo",
+    "backToday": "Back to today",
+    "weekdaysShort": [
+      "Mo",
+      "Tu",
+      "We",
+      "Th",
+      "Fr",
+      "Sa",
+      "Su"
+    ]
   },
   "goal": {
     "ticked": "Ticked",

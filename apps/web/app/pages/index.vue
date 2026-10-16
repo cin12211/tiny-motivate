@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { toISODate } from '#shared/utils/dates'
-
 useHead({ title: 'Motivation' })
 
 const { goals } = useGoals()
 const { user, logout } = useAuth()
 const stats = computed(() => overallStats(goals.value))
-const today = toISODate()
 const { t } = useI18n()
 const name = computed(() => user.value?.name || t('home.you'))
 </script>
@@ -20,12 +17,12 @@ const name = computed(() => user.value?.name || t('home.you'))
       </Button>
     </div>
 
-    <!-- phones: small Mochi beside the greeting; web: big Mochi above it -->
+    <!-- phones: small sprout beside the greeting; web: bigger sprout above it -->
     <div class="flex items-center justify-center gap-3.5 pt-3.5 pb-3.5 text-left md:flex-col md:gap-1 md:pt-5 md:pb-4 md:text-center">
-      <Mochi pose="wave" :size="96" class="max-md:size-16" />
+      <GardenIcon icon="p2" class="size-14 shrink-0 text-indigo md:size-[72px]" />
       <TypographyH1 class="hidden md:block">{{ $t('home.hello', { name }) }}</TypographyH1>
       <TypographyLead class="max-md:text-[13px] max-md:leading-normal">
-        <span class="md:hidden">{{ $t('home.hello', { name }) }} <span class="text-[.92em] text-muted-foreground">· {{ $t(`weekdays.${weekdayIndex(today)}`) }} {{ dotShort(today) }}</span><br></span>
+        <span class="md:hidden">{{ $t('home.hello', { name }) }}<br></span>
         <i18n-t v-if="stats.pending.length" keypath="home.pending" tag="span" scope="global"><template #goals><em>{{ $t('home.pendingGoals', stats.pending.length, { n: stats.pending.length }) }}</em></template></i18n-t>
         <template v-else>{{ $t('home.allDone') }}</template>
         <br class="md:hidden">
@@ -37,8 +34,8 @@ const name = computed(() => user.value?.name || t('home.you'))
     </div>
 
     <!-- 60-day garden on phones, 120-day forest on the web -->
-    <Forest :goals="goals" :days="60" class="md:hidden" />
-    <Forest :goals="goals" class="hidden md:flex" />
+    <Forest :goals="goals" class="md:hidden" />
+    <Forest :goals="goals" web class="hidden md:flex" />
 
     <section class="flex flex-col pt-1.5 md:pt-1">
       <Badge class="mb-1 self-center md:mb-2.5">{{ $t('home.yourGoals') }}</Badge>

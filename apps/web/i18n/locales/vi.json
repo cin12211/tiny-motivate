@@ -85,13 +85,27 @@
     "sign": "Mỗi ngày đều đáng giá,"
   },
   "forest": {
-    "garden": "Khu vườn {n} ngày",
-    "day": "Ngày {i} / {n}",
     "grown": "Đã mọc {n} cây",
     "grownNote": "Mỗi cây là một ngày bạn hoàn thành ít nhất một mục tiêu",
     "tipDone": "{n} mục tiêu xong",
     "tipFuture": "Chưa tới",
-    "tipEmpty": "Chưa mọc cây"
+    "tipEmpty": "Chưa mọc cây",
+    "pickDate": "Chọn ngày cho khu vườn",
+    "prevMonth": "Tháng trước",
+    "nextMonth": "Tháng sau",
+    "show": "Hiển thị",
+    "monthsAria": "Số tháng hiển thị",
+    "months": "{n} tháng",
+    "backToday": "Về hôm nay",
+    "weekdaysShort": [
+      "T2",
+      "T3",
+      "T4",
+      "T5",
+      "T6",
+      "T7",
+      "CN"
+    ]
   },
   "goal": {
     "ticked": "Đã tick",

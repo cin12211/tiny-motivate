@@ -17,8 +17,8 @@ const seeds = [1, 4, 9, 2, 13, 6, 21]
       <div class="animate-bob">
         <Mochi pose="wave" :size="112" />
       </div>
-      <TypographyLarge as="h1" class="mt-3.5">motivation</TypographyLarge>
-      <TypographyHand as="p">{{ $t('splash.tagline') }}</TypographyHand>
+      <TypographyHand as="h1" class="mt-3.5 text-[40px] font-medium">motivation</TypographyHand>
+      <TypographyMuted class="mt-0.5 text-[12.5px]">{{ $t('splash.tagline') }}</TypographyMuted>
 
       <div class="mt-6.5 flex gap-1.5" aria-hidden="true">
         <span v-for="(n, i) in seeds" :key="n" class="relative grid size-[30px] place-items-center" :style="{ '--d': `${(i * 0.28).toFixed(2)}s` }">

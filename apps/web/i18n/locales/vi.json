@@ -69,7 +69,8 @@
     "titleLoginPage": "Đăng nhập",
     "titleSignupPage": "Đăng ký",
     "errInvalid": "Email hoặc mật khẩu chưa đúng",
-    "errExists": "Email này đã có tài khoản"
+    "errExists": "Email này đã có tài khoản",
+    "errGoogle": "Đăng nhập Google chưa thành công, thử lại nhé"
   },
   "home": {
     "hello": "chào {name} :)",

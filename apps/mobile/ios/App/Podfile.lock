@@ -3,6 +3,8 @@ PODS:
     - CapacitorCordova
   - CapacitorApp (6.0.3):
     - Capacitor
+  - CapacitorBrowser (6.0.6):
+    - Capacitor
   - CapacitorCordova (6.2.2)
   - CapacitorKeyboard (6.0.4):
     - Capacitor
@@ -14,6 +16,7 @@ PODS:
 DEPENDENCIES:
   - "Capacitor (from `../../../../node_modules/.pnpm/@capacitor+ios@6.2.2_@capacitor+core@6.2.2/node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../../../node_modules/.pnpm/@capacitor+app@6.0.3_@capacitor+core@6.2.2/node_modules/@capacitor/app`)"
+  - "CapacitorBrowser (from `../../../../node_modules/.pnpm/@capacitor+browser@6.0.6_@capacitor+core@6.2.2/node_modules/@capacitor/browser`)"
   - "CapacitorCordova (from `../../../../node_modules/.pnpm/@capacitor+ios@6.2.2_@capacitor+core@6.2.2/node_modules/@capacitor/ios`)"
   - "CapacitorKeyboard (from `../../../../node_modules/.pnpm/@capacitor+keyboard@6.0.4_@capacitor+core@6.2.2/node_modules/@capacitor/keyboard`)"
   - "CapacitorLocalNotifications (from `../../../../node_modules/.pnpm/@capacitor+local-notifications@6.1.3_@capacitor+core@6.2.2/node_modules/@capacitor/local-notifications`)"
@@ -24,6 +27,8 @@ EXTERNAL SOURCES:
     :path: "../../../../node_modules/.pnpm/@capacitor+ios@6.2.2_@capacitor+core@6.2.2/node_modules/@capacitor/ios"
   CapacitorApp:
     :path: "../../../../node_modules/.pnpm/@capacitor+app@6.0.3_@capacitor+core@6.2.2/node_modules/@capacitor/app"
+  CapacitorBrowser:
+    :path: "../../../../node_modules/.pnpm/@capacitor+browser@6.0.6_@capacitor+core@6.2.2/node_modules/@capacitor/browser"
   CapacitorCordova:
     :path: "../../../../node_modules/.pnpm/@capacitor+ios@6.2.2_@capacitor+core@6.2.2/node_modules/@capacitor/ios"
   CapacitorKeyboard:
@@ -36,11 +41,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Capacitor: 6591a78b923b7e6dde28506ffeea820356e68013
   CapacitorApp: a19ccb4f5f32d2534be5c6f524d5a9b614a1e8a7
+  CapacitorBrowser: 825163a1d6adce944ac7b9e3cab101146b5a9df8
   CapacitorCordova: c2c76283b5c00cf6073bab0b1311e3b10bd17254
   CapacitorKeyboard: e8cd50fd5cbdd023a5947a5c0f5cca6e5aa5a253
   CapacitorLocalNotifications: 801867e687c42dd2b33c1e22e08f48e6738d2f72
   CapacitorStatusBar: 149cde8f1328ec3aa6cbdd872a55137ae3f98b16
 
-PODFILE CHECKSUM: 3eb0058e82d27233215672da8167bcc96ae3eb97
+PODFILE CHECKSUM: 438c32a8e8cd35a8ef37528cc5a4f141a4f16e5d
 
 COCOAPODS: 1.16.2

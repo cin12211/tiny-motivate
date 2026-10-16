@@ -69,7 +69,8 @@
     "titleLoginPage": "Log in",
     "titleSignupPage": "Sign up",
     "errInvalid": "Wrong email or password",
-    "errExists": "That email already has an account"
+    "errExists": "That email already has an account",
+    "errGoogle": "Google sign-in didn't go through, please try again"
   },
   "home": {
     "hello": "hi {name} :)",

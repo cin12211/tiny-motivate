@@ -2,11 +2,15 @@ import { Capacitor } from '@capacitor/core'
 
 /**
  * Small native touches when running inside the Capacitor app:
- * light status bar over the grey paper and Android back-button navigation.
- * No-ops in a normal browser.
+ * light status bar, Android back button, and the motivation:// deep link
+ * that finishes Google sign-in. No-ops in a normal browser.
  */
 export function useNativeShell() {
   if (import.meta.server || !Capacitor.isNativePlatform()) return
+  // grab Nuxt-bound helpers while we still have the component context
+  const router = useRouter()
+  const auth = useAuth()
+
   onMounted(async () => {
     document.documentElement.classList.add('native')
     const [{ StatusBar, Style }, { App }] = await Promise.all([
@@ -14,7 +18,18 @@ export function useNativeShell() {
       import('@capacitor/app'),
     ])
     StatusBar.setStyle({ style: Style.Light }).catch(() => {})
-    const router = useRouter()
+
+    // Google sign-in comes back as motivation://auth?token=… (see /api/oauth/done)
+    App.addListener('appUrlOpen', async ({ url }) => {
+      if (!url.startsWith('motivation://auth')) return
+      const params = new URL(url.replace('motivation://', 'https://app/')).searchParams
+      const { Browser } = await import('@capacitor/browser')
+      Browser.close().catch(() => {})
+      const token = params.get('token')
+      const user = token ? await auth.acceptToken(token) : null
+      await router.replace(user ? '/' : '/login')
+    })
+
     App.addListener('backButton', ({ canGoBack }) => {
       if (canGoBack && router.currentRoute.value.path !== '/') router.back()
       else App.exitApp()

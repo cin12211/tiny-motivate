@@ -8,6 +8,14 @@ const { goal, goalDay, reward } = schema
 const MOODS = new Set(['m1', 'm2', 'm3', 'm4', 'm5'])
 const iso = (d: Date | null | undefined) => (d ? d.toISOString() : null)
 
+const goalsKey = (userId: string) => `goals:${userId}`
+const GOALS_TTL = 300
+
+/** All of a user's goals, cached for a few minutes (invalidated on every write). */
+export function listGoals(userId: string): Promise<Goal[]> {
+  return cached(goalsKey(userId), GOALS_TTL, () => loadGoals(userId))
+}
+
 /** Load goals (with rewards and days) in the shape the app uses. */
 export async function loadGoals(userId: string, goalId?: string): Promise<Goal[]> {
   const db = useDb()
@@ -68,12 +76,14 @@ export async function createGoal(userId: string, body: CreateGoalInput): Promise
   const db = useDb()
   await db.insert(goal).values({ id, userId, title, icon: body.icon || 'plant-01', totalDays, startDate })
   if (rewards.length) await db.insert(reward).values(rewards)
+  await invalidate(goalsKey(userId))
   return getGoal(userId, id)
 }
 
 export async function deleteGoal(userId: string, goalId: string) {
   const deleted = await useDb().delete(goal).where(and(eq(goal.id, goalId), eq(goal.userId, userId))).returning({ id: goal.id })
   if (!deleted.length) throw createError({ statusCode: 404, statusMessage: 'Không tìm thấy mục tiêu' })
+  await invalidate(goalsKey(userId))
 }
 
 /**
@@ -105,6 +115,7 @@ export async function updateDay(userId: string, goalId: string, day: number, bod
   await useDb().insert(goalDay)
     .values({ goalId, day, ...next, updatedAt: new Date() })
     .onConflictDoUpdate({ target: [goalDay.goalId, goalDay.day], set: { ...next, updatedAt: new Date() } })
+  await invalidate(goalsKey(userId))
   return getGoal(userId, goalId)
 }
 
@@ -115,6 +126,9 @@ export async function openReward(userId: string, goalId: string, rewardId: strin
   if (!r) throw createError({ statusCode: 404, statusMessage: 'Không tìm thấy phần thưởng' })
   const doneCount = Object.values(current.days).filter(d => d.done).length
   if (doneCount < r.day) throw createError({ statusCode: 403, statusMessage: 'Phần thưởng chưa mở khoá' })
-  if (!r.openedAt) await useDb().update(reward).set({ openedAt: new Date() }).where(eq(reward.id, rewardId))
+  if (!r.openedAt) {
+    await useDb().update(reward).set({ openedAt: new Date() }).where(eq(reward.id, rewardId))
+    await invalidate(goalsKey(userId))
+  }
   return getGoal(userId, goalId)
 }

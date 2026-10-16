@@ -1,3 +1,4 @@
+import { Capacitor } from '@capacitor/core'
 import type { User } from '#shared/types'
 
 /**
@@ -37,6 +38,30 @@ export function useAuth() {
   const signup = (name: string, email: string, password: string) =>
     signIn('/api/auth/sign-up/email', { name, email, password })
 
+  /**
+   * Google sign-in runs in a real browser (Google blocks embedded WebViews):
+   * the page itself on the web, the in-app Safari sheet on iOS. The server
+   * hands the session token back via /auth/callback or motivation://auth.
+   */
+  async function loginWithGoogle() {
+    const native = Capacitor.isNativePlatform()
+    const base = useRuntimeConfig().public.apiBase || window.location.origin
+    const url = `${base}/api/oauth/start?to=${native ? 'app' : 'web'}`
+    if (!native) {
+      window.location.href = url
+      return
+    }
+    const { Browser } = await import('@capacitor/browser')
+    await Browser.open({ url, presentationStyle: 'popover' })
+  }
+
+  /** Finish a Google sign-in with the token from the callback. */
+  async function acceptToken(sessionToken: string) {
+    setToken(sessionToken)
+    useGoals().reset()
+    return fetchMe()
+  }
+
   async function logout() {
     try {
       await api('/api/auth/sign-out', { method: 'POST', body: {} })
@@ -48,7 +73,7 @@ export function useAuth() {
     await navigateTo('/login')
   }
 
-  return { user, token, fetchMe, login, signup, logout }
+  return { user, token, fetchMe, login, signup, loginWithGoogle, acceptToken, logout }
 }
 
 /** Friendly message for Better Auth error codes (falls back to the server message). */

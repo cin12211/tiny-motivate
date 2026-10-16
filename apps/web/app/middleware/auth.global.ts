@@ -1,4 +1,4 @@
-const PUBLIC = new Set(['/login', '/signup'])
+const PUBLIC = new Set(['/login', '/signup', '/auth/callback'])
 
 /** Send signed-out visitors to /login and signed-in ones away from it. */
 export default defineNuxtRouteMiddleware(async (to) => {

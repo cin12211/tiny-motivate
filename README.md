@@ -60,6 +60,11 @@ pnpm --filter @motivation/web db:import-json   # (một lần) nhập dữ liệ
 
 Đăng nhập dùng Better Auth (`/api/auth/*`, email + mật khẩu). App mobile nhận token qua header `set-auth-token` và gửi lại bằng `Authorization: Bearer`.
 
+## Đăng nhập Google + Redis cache
+
+- Google: điền `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` trong `apps/web/.env` (khi deploy: `wrangler secret put`). Trong Google Cloud Console, thêm Authorized redirect URI `<BETTER_AUTH_URL>/api/auth/callback/google` (local: `http://localhost:3000/api/auth/callback/google`). Luồng: `/api/oauth/start` → Google → `/api/oauth/done` → web `/auth/callback` hoặc app iOS `motivation://auth`.
+- Redis: `REDIS_URL` trong `.env` bật cache cho phiên đăng nhập (Better Auth secondary storage) và danh sách mục tiêu. Cloudflare Workers không kết nối được Redis thường, nên bản deploy Cloudflare chạy không có cache này.
+
 ## Deploy lên Cloudflare Workers + R2
 
 Ảnh phần quà lưu trong R2 (binding `BUCKET`); khi chạy local thì lưu ở `apps/web/data/uploads`.

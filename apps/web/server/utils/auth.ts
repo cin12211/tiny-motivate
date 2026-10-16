@@ -37,6 +37,20 @@ function createAuth() {
     },
     // The Capacitor app has no cookies across origins: it sends the session as a bearer token.
     plugins: [bearer()],
+    socialProviders: process.env.GOOGLE_CLIENT_ID
+      ? {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            prompt: 'select_account',
+          },
+        }
+      : undefined,
+    // Sessions are cached in Redis when available; Postgres stays the source of truth.
+    ...(cacheEnabled() && {
+      secondaryStorage: authSecondaryStorage(),
+      session: { storeSessionInDatabase: true },
+    }),
     trustedOrigins: [
       'capacitor://localhost',
       'https://localhost',

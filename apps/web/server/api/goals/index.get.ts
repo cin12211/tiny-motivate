@@ -1,4 +1,4 @@
 export default defineEventHandler(async (event) => {
   const user = await requireUser(event)
-  return loadGoals(user.id)
+  return listGoals(user.id)
 })

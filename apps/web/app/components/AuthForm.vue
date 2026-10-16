@@ -4,7 +4,7 @@ import { toast } from 'vue-sonner'
 /** Login / signup card from the Mini design. The link under the form switches between them. */
 const props = defineProps<{ mode: 'login' | 'signup' }>()
 const up = computed(() => props.mode === 'signup')
-const { login, signup } = useAuth()
+const { login, signup, loginWithGoogle } = useAuth()
 const { t } = useI18n()
 
 const name = ref('')
@@ -97,7 +97,7 @@ const soon = (what: string) => toast(t('common.soon', { what }))
       {{ $t('auth.or') }}
     </div>
     <div class="grid grid-cols-2 gap-2.5">
-      <Button type="button" variant="outline" size="sm" class="h-[42px]" @click="soon($t('auth.googleSoon'))">
+      <Button type="button" variant="outline" size="sm" class="h-[42px]" @click="loginWithGoogle">
         <HandIcon name="google" /> google
       </Button>
       <Button type="button" variant="outline" size="sm" class="h-[42px]" @click="soon($t('auth.appleSoon'))">

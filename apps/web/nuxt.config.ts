@@ -68,7 +68,7 @@ export default defineNuxtConfig({
        * Empty on the web (same origin). The mobile build talks to the deployed API;
        * override with NUXT_PUBLIC_API_BASE (e.g. http://localhost:3000 for local dev).
        */
-      apiBase: isMobile ? 'https://motivation.taccin03.workers.dev' : '',
+      apiBase: isMobile ? 'https://motivation.noteddy.com' : '',
       mobile: isMobile,
     },
   },

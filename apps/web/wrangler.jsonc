@@ -15,8 +15,12 @@
     { "binding": "BUCKET", "bucket_name": "motivation-uploads" }
   ],
   // Public, non-secret settings. Secrets (DATABASE_URL, BETTER_AUTH_SECRET) go in with `wrangler secret put`.
+  "routes": [
+    { "pattern": "motivation.noteddy.com", "custom_domain": true }
+  ],
   "vars": {
-    "BETTER_AUTH_URL": "https://motivation.taccin03.workers.dev"
+    "BETTER_AUTH_URL": "https://motivation.noteddy.com",
+    "BETTER_AUTH_TRUSTED_ORIGINS": "https://motivation.taccin03.workers.dev"
   },
   "observability": { "enabled": true }
 }

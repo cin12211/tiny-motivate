@@ -31,8 +31,7 @@
   },
   "splash": {
     "tagline": "one little sprout a day",
-    "loading": "watering your garden",
-    "skip": "tap to skip"
+    "loading": "watering your garden"
   },
   "auth": {
     "titleLogin": "welcome back",

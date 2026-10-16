@@ -31,8 +31,7 @@
   },
   "splash": {
     "tagline": "mỗi ngày một mầm nhỏ",
-    "loading": "đang tưới vườn cho bạn",
-    "skip": "chạm để bỏ qua"
+    "loading": "đang tưới vườn cho bạn"
   },
   "auth": {
     "titleLogin": "chào mừng trở lại",

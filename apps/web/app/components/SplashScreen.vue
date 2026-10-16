@@ -1,29 +1,17 @@
 <script setup lang="ts">
 /**
- * Splash / loading gate shown each time the app starts.
- * Seven seeds sprout one after another while Mochi bobs; tap to skip.
+ * Loading screen shown while the app starts (auth check, settings, first page data).
+ * app.vue removes it as soon as the first page has rendered.
+ * Seven seeds sprout one after another while Mochi bobs.
  */
-const emit = defineEmits<{ done: [] }>()
 const seeds = [1, 4, 9, 2, 13, 6, 21]
-
-let timer: ReturnType<typeof setTimeout> | undefined
-onMounted(() => {
-  timer = setTimeout(() => emit('done'), 3200)
-})
-onBeforeUnmount(() => clearTimeout(timer))
-
-function skip() {
-  clearTimeout(timer)
-  emit('done')
-}
 </script>
 
 <template>
   <div
-    class="fixed inset-0 z-[100] flex cursor-pointer flex-col items-center justify-center bg-background px-6 pt-10 pb-7 text-indigo"
+    class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background px-6 pt-10 pb-7 text-indigo"
     role="status"
     aria-live="polite"
-    @click="skip"
   >
     <div class="flex flex-col items-center gap-1.5 text-center">
       <div class="animate-bob">
@@ -42,7 +30,6 @@ function skip() {
         {{ $t('splash.loading') }}<b class="animate-blink font-normal">.</b><b class="animate-blink font-normal [animation-delay:.2s]">.</b><b class="animate-blink font-normal [animation-delay:.4s]">.</b>
       </TypographyMuted>
     </div>
-    <TypographyMuted as="small" class="absolute bottom-[calc(26px+env(safe-area-inset-bottom))] text-[11px] text-faint">{{ $t('splash.skip') }}</TypographyMuted>
   </div>
 </template>
 

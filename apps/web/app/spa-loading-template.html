@@ -36,7 +36,7 @@
     var el = document.getElementById('mochi-boot')
     var theme = s.theme || 'system'
     var dark = theme === 'dark' || (theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
-    var accent = [["#1A0DC9","#968EFF"],["#2F6B3A","#8CCB95"],["#B4532A","#F0A27E"],["#C2387A","#F39BC4"],["#6B2FD1","#B79BFF"],["#0B6E99","#7CC8EA"]][s.accent] || [["#1A0DC9","#968EFF"],["#2F6B3A","#8CCB95"],["#B4532A","#F0A27E"],["#C2387A","#F39BC4"],["#6B2FD1","#B79BFF"],["#0B6E99","#7CC8EA"]][0]
+    var accent = [["#1A0DC9","#968EFF"],["#2F6B3A","#8CCB95"],["#B4532A","#F0A27E"],["#C2387A","#F39BC4"],["#6B2FD1","#B79BFF"],["#0B6E99","#7CC8EA"],["#2B2B33","#D4D3DC"],["#8A6A00","#E3C155"]][s.accent] || [["#1A0DC9","#968EFF"],["#2F6B3A","#8CCB95"],["#B4532A","#F0A27E"],["#C2387A","#F39BC4"],["#6B2FD1","#B79BFF"],["#0B6E99","#7CC8EA"],["#2B2B33","#D4D3DC"],["#8A6A00","#E3C155"]][0]
     if (dark) el.classList.add('mb-dark')
     el.style.setProperty('--ink', accent[dark ? 1 : 0])
     var text = {"vi":{"tagline":"mỗi ngày một mầm nhỏ","loading":"đang tưới vườn cho bạn"},"en":{"tagline":"one little sprout a day","loading":"watering your garden"}}[s.lang] || {"tagline":"mỗi ngày một mầm nhỏ","loading":"đang tưới vườn cho bạn"}

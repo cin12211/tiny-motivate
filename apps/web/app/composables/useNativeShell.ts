@@ -13,11 +13,8 @@ export function useNativeShell() {
 
   onMounted(async () => {
     document.documentElement.classList.add('native')
-    const [{ StatusBar, Style }, { App }] = await Promise.all([
-      import('@capacitor/status-bar'),
-      import('@capacitor/app'),
-    ])
-    StatusBar.setStyle({ style: Style.Light }).catch(() => {})
+    const { App } = await import('@capacitor/app')
+    // status bar style follows the theme: see syncStatusBar in useSettings.ts
 
     // Google sign-in comes back as motivation://auth?token=… (see /api/oauth/done)
     App.addListener('appUrlOpen', async ({ url }) => {

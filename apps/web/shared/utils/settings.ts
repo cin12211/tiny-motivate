@@ -19,6 +19,8 @@ export const ACCENTS: ReadonlyArray<Accent> = [
   { key: 'pink', light: '#C2387A', dark: '#F39BC4' },
   { key: 'violet', light: '#6B2FD1', dark: '#B79BFF' },
   { key: 'sea', light: '#0B6E99', dark: '#7CC8EA' },
+  { key: 'charcoal', light: '#2B2B33', dark: '#D4D3DC' },
+  { key: 'mustard', light: '#8A6A00', dark: '#E3C155' },
 ]
 
 /** Every garden icon can be the app logo: the forest, all 55 plants and the 5 mood flowers. */

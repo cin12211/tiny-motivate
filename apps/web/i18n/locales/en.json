@@ -240,7 +240,9 @@
     "terracotta": "terracotta",
     "pink": "pink",
     "violet": "violet",
-    "sea": "sea"
+    "sea": "sea",
+    "charcoal": "charcoal",
+    "mustard": "mustard"
   },
   "error": {
     "notFound": "page not found",

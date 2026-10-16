@@ -59,6 +59,25 @@ export function applyTheme(theme: UserSettings['theme']) {
   if (theme === 'system') root.removeAttribute('data-theme')
   else root.setAttribute('data-theme', theme)
   root.style.colorScheme = theme === 'system' ? 'light dark' : theme
+  syncStatusBar(theme)
+}
+
+let statusBarTheme: UserSettings['theme'] = 'system'
+let watchingScheme = false
+
+/** Native status bar text: dark on the light theme, light on the dark theme. */
+async function syncStatusBar(theme: UserSettings['theme']) {
+  const { Capacitor } = await import('@capacitor/core')
+  if (!Capacitor.isNativePlatform()) return
+  statusBarTheme = theme
+  const media = matchMedia('(prefers-color-scheme: dark)')
+  if (!watchingScheme) {
+    watchingScheme = true
+    media.addEventListener('change', () => syncStatusBar(statusBarTheme))
+  }
+  const dark = theme === 'dark' || (theme === 'system' && media.matches)
+  const { StatusBar, Style } = await import('@capacitor/status-bar')
+  StatusBar.setStyle({ style: dark ? Style.Dark : Style.Light }).catch(() => {})
 }
 
 /** Swap the app-wide accent (light + dark values) by overriding --m-indigo. */

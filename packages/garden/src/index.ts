@@ -424,20 +424,37 @@ function rng(seed: string) {
   }
 }
 
+/** Share of picks that come from the 55 plants (the rest: the 40 farm icons). */
+export const PLANT_SHARE = 0.65
+const PLANT_IDS = PLANTS.map(p => `p${p.id}`)
+
+function shuffle(items: readonly string[], next: () => number) {
+  const out = [...items]
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(next() * (i + 1))
+    ;[out[i], out[j]] = [out[j]!, out[i]!]
+  }
+  return out
+}
+
 const goalPools = new Map<string, string[]>()
 
 /**
- * Icon that grows on day `day` of a goal: the 95-icon pool shuffled once with
- * the goal id as seed, so there are no repeats within 95 days.
+ * Icon that grows on day `day` of a goal. The 95 icons are dealt once per goal
+ * (seeded by the goal id) as one sequence with no repeats: each step takes the
+ * next plant with 65% chance, otherwise the next farm icon (whichever pile is
+ * left once the other runs out). The sequence repeats after 95 days.
  */
 export function growIconForGoal(goalId: string, day: number) {
   let pool = goalPools.get(goalId)
   if (!pool) {
     const next = rng(goalId)
-    pool = [...GROW_POOL]
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.floor(next() * (i + 1))
-      ;[pool[i], pool[j]] = [pool[j]!, pool[i]!]
+    const plants = shuffle(PLANT_IDS, next)
+    const farm = shuffle(FARM_ICONS, next)
+    pool = []
+    while (plants.length || farm.length) {
+      const fromPlants = farm.length === 0 || (plants.length > 0 && next() < PLANT_SHARE)
+      pool.push((fromPlants ? plants : farm).shift()!)
     }
     goalPools.set(goalId, pool)
   }
@@ -445,13 +462,18 @@ export function growIconForGoal(goalId: string, day: number) {
 }
 
 /**
- * Icon for a date in the home garden (all goals together): picked with the
- * date as seed, re-picked when it equals the previous cell's icon.
+ * Icon for a date in the home garden (all goals together), seeded by the date:
+ * a plant with 65% chance, otherwise a farm icon; re-picked when it equals the
+ * previous cell's icon.
  */
 export function growIconForDate(iso: string, previous?: string) {
   const next = rng(iso)
-  let id = GROW_POOL[Math.floor(next() * GROW_POOL.length)]!
-  while (id === previous) id = GROW_POOL[Math.floor(next() * GROW_POOL.length)]!
+  const pick = () => {
+    const set = next() < PLANT_SHARE ? PLANT_IDS : FARM_ICONS
+    return set[Math.floor(next() * set.length)]!
+  }
+  let id = pick()
+  while (id === previous) id = pick()
   return id
 }
 

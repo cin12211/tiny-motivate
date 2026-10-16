@@ -14,6 +14,7 @@ const { settings } = useSettings()
 onMounted(() => {
   applyAccent(settings.value.accent)
   applyTheme(settings.value.theme)
+  syncFavicon(settings.value)
 })
 
 // Language follows the user's setting (cached on the device, synced from the server).

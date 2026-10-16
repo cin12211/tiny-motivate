@@ -4,7 +4,8 @@ import { addDays, toISODate } from '#shared/utils/dates'
 
 /**
  * Forest on the home screen: one cell per calendar day since the earliest
- * goal started. A plant grows on every day at least one goal was ticked.
+ * goal started (no goals yet: today sits in the middle). A plant grows on
+ * every day at least one goal was ticked.
  * Web shows 120 days; the mobile home shows a compact 60-day garden.
  */
 const { t } = useI18n()
@@ -13,7 +14,9 @@ const N = computed(() => props.days)
 const small = computed(() => props.days < 120)
 const today = toISODate()
 
-const start = computed(() => props.goals.reduce((m, g) => (g.startDate < m ? g.startDate : m), today))
+const start = computed(() => props.goals.length
+  ? props.goals.reduce((m, g) => (g.startDate < m ? g.startDate : m), today)
+  : addDays(today, -Math.floor(N.value / 2)))
 
 const cells = computed(() =>
   Array.from({ length: N.value }, (_, i) => {

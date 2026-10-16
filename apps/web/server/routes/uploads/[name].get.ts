@@ -17,5 +17,8 @@ export default defineEventHandler(async (event) => {
   if (!data) throw createError({ statusCode: 404 })
   setHeader(event, 'Content-Type', type)
   setHeader(event, 'Cache-Control', 'public, max-age=31536000, immutable')
-  return data
+  // Local disk (Node) gives a Buffer, which h3 sends as-is. R2 (Workers) gives an
+  // ArrayBuffer, which h3 would mangle - hand that over as a web Response instead.
+  if (Buffer.isBuffer(data)) return data
+  return new Response(data as BodyInit, { headers: getResponseHeaders(event) as HeadersInit })
 })

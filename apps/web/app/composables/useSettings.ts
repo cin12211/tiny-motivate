@@ -18,6 +18,7 @@ export function useSettings() {
     applyTheme(value.theme)
     scheduleReminder(value, askPermission)
     syncAppIcon(value)
+    syncFavicon(value)
   }
 
   async function update(patch: Partial<UserSettings>) {

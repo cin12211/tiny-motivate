@@ -37,10 +37,8 @@ const name = computed(() => user.value?.name || t('home.you'))
     </div>
 
     <!-- 60-day garden on phones, 120-day forest on the web -->
-    <template v-if="goals.length">
-      <Forest :goals="goals" :days="60" class="md:hidden" />
-      <Forest :goals="goals" class="hidden md:flex" />
-    </template>
+    <Forest :goals="goals" :days="60" class="md:hidden" />
+    <Forest :goals="goals" class="hidden md:flex" />
 
     <section class="flex flex-col pt-1.5 md:pt-1">
       <Badge class="mb-1 self-center md:mb-2.5">{{ $t('home.yourGoals') }}</Badge>
@@ -57,7 +55,8 @@ const name = computed(() => user.value?.name || t('home.you'))
     <div class="mt-[22px] hidden flex-col items-center md:flex">
       <TypographyMuted class="text-center leading-relaxed">{{ $t('home.sign') }}<br><TypographyHand class="mr-1 text-[30px]">Mochi</TypographyHand><HandIcon name="favourite" class="-translate-y-1 text-indigo" /></TypographyMuted>
     </div>
-    <Button variant="ghost" size="sm" class="mx-auto mt-3.5 flex text-[11.5px]" @click="logout">
+    <!-- web only: phones log out from the settings page -->
+    <Button variant="ghost" size="sm" class="mx-auto mt-3.5 hidden text-[11.5px] md:flex" @click="logout">
       <HandIcon name="logout-03" /> {{ $t('common.logout') }}
     </Button>
   </div>

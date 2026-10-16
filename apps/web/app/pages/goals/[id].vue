@@ -16,7 +16,9 @@ if (!goal.value) throw createError({ statusCode: 404, statusMessage: t('goal.not
 useHead({ title: () => `${goal.value?.title ?? t('goal.title')} · Motivation` })
 
 const s = computed(() => goalStats(goal.value!))
-const selected = ref(Math.min(Math.max(s.value.today, 1), goal.value.totalDays))
+// ?day=N (from the day page) opens that day; otherwise today
+const askedDay = Number(route.query.day)
+const selected = ref(Math.min(Math.max(Number.isInteger(askedDay) && askedDay > 0 ? askedDay : s.value.today, 1), goal.value.totalDays))
 const entry = computed(() => goal.value?.days[String(selected.value)])
 const isToday = computed(() => selected.value === s.value.today)
 const isFuture = computed(() => selected.value > s.value.today)

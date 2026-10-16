@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onClickOutside, onKeyStroke } from '@vueuse/core'
 import { growIconForDate } from '@motivation/garden'
 import type { Goal } from '#shared/types'
 import { addDays, dayNumberOf, parseISODate, toISODate } from '#shared/utils/dates'
@@ -32,14 +31,6 @@ const range = computed(() => {
   return { from, to, days: dayNumberOf(from, to) }
 })
 
-// What grows on each date: random from the 95-icon pool (seeded by the date),
-// never the same as the cell before it.
-const growIcons = computed(() => {
-  const out: string[] = []
-  for (let i = 0; i < range.value.days; i++) out.push(growIconForDate(addDays(range.value.from, i), out[i - 1]))
-  return out
-})
-
 const cells = computed(() =>
   Array.from({ length: range.value.days }, (_, i) => {
     const iso = addDays(range.value.from, i)
@@ -52,7 +43,8 @@ const cells = computed(() =>
     const label = dotShort(iso)
     return {
       iso,
-      grow: growIcons.value[i]!,
+      // random from the 95-icon pool, seeded by the date (same on the day page)
+      grow: growIconForDate(iso),
       done,
       isToday,
       future,
@@ -71,114 +63,45 @@ const gridClass = computed(() => props.web
   : months.value === 6 ? 'grid-cols-15' : 'grid-cols-10')
 const dense = computed(() => (props.web ? months.value === 12 : months.value === 6))
 
-/* ---------- date chip + popover ---------- */
-const open = ref(false)
-const anchor = ref<HTMLElement>()
-const calMonth = ref(today.slice(0, 7)) // yyyy-mm shown in the calendar
-onClickOutside(anchor, () => (open.value = false))
-onKeyStroke('Escape', () => (open.value = false))
-
-function toggle() {
-  open.value = !open.value
-  calMonth.value = viewed.value.slice(0, 7)
-}
-function shiftMonth(n: number) {
-  const [y, m] = calMonth.value.split('-').map(Number)
-  calMonth.value = toISODate(new Date(y!, m! - 1 + n, 1)).slice(0, 7)
-}
-function pick(iso: string) {
-  viewed.value = iso
-  open.value = false
-}
-
 const chipLabel = computed(() =>
   `${viewed.value === today ? t('common.today') : t(`weekdays.${weekdayIndex(viewed.value)}`)} · ${dotDate(viewed.value)}`)
 
-const calTitle = computed(() => {
-  const d = parseISODate(`${calMonth.value}-01`)
-  const s = d.toLocaleDateString(locale.value === 'vi' ? 'vi-VN' : 'en-US', { month: 'long', year: 'numeric' })
-  return s.charAt(0).toUpperCase() + s.slice(1)
-})
-const calDays = computed(() => {
-  const first = parseISODate(`${calMonth.value}-01`)
-  const lead = (first.getDay() + 6) % 7 // Monday first
-  const count = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate()
-  return {
-    lead,
-    days: Array.from({ length: count }, (_, i) => {
-      const iso = addDays(`${calMonth.value}-01`, i)
-      return { iso, n: i + 1, isToday: iso === today, on: iso === viewed.value }
-    }),
-  }
-})
+/** Any goal ticked on this date (calendar dots). */
+function doneOn(iso: string) {
+  return props.goals.some((g) => {
+    const k = dayNumberOf(g.startDate, iso)
+    return k >= 1 && k <= g.totalDays && !!g.days[String(k)]?.done
+  })
+}
+
+/** Today and past cells open the day page. */
+function openDay(iso: string) {
+  if (iso <= today) navigateTo(`/day/${iso}`)
+}
 </script>
 
 <template>
   <section class="flex flex-col items-center" :class="web ? 'gap-3 pt-1 pb-5' : 'gap-2 pb-3.5'">
-    <!-- viewed date + popover -->
-    <div ref="anchor" class="relative z-[15] flex justify-center">
-      <Badge
-        as="button"
-        type="button"
-        variant="solid"
-        class="cursor-pointer gap-1.5"
-        :aria-expanded="open"
-        aria-haspopup="dialog"
-        @click="toggle"
-      >
-        {{ chipLabel }}
-        <i class="size-1.5 border-r-[1.5px] border-b-[1.5px] border-current transition-transform duration-150" :class="open ? 'translate-y-px -rotate-[135deg]' : '-translate-y-0.5 rotate-45'" />
-      </Badge>
-
-      <div
-        v-if="open"
-        class="absolute top-[calc(100%+8px)] left-1/2 flex w-64 -translate-x-1/2 flex-col gap-2 rounded-xl border border-line bg-surface p-3 shadow-[0_14px_30px_-14px_rgba(0,0,0,.35)] animate-in fade-in-0 zoom-in-95"
-        role="dialog"
-        :aria-label="$t('forest.pickDate')"
-      >
-        <div class="flex items-center justify-between text-[12.5px] text-indigo">
-          <Button type="button" variant="ghost" size="icon-sm" :aria-label="$t('forest.prevMonth')" @click="shiftMonth(-1)"><HandIcon name="arrow-left-01" /></Button>
-          <b class="font-semibold">{{ calTitle }}</b>
-          <Button type="button" variant="ghost" size="icon-sm" :aria-label="$t('forest.nextMonth')" @click="shiftMonth(1)"><HandIcon name="arrow-left-01" class="-scale-x-100" /></Button>
-        </div>
-        <div class="grid grid-cols-7 gap-0.5 text-center">
-          <span v-for="i in 7" :key="i" class="text-[9.5px] text-muted-foreground">{{ $t(`forest.weekdaysShort.${i - 1}`) }}</span>
-        </div>
-        <div class="grid grid-cols-7 gap-0.5 text-center">
-          <span v-for="i in calDays.lead" :key="`l${i}`" />
+    <!-- viewed date + calendar (and how many months to show) -->
+    <CalendarChip v-model="viewed" :label="chipLabel" :marked="doneOn">
+      <div class="flex flex-col gap-1.5 pt-2 dashed-top">
+        <TypographyMuted as="small" class="text-[10.5px]">{{ $t('forest.show') }}</TypographyMuted>
+        <div class="grid gap-[3px] rounded-lg bg-background p-[3px]" :class="OPTIONS.length === 4 ? 'grid-cols-4' : 'grid-cols-3'" role="radiogroup" :aria-label="$t('forest.monthsAria')">
           <button
-            v-for="d in calDays.days"
-            :key="d.iso"
+            v-for="n in OPTIONS"
+            :key="n"
             type="button"
-            class="h-7 rounded-[7px] text-[11.5px] text-ink hover:bg-background"
-            :class="[d.isToday && 'font-semibold text-indigo shadow-[inset_0_0_0_1px_var(--m-indigo)]', d.on && 'bg-primary text-primary-foreground hover:bg-primary']"
-            :aria-label="dotDate(d.iso)"
-            :aria-pressed="d.on"
-            @click="pick(d.iso)"
+            role="radio"
+            :aria-checked="months === n"
+            class="h-[26px] rounded-md px-0.5 text-[10.5px] whitespace-nowrap text-indigo"
+            :class="months === n && 'bg-primary text-primary-foreground'"
+            @click="months = n"
           >
-            {{ d.n }}
+            {{ $t('forest.months', { n }) }}
           </button>
         </div>
-        <div class="flex flex-col gap-1.5 pt-2 dashed-top">
-          <TypographyMuted as="small" class="text-[10.5px]">{{ $t('forest.show') }}</TypographyMuted>
-          <div class="grid gap-[3px] rounded-lg bg-background p-[3px]" :class="OPTIONS.length === 4 ? 'grid-cols-4' : 'grid-cols-3'" role="radiogroup" :aria-label="$t('forest.monthsAria')">
-            <button
-              v-for="n in OPTIONS"
-              :key="n"
-              type="button"
-              role="radio"
-              :aria-checked="months === n"
-              class="h-[26px] rounded-md px-0.5 text-[10.5px] whitespace-nowrap text-indigo"
-              :class="months === n && 'bg-primary text-primary-foreground'"
-              @click="months = n"
-            >
-              {{ $t('forest.months', { n }) }}
-            </button>
-          </div>
-        </div>
-        <Button type="button" variant="link" size="xs" class="self-center text-[11px]" @click="pick(today)">{{ $t('forest.backToday') }}</Button>
       </div>
-    </div>
+    </CalendarChip>
 
     <!-- one continuous grid -->
     <div class="grid w-full" :class="[gridClass, web && 'gap-y-1']">
@@ -188,11 +111,17 @@ const calDays = computed(() => {
         class="forest-cell group relative h-0 rounded-[7px] pt-[100%] text-indigo transition-colors hover:z-[3] hover:bg-surface"
         :class="[
           web && (dense ? 'min-[861px]:size-[22px] min-[861px]:justify-self-center min-[861px]:pt-0' : 'min-[861px]:size-[30px] min-[861px]:justify-self-center min-[861px]:pt-0'),
+          !c.future && 'cursor-pointer',
           c.viewed && 'shadow-[inset_0_0_0_1.5px_var(--m-indigo)]',
           c.isToday && 'is-today shadow-[inset_0_0_0_1.5px_var(--m-indigo)]',
           dense && 'is-dense',
         ]"
         :data-tip="web ? c.tip : undefined"
+        :role="c.future ? undefined : 'button'"
+        :tabindex="c.future ? undefined : 0"
+        :aria-label="c.future ? undefined : c.tip"
+        @click="openDay(c.iso)"
+        @keydown.enter="openDay(c.iso)"
       >
         <!-- padding-box square + absolute centre: aspect-ratio grid items size unreliably in iOS WebKit -->
         <span class="absolute inset-0 grid place-items-center">

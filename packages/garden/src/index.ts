@@ -461,19 +461,46 @@ export function growIconForGoal(goalId: string, day: number) {
   return pool[(Math.max(1, Math.floor(day)) - 1) % pool.length]!
 }
 
-/**
- * Icon for a date in the home garden (all goals together), seeded by the date:
- * a plant with 65% chance, otherwise a farm icon; re-picked when it equals the
- * previous cell's icon.
- */
-export function growIconForDate(iso: string, previous?: string) {
+/** Seeded pick for a date on its own (before the no-repeat rule). */
+function baseIconForDate(iso: string) {
   const next = rng(iso)
-  const pick = () => {
+  const set = next() < PLANT_SHARE ? PLANT_IDS : FARM_ICONS
+  return set[Math.floor(next() * set.length)]!
+}
+
+function dayBefore(iso: string) {
+  const [y, m, d] = iso.split('-').map(Number)
+  const t = new Date(Date.UTC(y!, m! - 1, d! - 1))
+  return t.toISOString().slice(0, 10)
+}
+
+/**
+ * Icon for a date in the home garden / day page (all goals together), seeded by
+ * the date (yyyy-mm-dd): a plant with 65% chance, otherwise a farm icon. It is
+ * re-picked when it would match the day before, so neighbours never repeat, and
+ * it only depends on the date, so every screen shows the same icon for it.
+ */
+export function growIconForDate(iso: string): string {
+  const prev = dayBefore(iso)
+  const avoid = new Set([baseIconForDate(prev), settledIcon(prev)])
+  const next = rng(`${iso}#`)
+  let id = baseIconForDate(iso)
+  while (avoid.has(id)) {
     const set = next() < PLANT_SHARE ? PLANT_IDS : FARM_ICONS
-    return set[Math.floor(next() * set.length)]!
+    id = set[Math.floor(next() * set.length)]!
   }
-  let id = pick()
-  while (id === previous) id = pick()
+  return id
+}
+
+/** The icon of `iso` after avoiding the base pick of the day before (one step deep). */
+function settledIcon(iso: string) {
+  const prevBase = baseIconForDate(dayBefore(iso))
+  const next = rng(`${iso}#`)
+  let id = baseIconForDate(iso)
+  while (id === prevBase) {
+    const set = next() < PLANT_SHARE ? PLANT_IDS : FARM_ICONS
+    id = set[Math.floor(next() * set.length)]!
+  }
   return id
 }
 

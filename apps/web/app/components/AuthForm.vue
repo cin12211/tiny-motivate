@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { toast } from 'vue-sonner'
 
-/** Login / signup card from the Mini design. The link under the form switches between them. */
+/**
+ * Login / signup card from the Mini design (v19): p2 sprout hero, Google / Apple first,
+ * then "or continue with email" and the form. The link at the bottom switches between them.
+ */
 const props = defineProps<{ mode: 'login' | 'signup' }>()
 const up = computed(() => props.mode === 'signup')
 const { login, signup, loginWithGoogle } = useAuth()
@@ -51,12 +54,24 @@ const soon = (what: string) => toast(t('common.soon', { what }))
 <template>
   <div class="flex w-full max-w-[360px] flex-col gap-[18px]">
     <div class="mb-1.5 flex flex-col items-center gap-1 text-center">
-      <Mochi :pose="up ? 'gift' : 'wave'" :size="up ? 84 : 78" />
+      <GardenIcon icon="p2" class="size-[72px] text-indigo" />
       <TypographyH1 class="mt-2 text-[19px] font-semibold">{{ up ? $t('auth.titleSignup') : $t('auth.titleLogin') }}</TypographyH1>
       <TypographyLead class="text-[12.5px] opacity-75">
         <template v-if="up">{{ $t('auth.leadSignup1') }}<br>{{ $t('auth.leadSignup2') }}</template>
         <template v-else>{{ $t('auth.leadLogin1') }}<br>{{ $t('auth.leadLogin2') }}</template>
       </TypographyLead>
+    </div>
+
+    <div class="flex flex-col gap-2.5">
+      <Button type="button" variant="outline" size="sm" class="h-11" @click="loginWithGoogle">
+        <HandIcon name="google" /> {{ $t('auth.continueGoogle') }}
+      </Button>
+      <Button type="button" variant="outline" size="sm" class="h-11" @click="soon($t('auth.appleSoon'))">
+        <HandIcon name="apple" /> {{ $t('auth.continueApple') }}
+      </Button>
+    </div>
+    <div class="flex items-center gap-3 text-[11px] text-muted-foreground before:flex-1 before:border-t before:border-dashed before:border-faint after:flex-1 after:border-t after:border-dashed after:border-faint">
+      {{ $t('auth.orEmail') }}
     </div>
 
     <form class="flex flex-col gap-2.5" novalidate @submit.prevent="submit">
@@ -92,18 +107,6 @@ const soon = (what: string) => toast(t('common.soon', { what }))
         <HandIcon name="arrow-right-01" class="transition-transform group-hover:translate-x-[3px]" />
       </Button>
     </form>
-
-    <div class="flex items-center gap-3 text-[11px] text-muted-foreground before:flex-1 before:border-t before:border-dashed before:border-faint after:flex-1 after:border-t after:border-dashed after:border-faint">
-      {{ $t('auth.or') }}
-    </div>
-    <div class="grid grid-cols-2 gap-2.5">
-      <Button type="button" variant="outline" size="sm" class="h-[42px]" @click="loginWithGoogle">
-        <HandIcon name="google" /> google
-      </Button>
-      <Button type="button" variant="outline" size="sm" class="h-[42px]" @click="soon($t('auth.appleSoon'))">
-        <HandIcon name="apple" /> apple
-      </Button>
-    </div>
 
     <TypographyMuted class="text-center">
       <template v-if="up">{{ $t('auth.hasAccount') }} <NuxtLink to="/login" class="text-indigo underline decoration-dotted underline-offset-[3px]">{{ $t('auth.login') }}</NuxtLink></template>

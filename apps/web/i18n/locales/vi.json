@@ -53,7 +53,6 @@
     "submitSignup": "tạo tài khoản",
     "busyLogin": "đang mở vườn…",
     "busySignup": "đang gieo mầm…",
-    "or": "hoặc",
     "googleSoon": "Đăng nhập Google",
     "appleSoon": "Đăng nhập Apple",
     "hasAccount": "đã có tài khoản?",
@@ -69,7 +68,10 @@
     "titleSignupPage": "Đăng ký",
     "errInvalid": "Email hoặc mật khẩu chưa đúng",
     "errExists": "Email này đã có tài khoản",
-    "errGoogle": "Đăng nhập Google chưa thành công, thử lại nhé"
+    "errGoogle": "Đăng nhập Google chưa thành công, thử lại nhé",
+    "continueGoogle": "tiếp tục với google",
+    "continueApple": "tiếp tục với apple",
+    "orEmail": "hoặc tiếp tục với email"
   },
   "home": {
     "hello": "chào {name} :)",

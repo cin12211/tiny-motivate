@@ -53,7 +53,6 @@
     "submitSignup": "create account",
     "busyLogin": "opening the garden…",
     "busySignup": "planting…",
-    "or": "or",
     "googleSoon": "Google sign-in",
     "appleSoon": "Apple sign-in",
     "hasAccount": "already have an account?",
@@ -69,7 +68,10 @@
     "titleSignupPage": "Sign up",
     "errInvalid": "Wrong email or password",
     "errExists": "That email already has an account",
-    "errGoogle": "Google sign-in didn't go through, please try again"
+    "errGoogle": "Google sign-in didn't go through, please try again",
+    "continueGoogle": "continue with google",
+    "continueApple": "continue with apple",
+    "orEmail": "or continue with email"
   },
   "home": {
     "hello": "hi {name} :)",

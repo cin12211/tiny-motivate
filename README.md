@@ -30,7 +30,7 @@ Mở http://localhost:3000. Cần cấu hình database trước (xem phần Data
 
 ## App mobile (Capacitor)
 
-App native chạy bản SPA tĩnh, gọi API tới server Nitro ở `NUXT_PUBLIC_API_BASE`:
+App native chạy bản SPA tĩnh, mặc định gọi API production `https://motivation.taccin03.workers.dev` (đổi bằng `NUXT_PUBLIC_API_BASE`):
 
 ```bash
 # 1. chạy server API (máy tính và điện thoại cùng mạng)

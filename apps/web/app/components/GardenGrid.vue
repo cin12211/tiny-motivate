@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { growIconForGoal } from '@motivation/garden'
 import type { Goal } from '#shared/types'
 
 /** The goal's garden: one cell per day (10 columns). Tap a cell to open that day. */
@@ -26,7 +27,7 @@ const s = computed(() => goalStats(props.goal))
           <span v-if="rewardAt(goal, n)" class="grid size-[72%] max-h-6 max-w-6 place-items-center overflow-hidden rounded">
             <RewardBadge :reward="rewardAt(goal, n)!" icon-class="size-full" />
           </span>
-          <GardenIcon v-else-if="goal.days[String(n)]?.done" :day="n" class="size-[94%] max-h-8 max-w-8" />
+          <GardenIcon v-else-if="goal.days[String(n)]?.done" :icon="growIconForGoal(goal.id, n)" class="size-[94%] max-h-8 max-w-8" />
           <i
             v-else
             class="block rounded-full"

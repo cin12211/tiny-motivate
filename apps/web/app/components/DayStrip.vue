@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { growIconForGoal } from '@motivation/garden'
 import type { Goal } from '#shared/types'
 
 /**
@@ -62,7 +63,7 @@ watch(selected, () => nextTick(() => center()))
       <span v-if="d.reward" class="grid size-[34px] place-items-center overflow-hidden rounded-md">
         <RewardBadge :reward="d.reward" icon-class="size-[30px]" />
       </span>
-      <GardenIcon v-else-if="d.status === 'done'" :day="d.n" class="size-9" />
+      <GardenIcon v-else-if="d.status === 'done'" :icon="growIconForGoal(goal.id, d.n)" class="size-9" />
       <i
         v-else
         class="block rounded-full"

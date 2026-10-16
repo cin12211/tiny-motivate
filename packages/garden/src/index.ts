@@ -1,7 +1,7 @@
 /**
  * Mochi garden icons (generated from the "Mochi Garden Icons" design sheet).
  *
- * 55 hand-drawn plants (one grows on each completed day), 5 mood flowers
+ * 55 hand-drawn plants, 5 mood flowers
  * and the forest icon used for the "all goals" tab.
  * Each `body` is the inner markup of a 32x32 SVG drawn with `currentColor`,
  * so it can be dropped into `<svg viewBox="0 0 32 32">` and tinted with CSS.
@@ -106,7 +106,7 @@ export const PLANTS: ReadonlyArray<GardenIcon & { id: number, name: string }> = 
     "id": 15,
     "name": "cây thông",
     "description": "ba tầng lá kim",
-    "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 28c2.5-.9 4.5.6 7 0s4.6-.8 7-.1 4.6.6 8 0\"/><path d=\"M16 4.5l-4.5 6h3l-5 6h3.5l-5.5 6.5h17l-5.5-6.5h3.5l-5-6h3z\"/><path d=\"M14.8 23v4.6M17.2 23v4.6\"/></g>"
+    "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 28c2.5-.9 4.5.6 7 0s4.6-.8 7-.1 4.6.6 8 0\"/><path d=\"M16 4.2c-1 2.4-2.8 4.6-5 6.2c1.6.6 3.4.2 5-.6c1.6.8 3.4 1.2 5 .6c-2.2-1.6-4-3.8-5-6.2z\"/><path d=\"M12.8 10.4c-1.4 2.4-3.4 4.4-5.6 5.8c1.8.8 3.8.4 5.4-.4c1.2.8 2.4 1 3.4 1s2.2-.2 3.4-1c1.6.8 3.6 1.2 5.4.4c-2.2-1.4-4.2-3.4-5.6-5.8\"/><path d=\"M11.6 16.4c-1.6 2.2-3.6 4-6 5.2c2 .9 4.2.6 6-.4c1.4.9 2.9 1.2 4.4 1.2s3-.3 4.4-1.2c1.8 1 4 1.3 6 .4c-2.4-1.2-4.4-3-6-5.2\"/><path d=\"M15 22.6c.2 1.7.1 3.4-.1 5M17.2 22.6c-.1 1.7 0 3.4.2 5\"/><path d=\"M14.2 13.8h.01M18.4 19.2h.01M16.6 8.4h.01\"/></g>"
   },
   {
     "id": 16,
@@ -178,7 +178,7 @@ export const PLANTS: ReadonlyArray<GardenIcon & { id: number, name: string }> = 
     "id": 27,
     "name": "sen đá",
     "description": "hoa thị trong chậu",
-    "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 21h12l-1.4 6.8h-9.2z\"/><path d=\"M11 23.6h10\"/><path d=\"M16 21c-1.4-2-1.4-4.4 0-6.6c1.4 2.2 1.4 4.6 0 6.6z\"/><path d=\"M16 21c-2.6-.4-4.4-2.2-5-4.8c2.6.2 4.4 2 5 4.8z\"/><path d=\"M16 21c2.6-.4 4.4-2.2 5-4.8c-2.6.2-4.4 2-5 4.8z\"/><path d=\"M15.6 21c-3.4.6-6.2-.2-7.8-2.4c2.8-.8 5.4 0 7.8 2.4z\"/><path d=\"M16.4 21c3.4.6 6.2-.2 7.8-2.4c-2.8-.8-5.4 0-7.8 2.4z\"/></g>"
+    "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.6 21.2c4.2-.4 8.6-.4 12.8 0c-.2 2.4-.8 4.6-1.6 6.4c-3.2.4-6.4.4-9.6 0c-.8-1.8-1.4-4-1.6-6.4z\"/><path d=\"M10.4 23.4c3.8.3 7.4.3 11.2 0\"/><path d=\"M16 21c-1.6-2-1.8-4.6-.2-7.2c1.8 2.3 1.8 5 .2 7.2z\"/><path d=\"M15.4 21c-2.8-.2-4.8-2-5.6-4.6c2.8.2 4.8 2 5.6 4.6z\"/><path d=\"M16.6 21c2.8-.2 4.8-2 5.6-4.6c-2.8.2-4.8 2-5.6 4.6z\"/><path d=\"M14.8 21.2c-3.2.8-6 .2-7.8-1.8c2.8-1 5.4-.4 7.8 1.8z\"/><path d=\"M17.2 21.2c3.2.8 6 .2 7.8-1.8c-2.8-1-5.4-.4-7.8 1.8z\"/><path d=\"M16 18.8v-2.2\"/><path d=\"M13.2 25.4h.01M18.6 25.8h.01\"/></g>"
   },
   {
     "id": 28,
@@ -316,7 +316,7 @@ export const PLANTS: ReadonlyArray<GardenIcon & { id: number, name: string }> = 
     "id": 50,
     "name": "cây cổ thụ",
     "description": "có xích đu",
-    "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 28c2.5-.9 4.5.6 7 0s4.6-.8 7-.1 4.6.6 8 0\"/><path d=\"M14 27.6c.6-3 .6-6 0-9.4M18 27.6c-.6-3-.6-6 0-9.4\"/><path d=\"M8.6 18.2c-2.2 0-3.6-1.8-3.4-3.8c.2-1.8 1.6-3 3.2-3c.2-2.6 2.6-4.6 5.2-4.2c1-2 3.2-3 5.4-2.4c2 .4 3.4 2 3.6 4c2-.2 3.8 1.4 3.8 3.4c1.4.6 2 2 1.8 3.4c-.4 1.6-1.6 2.6-3.2 2.6z\"/><path d=\"M20.8 18.2v5.4M23.6 18.2v5.4M20.2 23.6h4\"/><path d=\"M11.4 13.4h.01M16.4 11h.01M19.6 14.4h.01\"/></g>"
+    "body": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 28c2.5-.9 4.5.6 7 0s4.6-.8 7-.1 4.6.6 8 0\"/><path d=\"M9 18.4c-2.4.2-4-1.6-3.8-3.6c.2-1.6 1.4-2.8 3-2.8c-.2-2.6 2-4.6 4.6-4.4c.8-2.2 3.2-3.4 5.4-2.8c1.8.4 3.2 1.8 3.6 3.6c2.2-.2 4 1.4 4 3.6c1.6.6 2.4 2 2.2 3.6c-.4 1.6-1.8 2.8-3.4 2.8c-1 .2-2 0-2.8-.4c-1 .8-2.4 1-3.6.6c-1.2.8-2.8.8-4 0c-1.2.6-2.6.4-3.6-.4z\"/><path d=\"M13.6 27.6c.8-2.6 1-5.6.4-9.2M18.4 27.6c-.8-2.6-1-5.6-.4-9.2\"/><path d=\"M13.6 27.6c-1.2-.2-2.2.2-3 .8M18.4 27.6c1.2-.2 2.2.2 3 .8\"/><path d=\"M16.2 19.4c.2 1.4 1.2 2.4 2.4 2.8\"/><path d=\"M10.6 13.8c.6-.6 1.4-.8 2.2-.6M18.4 10.6c.8 0 1.4.4 1.8 1M21.6 15.2c.6.4.8 1 .8 1.6\"/><path d=\"M15.4 24.2h.01\"/></g>"
   },
   {
     "id": 51,
@@ -390,7 +390,69 @@ export const FOREST: GardenIcon = {
   id: 'forest',
   name: 'khu rừng',
   description: 'thông lớn ở giữa, thông nhỏ bên phải, cây tròn bên trái',
-  body: '<g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 28c3-.8 5.5.6 8.5 0s5.6-.8 9-.1 5.4.6 8.5 0"/><path d="M16 3.6l-3.6 5.6h2.1l-4.1 6.2h3l-3.6 5.4h12.4l-3.6-5.4h3l-4.1-6.2h2.1z"/><path d="M16 20.8v6.6"/><circle cx="6.6" cy="17.2" r="3.6"/><path d="M6.6 20.8v6.6"/><path d="M25.4 11.4l-3.4 6h1.8l-2.6 4.6h8.4l-2.6-4.6h1.8z"/><path d="M25.4 22v5.4"/><circle cx="5.4" cy="16.4" r=".2" stroke-width="1.2"/><circle cx="7.8" cy="18" r=".2" stroke-width="1.2"/></g>',
+  body: '<g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 28c3-.8 5.5.6 8.5 0s5.6-.8 9-.1 5.4.6 8.5 0"/><path d="M16 3.8c-.8 1.8-2 3.4-3.4 4.6c1.2.4 2.3.2 3.4-.3c1.1.5 2.2.7 3.4.3c-1.4-1.2-2.6-2.8-3.4-4.6z"/><path d="M13.6 8.6c-1 1.8-2.2 3.2-3.6 4.2c1.3.5 2.6.3 3.7-.3c.8.5 1.5.7 2.3.7s1.5-.2 2.3-.7c1.1.6 2.4.8 3.7.3c-1.4-1-2.6-2.4-3.6-4.2"/><path d="M13.2 13.4c-1 1.8-2.4 3.2-4 4.2c1.5.6 3 .4 4.2-.3c.9.6 1.8.8 2.6.8s1.7-.2 2.6-.8c1.2.7 2.7.9 4.2.3c-1.6-1-3-2.4-4-4.2"/><path d="M15.2 18.4c.2 3 .1 6-.1 9.2M16.9 18.4c-.1 3 0 6 .2 9.2"/><path d="M6.6 13.4c2.2-.1 3.8 1.6 3.7 3.8c-.1 2.2-1.8 3.8-3.9 3.8c-2.2 0-3.8-1.7-3.7-3.9c.1-2.1 1.8-3.6 3.9-3.7z"/><path d="M6.4 21v6.6"/><path d="M5.4 16.6h.01M7.6 18.2h.01"/><path d="M25.8 11.6c-.6 1.6-1.6 3-2.8 3.8c1 .4 2 .2 2.8-.2c.8.4 1.8.6 2.8.2c-1.2-.8-2.2-2.2-2.8-3.8z"/><path d="M24.6 15.4c-.7 1.4-1.6 2.6-2.8 3.4c1 .5 2.1.3 3-.2c.4.3.8.4 1.2.4s.8-.1 1.2-.4c.9.5 2 .7 3 .2c-1.2-.8-2.1-2-2.8-3.4"/><path d="M26 19.8v7.6"/></g>',
+}
+
+/**
+ * 40 garden & farm hand icons (in hand-icons.ts, 24px grid). Together with the
+ * 55 plants they form the pool of things that grow on a done day.
+ */
+export const FARM_ICONS = [
+  'g-shovel', 'g-rake', 'g-hoe', 'g-pitchfork', 'g-watering', 'g-shears', 'g-wheelbarrow', 'g-glove',
+  'g-strawhat', 'g-seeds', 'g-hose', 'g-basket', 'g-crate', 'g-hay', 'g-fence', 'g-windmill',
+  'g-barn', 'g-tractor', 'g-scarecrow', 'g-bucket', 'g-chicken', 'g-cow', 'g-pig', 'g-sheep',
+  'g-duck', 'g-rabbit', 'g-beehive', 'g-eggs', 'g-horseshoe', 'g-coop', 'g-well', 'g-greenhouse',
+  'g-silo', 'g-birdhouse', 'g-mailbox', 'g-gate', 'g-ladder', 'g-axe', 'g-milkcan', 'g-vegbed',
+] as const
+
+/** Everything that can grow on a done day: "p1".."p55" + the 40 farm icons (95). */
+export const GROW_POOL: readonly string[] = [...PLANTS.map(p => `p${p.id}`), ...FARM_ICONS]
+
+/** Small seeded PRNG (xmur3 hash → mulberry32) so picks are the same on every device. */
+function rng(seed: string) {
+  let h = 1779033703 ^ seed.length
+  for (let i = 0; i < seed.length; i++) {
+    h = Math.imul(h ^ seed.charCodeAt(i), 3432918353)
+    h = (h << 13) | (h >>> 19)
+  }
+  let a = h >>> 0
+  return () => {
+    a = (a + 0x6D2B79F5) | 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+const goalPools = new Map<string, string[]>()
+
+/**
+ * Icon that grows on day `day` of a goal: the 95-icon pool shuffled once with
+ * the goal id as seed, so there are no repeats within 95 days.
+ */
+export function growIconForGoal(goalId: string, day: number) {
+  let pool = goalPools.get(goalId)
+  if (!pool) {
+    const next = rng(goalId)
+    pool = [...GROW_POOL]
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(next() * (i + 1))
+      ;[pool[i], pool[j]] = [pool[j]!, pool[i]!]
+    }
+    goalPools.set(goalId, pool)
+  }
+  return pool[(Math.max(1, Math.floor(day)) - 1) % pool.length]!
+}
+
+/**
+ * Icon for a date in the home garden (all goals together): picked with the
+ * date as seed, re-picked when it equals the previous cell's icon.
+ */
+export function growIconForDate(iso: string, previous?: string) {
+  const next = rng(iso)
+  let id = GROW_POOL[Math.floor(next() * GROW_POOL.length)]!
+  while (id === previous) id = GROW_POOL[Math.floor(next() * GROW_POOL.length)]!
+  return id
 }
 
 /** Plant for the n-th day (1-based). Cycles after 55 so long journeys never run out. */

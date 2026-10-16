@@ -14,7 +14,7 @@ interface DraftReward { key: number, day: number, title: string, icon: string, i
 
 let seq = 0
 const title = ref('')
-const icon = ref(GOAL_ICONS[0]!)
+const icon = ref('plant-01')
 const totalDays = ref(30)
 const startDate = ref(toISODate())
 const rewards = ref<DraftReward[]>([

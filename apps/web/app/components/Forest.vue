@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside, onKeyStroke } from '@vueuse/core'
+import { growIconForDate } from '@motivation/garden'
 import type { Goal } from '#shared/types'
 import { addDays, dayNumberOf, parseISODate, toISODate } from '#shared/utils/dates'
 
@@ -31,8 +32,13 @@ const range = computed(() => {
   return { from, to, days: dayNumberOf(from, to) }
 })
 
-// Plants are numbered from the earliest goal start, as before.
-const firstStart = computed(() => props.goals.reduce((m, g) => (g.startDate < m ? g.startDate : m), today))
+// What grows on each date: random from the 95-icon pool (seeded by the date),
+// never the same as the cell before it.
+const growIcons = computed(() => {
+  const out: string[] = []
+  for (let i = 0; i < range.value.days; i++) out.push(growIconForDate(addDays(range.value.from, i), out[i - 1]))
+  return out
+})
 
 const cells = computed(() =>
   Array.from({ length: range.value.days }, (_, i) => {
@@ -46,7 +52,7 @@ const cells = computed(() =>
     const label = dotShort(iso)
     return {
       iso,
-      plant: Math.max(1, dayNumberOf(firstStart.value, iso)),
+      grow: growIcons.value[i]!,
       done,
       isToday,
       future,
@@ -190,7 +196,7 @@ const calDays = computed(() => {
       >
         <!-- padding-box square + absolute centre: aspect-ratio grid items size unreliably in iOS WebKit -->
         <span class="absolute inset-0 grid place-items-center">
-          <GardenIcon v-if="c.done" :day="c.plant" :class="web ? 'size-[92%]' : 'size-[88%]'" class="transition-transform duration-200 group-hover:-translate-y-px group-hover:scale-[1.18]" />
+          <GardenIcon v-if="c.done" :icon="c.grow" :class="web ? 'size-[92%]' : 'size-[88%]'" class="transition-transform duration-200 group-hover:-translate-y-px group-hover:scale-[1.18]" />
           <i
             v-else
             class="block rounded-full transition-transform group-hover:scale-[1.6]"

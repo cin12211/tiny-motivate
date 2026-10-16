@@ -1,0 +1,34 @@
+# Redis + HTTP bridge (serverless-redis-http) so Cloudflare Workers can use Redis.
+# Usage on the VPS:  cp .env.example .env  (fill in)  →  docker compose up -d
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    # Only reachable from this machine; the Worker goes through SRH below.
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  serverless-redis-http:
+    image: hiett/serverless-redis-http:latest
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      SRH_MODE: env
+      SRH_TOKEN: ${SRH_TOKEN}
+      SRH_CONNECTION_STRING: "redis://:${REDIS_PASSWORD}@redis:6379"
+    # Put HTTPS (Caddy/Nginx + your domain) in front of this port.
+    ports:
+      - "8079:80"
+
+volumes:
+  redis-data:

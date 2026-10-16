@@ -42,19 +42,19 @@ const dayIndex = computed(() => cells.value.findIndex(c => c.isToday) + 1)
 </script>
 
 <template>
-  <section class="flex flex-col items-center" :class="small ? 'gap-2 pb-3.5' : 'gap-[18px] pt-2 pb-[34px]'">
+  <section class="flex flex-col items-center" :class="small ? 'gap-2 pb-3.5' : 'gap-3 pt-1 pb-5'">
     <Badge v-if="small">{{ $t('forest.garden', { n: N }) }}</Badge>
     <div v-else class="flex flex-col items-center gap-1.5">
       <Badge variant="solid">{{ $t(`weekdays.${weekdayIndex(today)}`) }} · {{ dotDate(today) }}</Badge>
       <i18n-t keypath="forest.day" tag="small" scope="global" class="text-[11.5px] text-muted-foreground"><template #i><em>{{ dayIndex }}</em></template><template #n>{{ N }}</template></i18n-t>
     </div>
 
-    <div class="grid w-full grid-cols-10" :class="!small && 'gap-y-1 sm:grid-cols-15'">
+    <div class="grid w-full grid-cols-10" :class="!small && 'gap-y-1 min-[861px]:grid-cols-20'">
       <span
         v-for="c in cells"
         :key="c.n"
         class="forest-cell group relative h-0 rounded-[7px] pt-[100%] text-indigo transition-colors hover:z-[3] hover:bg-surface"
-        :class="c.isToday && 'is-today bg-primary text-primary-foreground shadow-[0_0_0_3px_var(--m-paper),0_0_0_4.5px_var(--m-indigo)] hover:bg-primary'"
+        :class="[!small && 'min-[861px]:h-[26px] min-[861px]:w-[30px] min-[861px]:justify-self-center min-[861px]:pt-0', c.isToday && 'is-today bg-primary text-primary-foreground shadow-[0_0_0_3px_var(--m-paper),0_0_0_4.5px_var(--m-indigo)] hover:bg-primary']"
         :data-tip="small ? undefined : c.tip"
       >
         <!-- padding-box square + absolute centre: aspect-ratio grid items size unreliably in iOS WebKit -->

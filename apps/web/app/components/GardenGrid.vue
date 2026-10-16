@@ -8,13 +8,13 @@ const s = computed(() => goalStats(props.goal))
 </script>
 
 <template>
-  <section class="flex flex-col items-center gap-4 pt-5 pb-2 dashed-top">
+  <section class="flex flex-col items-center gap-4 pt-5 pb-2 dashed-top md:gap-3 md:pt-3.5 md:pb-1.5">
     <Badge variant="solid">{{ $t('common.days', { n: goal.totalDays }) }}</Badge>
-    <div class="grid w-full max-w-[460px] grid-cols-10 gap-y-1.5">
+    <div class="grid w-full max-w-[460px] grid-cols-10 gap-y-1.5 min-[861px]:max-w-none min-[861px]:grid-cols-15 min-[861px]:gap-y-1">
       <button
         v-for="n in goal.totalDays"
         :key="n"
-        class="relative h-0 min-w-0 rounded-md pt-[100%] text-indigo transition-colors hover:bg-surface"
+        class="relative h-0 min-w-0 rounded-md pt-[100%] text-indigo transition-colors hover:bg-surface min-[861px]:h-[30px] min-[861px]:w-[34px] min-[861px]:justify-self-center min-[861px]:pt-0"
         :class="[
           selected === n && 'bg-surface shadow-[inset_0_0_0_1px_var(--m-indigo)]',
           rewardAt(goal, n) && s.doneCount < n && 'opacity-35',

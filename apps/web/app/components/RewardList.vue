@@ -7,12 +7,12 @@ const s = computed(() => goalStats(props.goal))
 </script>
 
 <template>
-  <section class="flex flex-col items-center gap-1.5 pt-[22px]">
+  <section class="flex flex-col items-center gap-1.5 pt-[22px] md:gap-2 md:pt-3">
     <Badge class="mb-2">{{ $t('goal.rewards') }}</Badge>
     <div
       v-for="r in s.rewards"
       :key="r.id"
-      class="flex w-full items-center justify-between gap-3 px-0.5 py-2.5"
+      class="flex w-full items-center justify-between gap-3 px-0.5 py-2.5 md:py-2"
     >
       <div class="min-w-0">
         <TypographyH3 as="b" class="block">{{ $t('goal.rewardDay', { n: pad2(r.day) }) }}</TypographyH3>

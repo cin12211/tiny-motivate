@@ -21,7 +21,7 @@ const onHome = computed(() => route.path === '/')
 <template>
   <div class="min-h-dvh bg-background">
 
-    <main class="mx-auto w-full max-w-[680px] px-[22px] pt-[max(env(safe-area-inset-top),0px)] pb-[150px] md:px-6 md:pb-16">
+    <main class="mx-auto w-full max-w-[920px] px-[22px] pt-[max(env(safe-area-inset-top),0px)] pb-[150px] md:px-7 md:pb-16 max-[860px]:md:px-4">
       <slot />
     </main>
 

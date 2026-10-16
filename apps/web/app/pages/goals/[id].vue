@@ -99,7 +99,7 @@ async function onDelete() {
 <template>
   <div v-if="goal">
     <!-- top bar: back · day chip · goal icon (sticky, under the web header on md+) -->
-    <div class="sticky top-0 z-10 -mx-[22px] bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-3.5 pb-2.5 md:top-0 md:-mx-6 md:px-6 md:pt-3">
+    <div class="sticky top-0 z-10 -mx-[22px] bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-3.5 pb-2.5 md:top-0 md:-mx-7 md:px-7 max-[860px]:md:-mx-4 max-[860px]:md:px-4 md:pt-3">
       <div class="flex items-center justify-between">
         <Button as-child variant="ghost" size="icon" class="text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" 
           :aria-label="$t('common.back')">
@@ -147,7 +147,7 @@ async function onDelete() {
     </JournalEditor>
 
     <!-- countdown + stats -->
-    <TypographyP class="mt-[22px] mb-1.5 text-center">
+    <TypographyP class="mt-[22px] mb-1.5 text-center md:mt-3 md:mb-1">
       <template v-if="s.nextReward">
         <i18n-t keypath="goal.countdown" tag="span" scope="global"><template #n><em>{{ pad2(s.daysToNext) }}</em></template></i18n-t><br>
         <span class="inline-flex items-center gap-1.5 text-indigo">
@@ -157,7 +157,7 @@ async function onDelete() {
       </template>
       <template v-else>{{ $t('goal.allRewards') }}</template>
     </TypographyP>
-    <div class="mt-2 mb-6 flex justify-center gap-[18px]">
+    <div class="mt-2 mb-6 flex justify-center gap-[18px] md:mt-1.5 md:mb-3.5">
       <i18n-t keypath="goal.statDays" tag="span" scope="global" class="text-xs text-muted-foreground"><template #done><b class="font-semibold text-indigo">{{ pad2(s.doneCount) }}</b></template><template #total>{{ goal.totalDays }}</template></i18n-t>
       <i18n-t keypath="goal.statStreak" tag="span" scope="global" class="text-xs text-muted-foreground"><template #n><b class="font-semibold text-indigo">{{ pad2(s.streak) }}</b></template></i18n-t>
       <i18n-t keypath="goal.statRewards" tag="span" scope="global" class="text-xs text-muted-foreground"><template #got><b class="font-semibold text-indigo">{{ s.unlocked.length }}</b></template><template #total>{{ goal.rewards.length }}</template></i18n-t>

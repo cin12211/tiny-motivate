@@ -42,7 +42,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
 <template>
   <div>
     <!-- back bar (sticky under the web header on md+) -->
-    <div class="sticky top-0 z-10 -mx-[22px] bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-4 pb-2.5 md:top-0 md:-mx-6 md:px-6 md:pt-3">
+    <div class="sticky top-0 z-10 -mx-[22px] bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-4 pb-2.5 md:top-0 md:-mx-7 md:px-7 max-[860px]:md:-mx-4 max-[860px]:md:px-4 md:pt-3">
       <Button as-child variant="ghost" size="icon" class="text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" :aria-label="$t('common.back')">
         <NuxtLink to="/"><HandIcon name="arrow-left-01" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
       </Button>

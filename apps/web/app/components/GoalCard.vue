@@ -16,7 +16,7 @@ const dots = computed(() =>
 <template>
   <NuxtLink
     :to="`/goals/${goal.id}`"
-    class="group block w-full rounded-[10px] px-1 pt-4 pb-[18px] text-left text-ink transition-colors dashed-top md:px-3.5 md:hover:bg-surface"
+    class="group block w-full px-1 pt-4 pb-[18px] text-left text-ink transition-colors dashed-bottom md:px-3.5 md:pt-3 md:pb-[13px] md:hover:rounded-[10px] md:hover:border-b-transparent md:hover:bg-surface md:[&:has(+a:hover)]:border-b-transparent"
   >
     <div class="mb-3 flex items-center gap-2">
       <HandIcon :name="goal.icon" class="text-indigo" />

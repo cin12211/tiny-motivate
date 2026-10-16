@@ -14,7 +14,7 @@ const name = computed(() => user.value?.name || t('home.you'))
 <template>
   <div class="relative">
     <!-- top row: date chip (phones; the web shows it in the header) + settings link -->
-    <div class="flex items-center justify-between pt-5 md:absolute md:top-[18px] md:right-6 md:pt-0">
+    <div class="flex items-center justify-between pt-5 md:absolute md:top-[18px] md:right-0 md:pt-0">
       <Badge variant="solid" class="md:hidden">{{ dotDate(today) }}</Badge>
       <Button as-child variant="link" size="xs" class="-mr-1.5 gap-1.5 px-1.5 text-xs">
         <NuxtLink to="/settings"><HandIcon name="settings-01" />{{ $t('common.settings') }}</NuxtLink>
@@ -22,7 +22,7 @@ const name = computed(() => user.value?.name || t('home.you'))
     </div>
 
     <!-- phones: small Mochi beside the greeting; web: big Mochi above it -->
-    <div class="flex items-center justify-center gap-3.5 pt-1.5 pb-3.5 text-left md:flex-col md:gap-1.5 md:pt-12 md:pb-7 md:text-center">
+    <div class="flex items-center justify-center gap-3.5 pt-1.5 pb-3.5 text-left md:flex-col md:gap-1 md:pt-5 md:pb-4 md:text-center">
       <Mochi pose="wave" :size="96" class="max-md:size-16" />
       <TypographyH1 class="hidden md:block">{{ $t('home.hello', { name }) }}</TypographyH1>
       <TypographyLead class="max-md:text-[13px] max-md:leading-normal">
@@ -43,7 +43,7 @@ const name = computed(() => user.value?.name || t('home.you'))
       <Forest :goals="goals" class="hidden md:flex" />
     </template>
 
-    <section class="flex flex-col md:pt-[26px] md:dashed-top">
+    <section class="flex flex-col md:pt-1">
       <Badge class="mb-2.5 hidden self-center md:inline-flex">{{ $t('home.yourGoals') }}</Badge>
       <GoalCard v-for="g in goals" :key="g.id" :goal="g" />
       <div v-if="!goals.length" class="flex flex-col items-center gap-3 py-8 text-center dashed-top">
@@ -55,7 +55,7 @@ const name = computed(() => user.value?.name || t('home.you'))
       </Button>
     </section>
 
-    <div class="mt-9 hidden flex-col items-center md:flex">
+    <div class="mt-[22px] hidden flex-col items-center md:flex">
       <TypographyMuted class="text-center leading-relaxed">{{ $t('home.sign') }}<br><TypographyHand class="mr-1 text-[30px]">Mochi</TypographyHand><HandIcon name="favourite" class="-translate-y-1 text-indigo" /></TypographyMuted>
     </div>
     <Button variant="ghost" size="sm" class="mx-auto mt-3.5 flex text-[11.5px]" @click="logout">

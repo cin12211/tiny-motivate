@@ -16,7 +16,7 @@
   ],
   // Public, non-secret settings. Secrets (DATABASE_URL, BETTER_AUTH_SECRET) go in with `wrangler secret put`.
   "vars": {
-    "BETTER_AUTH_URL": "https://motivation.<your-subdomain>.workers.dev"
+    "BETTER_AUTH_URL": "https://motivation.taccin03.workers.dev"
   },
   "observability": { "enabled": true }
 }

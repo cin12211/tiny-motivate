@@ -13,20 +13,19 @@ const name = computed(() => user.value?.name || t('home.you'))
 
 <template>
   <div class="relative">
-    <!-- top row: date chip (phones; the web shows it in the header) + settings link -->
-    <div class="flex items-center justify-between pt-5 md:absolute md:top-[18px] md:right-0 md:pt-0">
-      <Badge variant="solid" class="md:hidden">{{ dotDate(today) }}</Badge>
+    <!-- web: settings link top right (phones use the bottom bar) -->
+    <div class="hidden md:absolute md:top-[18px] md:right-0 md:flex">
       <Button as-child variant="link" size="xs" class="-mr-1.5 gap-1.5 px-1.5 text-xs">
         <NuxtLink to="/settings"><HandIcon name="settings-01" />{{ $t('common.settings') }}</NuxtLink>
       </Button>
     </div>
 
     <!-- phones: small Mochi beside the greeting; web: big Mochi above it -->
-    <div class="flex items-center justify-center gap-3.5 pt-1.5 pb-3.5 text-left md:flex-col md:gap-1 md:pt-5 md:pb-4 md:text-center">
+    <div class="flex items-center justify-center gap-3.5 pt-3.5 pb-3.5 text-left md:flex-col md:gap-1 md:pt-5 md:pb-4 md:text-center">
       <Mochi pose="wave" :size="96" class="max-md:size-16" />
       <TypographyH1 class="hidden md:block">{{ $t('home.hello', { name }) }}</TypographyH1>
       <TypographyLead class="max-md:text-[13px] max-md:leading-normal">
-        <span class="md:hidden">{{ $t('home.hello', { name }) }}<br></span>
+        <span class="md:hidden">{{ $t('home.hello', { name }) }} <span class="text-[.92em] text-muted-foreground">· {{ $t(`weekdays.${weekdayIndex(today)}`) }} {{ dotShort(today) }}</span><br></span>
         <i18n-t v-if="stats.pending.length" keypath="home.pending" tag="span" scope="global"><template #goals><em>{{ $t('home.pendingGoals', stats.pending.length, { n: stats.pending.length }) }}</em></template></i18n-t>
         <template v-else>{{ $t('home.allDone') }}</template>
         <br class="md:hidden">
@@ -43,8 +42,8 @@ const name = computed(() => user.value?.name || t('home.you'))
       <Forest :goals="goals" class="hidden md:flex" />
     </template>
 
-    <section class="flex flex-col md:pt-1">
-      <Badge class="mb-2.5 hidden self-center md:inline-flex">{{ $t('home.yourGoals') }}</Badge>
+    <section class="flex flex-col pt-1.5 md:pt-1">
+      <Badge class="mb-1 self-center md:mb-2.5">{{ $t('home.yourGoals') }}</Badge>
       <GoalCard v-for="g in goals" :key="g.id" :goal="g" />
       <div v-if="!goals.length" class="flex flex-col items-center gap-3 py-8 text-center dashed-top">
         <Mochi pose="sleepy" :size="84" />

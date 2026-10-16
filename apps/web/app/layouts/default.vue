@@ -2,7 +2,7 @@
 /**
  * Mini layout: one centred column on every screen size.
  * No top bar (per the Mini design): each page carries its own back bar.
- * Phones get the floating bottom switch (all goals / today);
+ * Phones get the floating bottom bar (settings / all goals / today);
  * the longest streak lives at the top of the mobile home.
  */
 
@@ -14,8 +14,9 @@ const stats = computed(() => overallStats(goals.value))
 
 // "Today" opens the first goal still waiting for a tick (or the first goal).
 const todayGoal = computed(() => stats.value.pending[0] ?? goals.value[0])
-const showSwitch = computed(() => !route.path.startsWith('/goals/new') && route.path !== '/settings')
+const showSwitch = computed(() => !route.path.startsWith('/goals/new'))
 const onHome = computed(() => route.path === '/')
+const onSettings = computed(() => route.path === '/settings')
 </script>
 
 <template>
@@ -32,6 +33,14 @@ const onHome = computed(() => route.path === '/')
     >
       <div class="pointer-events-auto flex gap-1 rounded-[10px] border border-line bg-surface p-1 shadow-[0_8px_20px_-12px_var(--m-glow)]">
         <NuxtLink
+          to="/settings"
+          class="grid h-[42px] w-[46px] place-items-center rounded-[7px] text-indigo"
+          :class="onSettings && 'bg-primary text-primary-foreground'"
+          :aria-label="$t('common.settings')"
+        >
+          <HandIcon name="settings-01" class="size-6" />
+        </NuxtLink>
+        <NuxtLink
           to="/"
           class="grid h-[42px] w-[46px] place-items-center rounded-[7px] text-indigo"
           :class="onHome && 'bg-primary text-primary-foreground'"
@@ -42,7 +51,7 @@ const onHome = computed(() => route.path === '/')
         <NuxtLink
           :to="todayGoal ? `/goals/${todayGoal.id}` : '/goals/new'"
           class="grid h-[42px] w-[46px] place-items-center rounded-[7px] text-indigo"
-          :class="!onHome && 'bg-primary text-primary-foreground'"
+          :class="!onHome && !onSettings && 'bg-primary text-primary-foreground'"
           :aria-label="$t('common.today')"
         >
           <GardenIcon :day="2" class="size-[30px]" />

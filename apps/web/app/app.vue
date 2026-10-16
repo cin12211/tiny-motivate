@@ -14,8 +14,22 @@ const { settings } = useSettings()
 onMounted(() => {
   applyAccent(settings.value.accent)
   applyTheme(settings.value.theme)
-  syncFavicon(settings.value)
 })
+
+// Favicon follows the chosen logo, accent and light/dark (one <link>, owned by useHead).
+const favicon = ref('/favicon.svg')
+const systemDark = ref(false)
+onMounted(() => {
+  const media = matchMedia('(prefers-color-scheme: dark)')
+  systemDark.value = media.matches
+  media.addEventListener('change', e => (systemDark.value = e.matches))
+  watchEffect(async () => {
+    const { accent, logo, theme } = settings.value
+    const dark = theme === 'dark' || (theme === 'system' && systemDark.value)
+    favicon.value = await faviconHref({ accent, logo }, dark)
+  })
+})
+useHead({ link: [{ key: 'favicon', rel: 'icon', type: () => favicon.value.startsWith('/') || favicon.value.startsWith('data:image/svg') ? 'image/svg+xml' : 'image/png', href: favicon }] })
 
 // Language follows the user's setting (cached on the device, synced from the server).
 const { setLocale } = useI18n()

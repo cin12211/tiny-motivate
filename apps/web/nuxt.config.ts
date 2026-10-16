@@ -42,7 +42,8 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover' },
         { name: 'theme-color', content: '#E6E5EA' },
       ],
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      // default favicon; app.vue swaps it (same key) for the user's logo / accent / theme
+      link: [{ key: 'favicon', rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     },
   },
   // JSON database + uploads live in ./data — keep them out of the file watcher

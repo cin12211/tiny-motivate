@@ -54,6 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 class MainViewController: CAPBridgeViewController {
     override open func capacitorDidLoad() {
         bridge?.registerPluginInstance(AppIconPlugin())
+        // iOS edge-swipe back/forward through the SPA's history (pushState entries)
+        webView?.allowsBackForwardNavigationGestures = true
     }
 }
 

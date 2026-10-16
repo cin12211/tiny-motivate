@@ -51,7 +51,8 @@ const cells = computed(() =>
       isToday,
       future,
       viewed: iso === viewed.value && !isToday,
-      monthLabel: i > 0 && iso.endsWith('-01') ? label : '',
+      // web: dd.mm on the first and last cell and on each month start
+      monthLabel: i === 0 || i === range.value.days - 1 || iso.endsWith('-01') ? label : '',
       tip: `${isToday ? `${t('common.today')} · ` : ''}${label} · ${done ? t('forest.tipDone', { n: done }) : future ? t('forest.tipFuture') : t('forest.tipEmpty')}`,
     }
   }),
@@ -182,7 +183,7 @@ const calDays = computed(() => {
         :class="[
           web && (dense ? 'min-[861px]:size-[22px] min-[861px]:justify-self-center min-[861px]:pt-0' : 'min-[861px]:size-[30px] min-[861px]:justify-self-center min-[861px]:pt-0'),
           c.viewed && 'shadow-[inset_0_0_0_1.5px_var(--m-indigo)]',
-          c.isToday && ['is-today bg-primary text-primary-foreground hover:bg-primary', dense ? 'shadow-[0_0_0_2px_var(--m-paper),0_0_0_3.5px_var(--m-indigo)]' : 'shadow-[0_0_0_3px_var(--m-paper),0_0_0_4.5px_var(--m-indigo)]'],
+          c.isToday && 'is-today shadow-[inset_0_0_0_1.5px_var(--m-indigo)]',
           dense && 'is-dense',
         ]"
         :data-tip="web ? c.tip : undefined"
@@ -193,17 +194,17 @@ const calDays = computed(() => {
           <i
             v-else
             class="block rounded-full transition-transform group-hover:scale-[1.6]"
-            :class="c.isToday ? 'size-[7px] bg-primary-foreground' : ['size-[3px] bg-indigo', c.future ? 'opacity-30' : 'opacity-60']"
+            :class="c.isToday ? 'size-[7px] bg-indigo' : ['size-[3px] bg-indigo', c.future ? 'opacity-30' : 'opacity-60']"
           />
         </span>
-        <b v-if="web && c.monthLabel && !c.done && !c.isToday" class="absolute -top-0.5 left-1/2 -translate-x-1/2 text-[9px] font-medium whitespace-nowrap text-muted-foreground">{{ c.monthLabel }}</b>
+        <b v-if="web && c.monthLabel && !c.done" class="absolute -top-0.5 left-1/2 -translate-x-1/2 text-[9px] font-medium whitespace-nowrap text-muted-foreground">{{ c.monthLabel }}</b>
       </span>
     </div>
 
     <TypographyMuted class="flex w-full justify-between gap-3" :class="web ? 'text-[11.5px]' : 'text-[11px]'">
-      <span>{{ dotShort(range.from) }}</span>
-      <span class="text-center"><i18n-t keypath="forest.grown" tag="span" scope="global"><template #n><em>{{ grown }}</em></template></i18n-t><template v-if="web"> · {{ $t('forest.grownNote') }}</template></span>
-      <span>{{ dotShort(range.to) }}</span>
+      <span v-if="!web">{{ dotShort(range.from) }}</span>
+      <span class="text-center" :class="web && 'w-full'"><i18n-t keypath="forest.grown" tag="span" scope="global"><template #n><em>{{ grown }}</em></template></i18n-t><template v-if="web"> · {{ $t('forest.grownNote') }}</template></span>
+      <span v-if="!web">{{ dotShort(range.to) }}</span>
     </TypographyMuted>
   </section>
 </template>

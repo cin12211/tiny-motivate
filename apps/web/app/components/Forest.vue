@@ -57,7 +57,7 @@ const dayIndex = computed(() => cells.value.findIndex(c => c.isToday) + 1)
         v-for="c in cells"
         :key="c.n"
         class="forest-cell group relative h-0 rounded-[7px] pt-[100%] text-indigo transition-colors hover:z-[3] hover:bg-surface"
-        :class="[!small && 'min-[861px]:h-[26px] min-[861px]:w-[30px] min-[861px]:justify-self-center min-[861px]:pt-0', c.isToday && 'is-today bg-primary text-primary-foreground shadow-[0_0_0_3px_var(--m-paper),0_0_0_4.5px_var(--m-indigo)] hover:bg-primary']"
+        :class="[!small && 'min-[861px]:size-[30px] min-[861px]:justify-self-center min-[861px]:pt-0', c.isToday && 'is-today bg-primary text-primary-foreground shadow-[0_0_0_3px_var(--m-paper),0_0_0_4.5px_var(--m-indigo)] hover:bg-primary']"
         :data-tip="small ? undefined : c.tip"
       >
         <!-- padding-box square + absolute centre: aspect-ratio grid items size unreliably in iOS WebKit -->

@@ -14,7 +14,7 @@ const s = computed(() => goalStats(props.goal))
       <button
         v-for="n in goal.totalDays"
         :key="n"
-        class="relative h-0 min-w-0 rounded-md pt-[100%] text-indigo transition-colors hover:bg-surface min-[861px]:h-[30px] min-[861px]:w-[34px] min-[861px]:justify-self-center min-[861px]:pt-0"
+        class="relative h-0 min-w-0 rounded-md pt-[100%] text-indigo transition-colors hover:bg-surface min-[861px]:size-[32px] min-[861px]:justify-self-center min-[861px]:pt-0"
         :class="[
           selected === n && 'bg-surface shadow-[inset_0_0_0_1px_var(--m-indigo)]',
           rewardAt(goal, n) && s.doneCount < n && 'opacity-35',

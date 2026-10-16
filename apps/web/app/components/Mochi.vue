@@ -3,7 +3,7 @@
  * Mochi — the Motivation mascot, Mini style: a single-line ant drawn with
  * currentColor (so it follows the indigo accent and dark mode).
  */
-export type MochiPose = 'idle' | 'wave' | 'cheer' | 'gift' | 'sleepy'
+export type MochiPose = 'idle' | 'wave' | 'cheer' | 'gift' | 'sleepy' | 'sprout'
 
 const props = withDefaults(defineProps<{ pose?: MochiPose, size?: number | string }>(), {
   pose: 'idle',
@@ -55,6 +55,13 @@ const label = computed(() => t(`mochi.${props.pose}`))
     <template v-else-if="pose === 'gift'">
       <rect x="40" y="70" width="20" height="14" rx="2" />
       <path d="M50 70v14M40 76h20" />
+    </template>
+    <template v-else-if="pose === 'sprout'">
+      <!-- holds a small two-leaf sprout on its left side -->
+      <path d="M23 60q-7 1-10-5" />
+      <path d="M12 56q1.5-8-.5-17" />
+      <path d="M12 48c3-4 8-5 11.5-3c-2 4-7.5 5.5-11.5 3z" stroke-width="1.8" />
+      <path d="M11.6 42c-1-5-5-8-10-7c1 5 5 7.5 10 7z" stroke-width="1.8" />
     </template>
     <path v-if="pose === 'sleepy'" d="M74 30h6l-6 6h6" stroke-width="1.8" />
   </svg>

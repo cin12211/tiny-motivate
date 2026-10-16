@@ -38,7 +38,8 @@ export default defineNuxtConfig({
       title: 'Motivation',
       htmlAttrs: { lang: 'vi' },
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
+        // maximum-scale=1 stops iOS from zooming in when an input (font < 16px) gets focus
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover' },
         { name: 'theme-color', content: '#E6E5EA' },
       ],
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],

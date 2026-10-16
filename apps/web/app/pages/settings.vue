@@ -44,7 +44,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
     <!-- back bar (sticky under the web header on md+) -->
     <div class="sticky top-0 z-10 -mx-[22px] bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-4 pb-2.5 md:top-0 md:-mx-6 md:px-6 md:pt-3">
       <Button as-child variant="ghost" size="icon" class="text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" :aria-label="$t('common.back')">
-        <NuxtLink to="/"><HandIcon name="arrow-left-01" class="size-6" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
+        <NuxtLink to="/"><HandIcon name="arrow-left-01" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
       </Button>
     </div>
 
@@ -101,7 +101,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
             :class="settings.theme === theme ? 'bg-primary text-primary-foreground' : 'text-indigo hover:bg-background'"
             @click="save({ theme })"
           >
-            <HandIcon :name="THEME_ICONS[theme]" class="size-[26px]" />
+            <HandIcon :name="THEME_ICONS[theme]" />
           </button>
         </div>
       </div>
@@ -192,7 +192,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
           <TypographySmall as="p" :class="rowDesc">{{ $t('settings.reviewDesc') }}</TypographySmall>
         </div>
         <button type="button" :class="[tile, pressable, 'border-line']" :aria-label="$t('settings.review')" @click="toast($t('settings.reviewThanks'))">
-          <HandIcon name="favourite" class="size-[30px]" />
+          <HandIcon name="favourite" />
         </button>
       </div>
 
@@ -208,7 +208,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
       </div>
 
       <Button variant="ghost" size="sm" class="mx-auto mt-[22px] flex text-[11.5px]" @click="logout">
-        <HandIcon name="logout-03" class="size-[18px]" /> {{ $t('common.logout') }}
+        <HandIcon name="logout-03" /> {{ $t('common.logout') }}
       </Button>
     </div>
   </div>

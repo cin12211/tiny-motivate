@@ -23,7 +23,7 @@ const s = computed(() => goalStats(props.goal))
         class="grid h-[52px] w-16 shrink-0 place-items-center overflow-hidden rounded-lg border shadow-[0_6px_14px_-10px_var(--m-glow)]"
         :class="s.doneCount >= r.day ? 'border-indigo bg-primary text-primary-foreground' : 'border-line bg-surface text-muted-foreground'"
       >
-        <RewardBadge :reward="r" icon-class="size-6" />
+        <RewardBadge :reward="r" />
       </span>
     </div>
     <TypographyMuted v-if="!s.rewards.length">{{ $t('goal.noRewards') }}</TypographyMuted>

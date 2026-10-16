@@ -19,7 +19,7 @@ const dots = computed(() =>
     class="group block w-full rounded-[10px] px-1 pt-4 pb-[18px] text-left text-ink transition-colors dashed-top md:px-3.5 md:hover:bg-surface"
   >
     <div class="mb-3 flex items-center gap-2">
-      <HandIcon :name="goal.icon" class="size-[22px] text-indigo" />
+      <HandIcon :name="goal.icon" class="text-indigo" />
       <TypographyH3 as="b" class="min-w-0 flex-1 truncate text-sm group-hover:underline group-hover:underline-offset-[3px]">{{ goal.title }}</TypographyH3>
       <Badge v-if="s.active" size="sm" :variant="s.todayDone ? 'solid' : 'default'">{{ s.todayDone ? $t('goal.ticked') : $t('goal.notTicked') }}</Badge>
       <Badge v-else-if="s.finished" size="sm" variant="outline">{{ $t('goal.finished') }}</Badge>

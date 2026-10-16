@@ -103,18 +103,18 @@ async function onDelete() {
       <div class="flex items-center justify-between">
         <Button as-child variant="ghost" size="icon" class="text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" 
           :aria-label="$t('common.back')">
-          <NuxtLink to="/"><HandIcon name="arrow-left-01" class="size-6" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
+          <NuxtLink to="/"><HandIcon name="arrow-left-01" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
         </Button>
         <Badge class="md:absolute md:left-1/2 md:-translate-x-1/2">{{ dayLabel }}</Badge>
         <span class="grid w-9 place-items-center text-indigo md:invisible">
-          <HandIcon :name="goal.icon" class="size-6" />
+          <HandIcon :name="goal.icon" />
         </span>
       </div>
     </div>
 
     <DayStrip v-model="selected" :goal="goal" />
     <TypographyH2 class="mt-0.5 flex items-center justify-center gap-1.5 text-center text-[13px] text-muted-foreground">
-      <HandIcon :name="goal.icon" class="hidden size-[22px] md:inline" />{{ goal.title }}
+      <HandIcon :name="goal.icon" class="hidden md:inline" />{{ goal.title }}
     </TypographyH2>
 
     <!-- journal -->
@@ -140,7 +140,7 @@ async function onDelete() {
           :title="isToday ? $t('goal.untickHint') : undefined"
           @click="toggleDone"
         >
-          <HandIcon name="checkmark-circle-02" class="size-[22px]" /> {{ $t('goal.done') }}
+          <HandIcon name="checkmark-circle-02" /> {{ $t('goal.done') }}
         </Button>
         <Button v-else variant="hand" class="h-10 px-[18px] text-[22px]" :disabled="ticking" @click="toggleDone">done</Button>
       </template>
@@ -151,7 +151,7 @@ async function onDelete() {
       <template v-if="s.nextReward">
         <i18n-t keypath="goal.countdown" tag="span" scope="global"><template #n><em>{{ pad2(s.daysToNext) }}</em></template></i18n-t><br>
         <span class="inline-flex items-center gap-1.5 text-indigo">
-          <span class="grid size-5 place-items-center overflow-hidden rounded"><RewardBadge :reward="s.nextReward" icon-class="size-[18px]" /></span>
+          <span class="grid size-6 place-items-center overflow-hidden rounded"><RewardBadge :reward="s.nextReward" /></span>
           {{ s.nextReward.title }}
         </span>
       </template>
@@ -167,7 +167,7 @@ async function onDelete() {
     <RewardList :goal="goal" />
 
     <Button variant="ghost" size="sm" class="mx-auto mt-8 flex text-[11.5px]" @click="onDelete">
-      <HandIcon name="delete-02" class="size-[18px]" /> {{ $t('goal.delete') }}
+      <HandIcon name="delete-02" /> {{ $t('goal.delete') }}
     </Button>
 
     <RewardDialog v-model:open="rewardOpen" :reward="unlockedReward" />

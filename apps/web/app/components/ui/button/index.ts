@@ -6,7 +6,7 @@ export { default as Button } from "./Button.vue"
 // Mini style: flat 7px buttons, single indigo accent with a soft glow,
 // lowercase mono labels (no uppercase / 3D lip).
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-[transform,background-color,border-color,opacity] duration-100 select-none cursor-pointer active:scale-[.98] disabled:pointer-events-none disabled:opacity-60 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-[18px] [&_.iconify:not([class*='size-'])]:size-[22px] shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-[transform,background-color,border-color,opacity] duration-100 select-none cursor-pointer active:scale-[.98] disabled:pointer-events-none disabled:opacity-60 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-[18px] shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
   {
     variants: {
       variant: {
@@ -22,11 +22,11 @@ export const buttonVariants = cva(
       },
       size: {
         "default": "h-[46px] px-5 text-[13.5px]",
-        "xs": "h-7 gap-1 rounded-md px-2 text-[11.5px] [&_.iconify:not([class*='size-'])]:size-4",
-        "sm": "h-[34px] rounded-md px-3 text-[12.5px] [&_.iconify:not([class*='size-'])]:size-[18px]",
+        "xs": "h-7 gap-1 rounded-md px-2 text-[11.5px]",
+        "sm": "h-[34px] rounded-md px-3 text-[12.5px]",
         "lg": "h-[52px] px-6 text-sm",
         "icon": "size-9 rounded-lg",
-        "icon-sm": "size-[30px] rounded-md [&_.iconify:not([class*='size-'])]:size-5",
+        "icon-sm": "size-[30px] rounded-md",
         "icon-lg": "size-11",
       },
     },

@@ -61,18 +61,18 @@ const soon = (what: string) => toast(t('common.soon', { what }))
 
     <form class="flex flex-col gap-2.5" novalidate @submit.prevent="submit">
       <label v-if="up" class="auth-field">
-        <HandIcon name="user" class="size-[22px]" />
+        <HandIcon name="user" />
         <input v-model="name" name="name" :placeholder="$t('auth.name')" autocomplete="name">
       </label>
       <label class="auth-field">
-        <HandIcon name="mail-01" class="size-[22px]" />
+        <HandIcon name="mail-01" />
         <input v-model="email" name="email" type="email" :placeholder="$t('auth.email')" autocomplete="email" inputmode="email">
       </label>
       <label class="auth-field">
-        <HandIcon name="lock-password" class="size-[22px]" />
+        <HandIcon name="lock-password" />
         <input v-model="password" name="password" :type="showPw ? 'text' : 'password'" :placeholder="$t('auth.password')" :autocomplete="up ? 'new-password' : 'current-password'">
         <Button type="button" variant="ghost" size="icon-sm" class="-mr-1.5" :aria-label="showPw ? $t('auth.hidePw') : $t('auth.showPw')" @click="showPw = !showPw">
-          <HandIcon :name="showPw ? 'view-off' : 'view'" class="size-[22px]" />
+          <HandIcon :name="showPw ? 'view-off' : 'view'" />
         </Button>
       </label>
 
@@ -89,7 +89,7 @@ const soon = (what: string) => toast(t('common.soon', { what }))
 
       <Button type="submit" class="group mt-1 font-semibold" :disabled="busy">
         <span>{{ busy ? (up ? $t('auth.busySignup') : $t('auth.busyLogin')) : (up ? $t('auth.submitSignup') : $t('auth.submitLogin')) }}</span>
-        <HandIcon name="arrow-right-01" class="size-[22px] transition-transform group-hover:translate-x-[3px]" />
+        <HandIcon name="arrow-right-01" class="transition-transform group-hover:translate-x-[3px]" />
       </Button>
     </form>
 
@@ -98,10 +98,10 @@ const soon = (what: string) => toast(t('common.soon', { what }))
     </div>
     <div class="grid grid-cols-2 gap-2.5">
       <Button type="button" variant="outline" size="sm" class="h-[42px]" @click="loginWithGoogle">
-        <HandIcon name="google" class="size-[22px]" /> google
+        <HandIcon name="google" /> google
       </Button>
       <Button type="button" variant="outline" size="sm" class="h-[42px]" @click="soon($t('auth.appleSoon'))">
-        <HandIcon name="apple" class="size-[22px]" /> apple
+        <HandIcon name="apple" /> apple
       </Button>
     </div>
 

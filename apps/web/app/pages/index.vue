@@ -17,7 +17,7 @@ const name = computed(() => user.value?.name || t('home.you'))
     <div class="flex items-center justify-between pt-5 md:absolute md:top-[18px] md:right-6 md:pt-0">
       <Badge variant="solid" class="md:hidden">{{ dotDate(today) }}</Badge>
       <Button as-child variant="link" size="xs" class="-mr-1.5 gap-1.5 px-1.5 text-xs">
-        <NuxtLink to="/settings"><HandIcon name="settings-01" class="size-[18px]" />{{ $t('common.settings') }}</NuxtLink>
+        <NuxtLink to="/settings"><HandIcon name="settings-01" />{{ $t('common.settings') }}</NuxtLink>
       </Button>
     </div>
 
@@ -31,7 +31,7 @@ const name = computed(() => user.value?.name || t('home.you'))
         <template v-else>{{ $t('home.allDone') }}</template>
         <br class="md:hidden">
         <span class="mt-1 inline-flex items-center gap-1.5 text-xs text-muted-foreground md:hidden">
-          <HandIcon name="fire" class="size-4 text-indigo" />
+          <HandIcon name="fire" class="text-indigo" />
           <i18n-t keypath="home.streak" tag="span" scope="global"><template #n><b class="font-semibold text-indigo">{{ pad2(stats.bestStreak) }}</b></template></i18n-t>
         </span>
       </TypographyLead>
@@ -51,15 +51,15 @@ const name = computed(() => user.value?.name || t('home.you'))
         <TypographyMuted>{{ $t('home.empty') }}</TypographyMuted>
       </div>
       <Button as-child variant="dashed" class="mt-2.5 w-full">
-        <NuxtLink to="/goals/new"><HandIcon name="add-circle" class="size-6" /><span>{{ $t('common.newGoal') }}</span></NuxtLink>
+        <NuxtLink to="/goals/new"><HandIcon name="add-circle" /><span>{{ $t('common.newGoal') }}</span></NuxtLink>
       </Button>
     </section>
 
     <div class="mt-9 hidden flex-col items-center md:flex">
-      <TypographyMuted class="text-center leading-relaxed">{{ $t('home.sign') }}<br><TypographyHand class="mr-1 text-[30px]">Mochi</TypographyHand><HandIcon name="favourite" class="size-[18px] -translate-y-1 text-indigo" /></TypographyMuted>
+      <TypographyMuted class="text-center leading-relaxed">{{ $t('home.sign') }}<br><TypographyHand class="mr-1 text-[30px]">Mochi</TypographyHand><HandIcon name="favourite" class="-translate-y-1 text-indigo" /></TypographyMuted>
     </div>
     <Button variant="ghost" size="sm" class="mx-auto mt-3.5 flex text-[11.5px]" @click="logout">
-      <HandIcon name="logout-03" class="size-[18px]" /> {{ $t('common.logout') }}
+      <HandIcon name="logout-03" /> {{ $t('common.logout') }}
     </Button>
   </div>
 </template>

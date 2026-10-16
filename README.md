@@ -8,7 +8,7 @@ Giao diện theo bản design **Mini Style** (nền xám, chữ IBM Plex Mono, m
 
 ```
 apps/
-  web/        Nuxt 4.6.1 + Tailwind v4 + shadcn-vue, kèm backend Nitro (JSON file DB)
+  web/        Nuxt 4.6.1 + Tailwind v4 + shadcn-vue, kèm backend Nitro (Postgres/Neon + Drizzle + Better Auth)
   mobile/     Capacitor 6 (iOS + Android, chạy được với Xcode 15) bọc bản build tĩnh của apps/web
 packages/
   garden/     @motivation/garden: 55 icon cây + 5 icon cảm xúc (SVG currentColor)
@@ -26,7 +26,7 @@ pnpm install
 pnpm dev
 ```
 
-Mở http://localhost:3000. Lần chạy đầu tự tạo `apps/web/data/db.json` với tài khoản mẫu `cinny@motivation.app` / `mochi1234` và 3 mục tiêu ví dụ.
+Mở http://localhost:3000. Cần cấu hình database trước (xem phần Database bên dưới). Tài khoản mẫu: `cinny@motivation.app` / `mochi1234`.
 
 ## App mobile (Capacitor)
 
@@ -45,6 +45,36 @@ pnpm mobile:android
 ```
 
 Live reload khi dev: `CAP_SERVER_URL=http://192.168.1.10:3000 pnpm --filter @motivation/mobile sync`.
+
+## Database (Neon Postgres + Drizzle)
+
+- Schema: `apps/web/server/db/schema.ts` (bảng của Better Auth + `user_settings`, `goal`, `goal_day`, `reward`).
+- Cấu hình: copy `apps/web/.env.example` thành `apps/web/.env` rồi điền `DATABASE_URL` (URL pooled của Neon), `DATABASE_URL_UNPOOLED` (URL direct, dùng cho migration), `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`.
+
+```bash
+pnpm --filter @motivation/web db:generate   # tạo migration mới sau khi sửa schema
+pnpm --filter @motivation/web db:migrate    # áp migration lên Neon
+pnpm --filter @motivation/web db:studio     # xem dữ liệu
+pnpm --filter @motivation/web db:import-json   # (một lần) nhập dữ liệu cũ từ data/db.json
+```
+
+Đăng nhập dùng Better Auth (`/api/auth/*`, email + mật khẩu). App mobile nhận token qua header `set-auth-token` và gửi lại bằng `Authorization: Bearer`.
+
+## Deploy lên Cloudflare Workers + R2
+
+Ảnh phần quà lưu trong R2 (binding `BUCKET`); khi chạy local thì lưu ở `apps/web/data/uploads`.
+
+```bash
+cd apps/web
+npx wrangler login
+npx wrangler r2 bucket create motivation-uploads
+npx wrangler secret put DATABASE_URL
+npx wrangler secret put BETTER_AUTH_SECRET
+# sửa BETTER_AUTH_URL trong wrangler.jsonc thành URL thật của Worker, rồi:
+pnpm deploy:cloudflare
+```
+
+Chạy thử bản Cloudflare trên máy: tạo `apps/web/.dev.vars` (giống `.env`) rồi `pnpm --filter @motivation/web preview:cloudflare`.
 
 ## Web app (apps/web)
 

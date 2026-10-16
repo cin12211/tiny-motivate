@@ -38,7 +38,7 @@ async function submit() {
     }
   }
   catch (err) {
-    error.value = errorMessage(err)
+    error.value = authErrorMessage(err)
   }
   finally {
     busy.value = false

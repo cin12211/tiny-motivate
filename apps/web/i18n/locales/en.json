@@ -67,7 +67,9 @@
     "welcomeBack": "welcome back, {name}",
     "signedUp": "account created, let's plant your first seed",
     "titleLoginPage": "Log in",
-    "titleSignupPage": "Sign up"
+    "titleSignupPage": "Sign up",
+    "errInvalid": "Wrong email or password",
+    "errExists": "That email already has an account"
   },
   "home": {
     "hello": "hi {name} :)",

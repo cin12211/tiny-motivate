@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Cloudflare Workers deploy of the Nuxt app (SPA + Nitro API).
+  // Build first: pnpm --filter @motivation/web build:cloudflare
+  "name": "motivation",
+  "main": "./.output/server/index.mjs",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./.output/public",
+    "binding": "ASSETS"
+  },
+  // Reward photos (useStorage('uploads') → R2). Create it once: wrangler r2 bucket create motivation-uploads
+  "r2_buckets": [
+    { "binding": "BUCKET", "bucket_name": "motivation-uploads" }
+  ],
+  // Public, non-secret settings. Secrets (DATABASE_URL, BETTER_AUTH_SECRET) go in with `wrangler secret put`.
+  "vars": {
+    "BETTER_AUTH_URL": "https://motivation.<your-subdomain>.workers.dev"
+  },
+  "observability": { "enabled": true }
+}

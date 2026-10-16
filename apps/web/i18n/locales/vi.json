@@ -67,7 +67,9 @@
     "welcomeBack": "chào mừng trở lại, {name}",
     "signedUp": "tạo tài khoản xong, gieo mầm đầu tiên nào",
     "titleLoginPage": "Đăng nhập",
-    "titleSignupPage": "Đăng ký"
+    "titleSignupPage": "Đăng ký",
+    "errInvalid": "Email hoặc mật khẩu chưa đúng",
+    "errExists": "Email này đã có tài khoản"
   },
   "home": {
     "hello": "chào {name} :)",

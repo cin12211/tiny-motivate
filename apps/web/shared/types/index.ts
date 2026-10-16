@@ -60,28 +60,6 @@ export interface User {
   settings: UserSettings
 }
 
-export interface StoredUser extends Omit<User, 'settings'> {
-  settings?: UserSettings
-  passwordHash: string
-  salt: string
-}
-
-export interface Session {
-  token: string
-  userId: string
-  createdAt: string
-}
-
-export interface Database {
-  users: StoredUser[]
-  sessions: Session[]
-  goals: Goal[]
-}
-
-export interface AuthResponse {
-  token: string
-  user: User
-}
 
 export interface CreateGoalInput {
   title: string

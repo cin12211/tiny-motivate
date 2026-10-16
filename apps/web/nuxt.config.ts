@@ -5,6 +5,8 @@ import tailwindcss from '@tailwindcss/vite'
  * The native app then talks to the Nitro API at NUXT_PUBLIC_API_BASE.
  */
 const isMobile = !!process.env.NUXT_MOBILE
+/** NITRO_PRESET=cloudflare_module → Cloudflare Workers build (see wrangler.jsonc). */
+const isCloudflare = (process.env.NITRO_PRESET || '').startsWith('cloudflare')
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-10-01',
@@ -46,9 +48,20 @@ export default defineNuxtConfig({
   ignore: ['data/**'],
   nitro: {
     watchOptions: { ignored: ['**/data/**'] },
+    // Reward photos: Cloudflare R2 (binding BUCKET) when deployed, local disk otherwise.
+    storage: {
+      uploads: isCloudflare
+        ? { driver: 'cloudflare-r2-binding', binding: 'BUCKET' }
+        : { driver: 'fs', base: './data/uploads' },
+    },
+    devStorage: {
+      uploads: { driver: 'fs', base: './data/uploads' },
+    },
+    ...(isCloudflare && {
+      cloudflare: { deployConfig: false, nodeCompat: true },
+    }),
   },
   runtimeConfig: {
-    dataDir: './data',
     public: {
       /** Empty on the web (same origin). Set to the server URL for the mobile build. */
       apiBase: '',

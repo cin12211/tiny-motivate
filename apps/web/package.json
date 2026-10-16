@@ -8,7 +8,14 @@
     "generate": "nuxt generate",
     "generate:mobile": "NUXT_MOBILE=1 nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:import-json": "node server/db/import-json.ts",
+    "build:cloudflare": "NITRO_PRESET=cloudflare_module nuxt build",
+    "deploy:cloudflare": "pnpm build:cloudflare && wrangler deploy",
+    "preview:cloudflare": "pnpm build:cloudflare && wrangler dev"
   },
   "dependencies": {
     "@capacitor/app": "^6.0.3",
@@ -19,6 +26,7 @@
     "@fontsource/caveat": "^5.3.0",
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@motivation/garden": "workspace:*",
+    "@neondatabase/serverless": "^1.2.0",
     "@nuxtjs/i18n": "10.6.0",
     "@tailwindcss/vite": "^4.3.3",
     "@tiptap/extension-highlight": "^3.32.0",
@@ -26,12 +34,15 @@
     "@tiptap/starter-kit": "^3.32.0",
     "@tiptap/vue-3": "^3.32.0",
     "@vueuse/core": "^15.0.0",
+    "better-auth": "^1.7.10",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cn": "^0.4.0",
+    "drizzle-orm": "^0.45.4",
     "nanoid": "^6.0.2",
     "nuxt": "4.6.1",
+    "postgres": "^3.4.9",
     "reka-ui": "^2.11.0",
     "shadcn-nuxt": "^2.8.2",
     "tailwind-merge": "^3.7.0",
@@ -43,6 +54,9 @@
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",
-    "typescript": "^5.9.3"
+    "dotenv": "^18.0.8",
+    "drizzle-kit": "^0.31.11",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.151.0"
   }
 }

@@ -27,3 +27,7 @@ logs
 apps/web/data/db.json
 apps/web/data/uploads/*
 !apps/web/data/uploads/.gitkeep
+
+# Cloudflare local secrets / state
+.dev.vars
+.wrangler

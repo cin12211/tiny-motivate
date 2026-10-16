@@ -10,6 +10,8 @@ export default defineEventHandler((event) => {
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Authorization', 'Content-Type'],
+    // Better Auth returns the session token for the app in this header
+    exposeHeaders: ['set-auth-token'],
     maxAge: '86400',
   })
   if (handled) return ''

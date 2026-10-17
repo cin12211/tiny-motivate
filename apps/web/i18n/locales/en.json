@@ -271,8 +271,6 @@
     "body": "Ticked your goals today? Grow one more sprout :)"
   },
   "day": {
-    "prev": "Previous day",
-    "next": "Next day",
     "legend": "Days that grew a plant",
     "noGoals": "No goals on this day yet",
     "grew": "This day grew {plant} · {done}/{total} goals done",
@@ -282,7 +280,8 @@
     "dayOf": "Day {n}/{total}",
     "noJournal": "No journal for this day",
     "empty": "The garden was empty that day.",
-    "hintSwipe": "Swipe left / right to change day",
-    "hintKeys": "Use ← → keys to change day"
+    "hintSwipe": "Scroll the day strip and tap to change day",
+    "hintKeys": "Scroll the day strip or use ← → keys to change day",
+    "pick": "Pick a day"
   }
 }

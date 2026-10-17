@@ -271,8 +271,6 @@
     "body": "Hôm nay tick mục tiêu chưa? Thêm một mầm cho khu vườn nhé :)"
   },
   "day": {
-    "prev": "Ngày trước",
-    "next": "Ngày sau",
     "legend": "Ngày đã mọc cây",
     "noGoals": "Ngày này chưa có mục tiêu nào",
     "grew": "Ngày này mọc {plant} · {done}/{total} mục tiêu xong",
@@ -282,7 +280,8 @@
     "dayOf": "Ngày {n}/{total}",
     "noJournal": "Chưa viết nhật ký ngày này",
     "empty": "Khu vườn còn trống hôm đó.",
-    "hintSwipe": "Vuốt trái / phải để đổi ngày",
-    "hintKeys": "Dùng phím ← → để đổi ngày"
+    "hintSwipe": "Cuộn dải ngày và chạm để đổi ngày",
+    "hintKeys": "Cuộn dải ngày hoặc dùng phím ← → để đổi ngày",
+    "pick": "Chọn ngày"
   }
 }

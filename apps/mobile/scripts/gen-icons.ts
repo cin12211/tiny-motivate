@@ -39,12 +39,14 @@ const DEVICE_SIZES = [
 ]
 
 function render(body: string, fg: string, bg: string, px: number) {
-  // icon drawn at 64% of the tile, centred; strokes scale with it
-  const scale = (px * 0.64) / 32
+  // icon drawn at 84% of the tile, centred; strokes scale with it
+  const scale = (px * 0.84) / 32
   const offset = (px - 32 * scale) / 2
+  // garden drawings sit on a ground line near the bottom: nudge up 1.5 units to look centred
+  const offsetY = offset - 1.5 * scale
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}">
   <rect width="${px}" height="${px}" fill="${bg}"/>
-  <g transform="translate(${offset} ${offset}) scale(${scale})" style="color:${fg}">${body}</g>
+  <g transform="translate(${offset} ${offsetY}) scale(${scale})" style="color:${fg}">${body}</g>
 </svg>`
   // iOS icons must be opaque
   return sharp(Buffer.from(svg)).removeAlpha().png({ palette: true, colours: 32 })

@@ -13,6 +13,6 @@ const id = computed(() => props.icon ?? settings.value.logo)
     class="inline-grid shrink-0 place-items-center bg-[var(--m-tile)] text-indigo shadow-[0_0_0_1px_var(--m-line),0_8px_18px_-12px_var(--m-glow)]"
     :style="{ width: `${size}px`, height: `${size}px`, borderRadius: `${size * 0.26}px` }"
   >
-    <GardenIcon :icon="id" class="size-[76%]" />
+    <GardenIcon :icon="id" class="size-[90%]" />
   </span>
 </template>

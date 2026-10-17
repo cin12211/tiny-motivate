@@ -13,8 +13,10 @@ export async function faviconHref(settings: Pick<UserSettings, 'accent' | 'logo'
   const body = iconById(settings.logo)?.body ?? iconById('p2')!.body
   const w = Number(VIEWBOX.split(' ')[2]) // 32
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 ${w} ${w}">`
-    + `<rect width="${w}" height="${w}" rx="${w * 0.26}" fill="${dark ? '#1F1E27' : '#FFFFFF'}"/>`
-    + `<g transform="translate(${w * 0.14} ${w * 0.14}) scale(.72)" style="color:${dark ? accent.dark : accent.light}">${body}</g></svg>`
+    + `<rect width="${w}" height="${w}" rx="${w * 0.2}" fill="${dark ? '#1F1E27' : '#FFFFFF'}"/>`
+    // icon fills ~96% of the tile with a bolder line so it stays readable at 16px;
+    // nudged up 1.5 units because the garden drawings sit on a ground line near the bottom
+    + `<g transform="translate(${w * 0.02} ${w * 0.02 - 1.5}) scale(.96)" style="color:${dark ? accent.dark : accent.light}">${body.replace(/stroke-width="1\.6"/g, 'stroke-width="2.2"')}</g></svg>`
   const svgUrl = `data:image/svg+xml,${encodeURIComponent(svg)}`
   try {
     const img = new Image()

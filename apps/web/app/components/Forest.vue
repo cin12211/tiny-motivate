@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
 import { growIconForDate } from '@motivation/garden'
 import type { Goal } from '#shared/types'
 import { addDays, dayNumberOf, parseISODate, toISODate } from '#shared/utils/dates'
@@ -63,6 +64,18 @@ const gridClass = computed(() => props.web
   : months.value === 6 ? 'grid-cols-15' : 'grid-cols-10')
 const dense = computed(() => (props.web ? months.value === 12 : months.value === 6))
 
+/**
+ * Staggered rows: every second row (odd 0-based row) shifts right by a quarter
+ * cell, so the garden looks planted rather than gridded. Uses `left` (not a
+ * transform) to keep the hover scale / tooltip transforms intact; the grid gets
+ * the same quarter cell of right padding so the last column never overflows.
+ */
+const wide = useMediaQuery('(min-width: 861px)')
+const columns = computed(() => props.web
+  ? (dense.value ? (wide.value ? 30 : 15) : (wide.value ? 20 : 10))
+  : (dense.value ? 15 : 10))
+const staggered = (i: number) => Math.floor(i / columns.value) % 2 === 1
+
 const chipLabel = computed(() =>
   `${viewed.value === today ? t('common.today') : t(`weekdays.${weekdayIndex(viewed.value)}`)} · ${dotDate(viewed.value)}`)
 
@@ -104,13 +117,14 @@ function openDay(iso: string) {
     </CalendarChip>
 
     <!-- one continuous grid -->
-    <div class="grid w-full" :class="[gridClass, web && 'gap-y-1']">
+    <div class="grid w-full gap-y-0" :class="gridClass" :style="{ paddingRight: `${25 / columns}%` }">
       <span
-        v-for="c in cells"
+        v-for="(c, i) in cells"
         :key="c.iso"
-        class="forest-cell group relative h-0 rounded-[7px] pt-[100%] text-indigo transition-colors hover:z-[3] hover:bg-surface"
+        class="forest-cell group relative h-0 rounded-[7px] pt-[80%] text-indigo transition-colors hover:z-[3] hover:bg-surface"
+        :style="staggered(i) ? { left: '25%' } : undefined"
         :class="[
-          web && (dense ? 'min-[861px]:size-[22px] min-[861px]:justify-self-center min-[861px]:pt-0' : 'min-[861px]:size-[30px] min-[861px]:justify-self-center min-[861px]:pt-0'),
+          web && (dense ? 'min-[861px]:h-[17px] min-[861px]:w-[22px] min-[861px]:justify-self-center min-[861px]:pt-0' : 'min-[861px]:h-[22px] min-[861px]:w-[30px] min-[861px]:justify-self-center min-[861px]:pt-0'),
           !c.future && 'cursor-pointer',
           c.viewed && 'shadow-[inset_0_0_0_1.5px_var(--m-indigo)]',
           c.isToday && 'is-today shadow-[inset_0_0_0_1.5px_var(--m-indigo)]',
@@ -125,7 +139,7 @@ function openDay(iso: string) {
       >
         <!-- padding-box square + absolute centre: aspect-ratio grid items size unreliably in iOS WebKit -->
         <span class="absolute inset-0 grid place-items-center">
-          <GardenIcon v-if="c.done" :icon="c.grow" :class="web ? 'size-[92%]' : 'size-[88%]'" class="transition-transform duration-200 group-hover:-translate-y-px group-hover:scale-[1.18]" />
+          <GardenIcon v-if="c.done" :icon="c.grow" :class="web ? 'size-[96%]' : 'h-full w-[84%]'" class="transition-transform duration-200 group-hover:-translate-y-px group-hover:scale-[1.18]" />
           <i
             v-else
             class="block rounded-full transition-transform group-hover:scale-[1.6]"

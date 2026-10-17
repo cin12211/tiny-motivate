@@ -1,10 +1,11 @@
-import { FARM_ICONS } from '@motivation/garden'
-
-/** Goal icons offered on the create screen (hand-drawn set, packages/garden): the 40 garden & farm icons first. */
+/**
+ * Goal icons offered on the create screen (hand-drawn set, packages/garden).
+ * The garden & farm icons only grow in the garden, they are not goal icons
+ * (goals created with one earlier still render it).
+ */
 export const GOAL_ICONS: string[] = [
-  ...FARM_ICONS,
   'plant-01', 'books-01', 'workout-run', 'yoga-01', 'droplet', 'guitar', 'quill-write-01', 'salad',
-  'g-alarm', 'g-bike', 'g-broom', 'g-chat', 'g-laptop', 'g-moon', 'g-palette', 'g-phone-off', 'g-piggy', 'g-pill', 'g-steps', 'g-tooth',
+  'g-alarm', 'g-moon', 'g-bike', 'g-tooth', 'g-pill', 'g-laptop', 'g-chat', 'g-piggy', 'g-palette', 'g-steps', 'g-broom', 'g-phone-off',
 ]
 
 /** Reward icons offered in the picker. */

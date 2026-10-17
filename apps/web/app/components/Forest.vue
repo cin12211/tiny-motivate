@@ -58,23 +58,33 @@ const cells = computed(() =>
 )
 const grown = computed(() => cells.value.filter(c => c.done).length)
 
-/** Grid density: more columns (smaller cells) for long ranges. */
-const gridClass = computed(() => props.web
-  ? months.value === 12 ? 'grid-cols-15 min-[861px]:grid-cols-30' : 'grid-cols-10 min-[861px]:grid-cols-20'
-  : months.value === 6 ? 'grid-cols-15' : 'grid-cols-10')
 const dense = computed(() => (props.web ? months.value === 12 : months.value === 6))
 
 /**
- * Staggered rows: every second row (odd 0-based row) shifts right by a quarter
- * cell, so the garden looks planted rather than gridded. Uses `left` (not a
- * transform) to keep the hover scale / tooltip transforms intact; the grid gets
- * the same quarter cell of right padding so the last column never overflows.
+ * Fixed square columns, centred (v49c–e). Every second row (odd 0-based row)
+ * shifts right by a quarter cell so the garden looks planted rather than
+ * gridded. Uses `left` (not a transform) to keep the hover scale / tooltip
+ * transforms intact; the grid gets the same quarter cell of right padding.
+ *   mobile 1–3 months: 11 × 28px · mobile 6 months: 15 × 20px
+ *   web 3/6 months: 20 × 30px (gap 2) · web 12 months: 30 × 24px (gap 1)
+ *   web ≤860px: 10 × 30px, or 15 × 24px for 12 months
  */
 const wide = useMediaQuery('(min-width: 861px)')
-const columns = computed(() => props.web
-  ? (dense.value ? (wide.value ? 30 : 15) : (wide.value ? 20 : 10))
-  : (dense.value ? 15 : 10))
-const staggered = (i: number) => Math.floor(i / columns.value) % 2 === 1
+const layout = computed(() => {
+  if (!props.web) return dense.value ? { cols: 15, cell: 20, gap: 0 } : { cols: 11, cell: 28, gap: 0 }
+  if (dense.value) return { cols: wide.value ? 30 : 15, cell: 24, gap: 1 }
+  return { cols: wide.value ? 20 : 10, cell: 30, gap: 2 }
+})
+const gridStyle = computed(() => ({
+  gridTemplateColumns: `repeat(${layout.value.cols}, ${layout.value.cell}px)`,
+  columnGap: `${layout.value.gap}px`,
+  paddingRight: `${layout.value.cell / 4}px`,
+}))
+const cellStyle = (i: number) => ({
+  width: `${layout.value.cell}px`,
+  height: `${layout.value.cell}px`,
+  ...(Math.floor(i / layout.value.cols) % 2 === 1 && { left: `${layout.value.cell / 4}px` }),
+})
 
 const chipLabel = computed(() =>
   `${viewed.value === today ? t('common.today') : t(`weekdays.${weekdayIndex(viewed.value)}`)} · ${dotDate(viewed.value)}`)
@@ -117,14 +127,13 @@ function openDay(iso: string) {
     </CalendarChip>
 
     <!-- one continuous grid -->
-    <div class="grid w-full gap-y-0" :class="gridClass" :style="{ paddingRight: `${25 / columns}%` }">
+    <div class="grid w-full justify-center gap-y-0" :style="gridStyle">
       <span
         v-for="(c, i) in cells"
         :key="c.iso"
-        class="forest-cell group relative h-0 rounded-[7px] pt-[80%] text-indigo transition-colors hover:z-[3] hover:bg-surface"
-        :style="staggered(i) ? { left: '25%' } : undefined"
+        class="forest-cell group relative rounded-[7px] text-indigo transition-colors hover:z-[3] hover:bg-surface"
+        :style="cellStyle(i)"
         :class="[
-          web && (dense ? 'min-[861px]:h-[17px] min-[861px]:w-[22px] min-[861px]:justify-self-center min-[861px]:pt-0' : 'min-[861px]:h-[22px] min-[861px]:w-[30px] min-[861px]:justify-self-center min-[861px]:pt-0'),
           !c.future && 'cursor-pointer',
           c.viewed && 'shadow-[inset_0_0_0_1.5px_var(--m-indigo)]',
           c.isToday && 'is-today shadow-[inset_0_0_0_1.5px_var(--m-indigo)]',
@@ -137,9 +146,8 @@ function openDay(iso: string) {
         @click="openDay(c.iso)"
         @keydown.enter="openDay(c.iso)"
       >
-        <!-- padding-box square + absolute centre: aspect-ratio grid items size unreliably in iOS WebKit -->
         <span class="absolute inset-0 grid place-items-center">
-          <GardenIcon v-if="c.done" :icon="c.grow" :class="web ? 'size-[96%]' : 'h-full w-[84%]'" class="transition-transform duration-200 group-hover:-translate-y-px group-hover:scale-[1.18]" />
+          <GardenIcon v-if="c.done" :icon="c.grow" :class="web ? 'size-[96%]' : 'size-full'" class="transition-transform duration-200 group-hover:-translate-y-px group-hover:scale-[1.18]" />
           <i
             v-else
             class="block rounded-full transition-transform group-hover:scale-[1.6]"

@@ -41,9 +41,18 @@ export default defineNuxtConfig({
         // maximum-scale=1 stops iOS from zooming in when an input (font < 16px) gets focus
         { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover' },
         { name: 'theme-color', content: '#E6E5EA' },
+        // installable web app (PWA): see public/manifest.webmanifest + public/sw.js
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-title', content: 'Motivation' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
       ],
       // default favicon; app.vue swaps it (same key) for the user's logo / accent / theme
-      link: [{ key: 'favicon', rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      link: [
+        { key: 'favicon', rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'manifest', href: '/manifest.webmanifest' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+      ],
     },
   },
   // JSON database + uploads live in ./data — keep them out of the file watcher

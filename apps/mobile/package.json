@@ -11,7 +11,8 @@
     "open:android": "cap open android",
     "run:ios": "cap run ios",
     "run:android": "cap run android",
-    "icons": "node scripts/gen-icons.ts"
+    "icons": "node scripts/gen-icons.ts",
+    "pwa-icons": "node scripts/gen-pwa-icons.ts"
   },
   "dependencies": {
     "@capacitor/android": "6.2.2",

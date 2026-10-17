@@ -170,8 +170,7 @@ function onTouchEnd(e: TouchEvent) {
       </div>
 
       <TypographyMuted class="mt-6 text-center text-[11px]">
-        <span class="md:hidden">{{ $t('day.hintSwipe') }}</span>
-        <span class="hidden md:inline">{{ $t('day.hintKeys') }}</span>
+        {{ $t('day.hint') }}
       </TypographyMuted>
     </div>
   </div>

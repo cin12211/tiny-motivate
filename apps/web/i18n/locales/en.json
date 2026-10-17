@@ -280,8 +280,7 @@
     "dayOf": "Day {n}/{total}",
     "noJournal": "No journal for this day",
     "empty": "The garden was empty that day.",
-    "hintSwipe": "Scroll the day strip and tap to change day",
-    "hintKeys": "Scroll the day strip or use ← → keys to change day",
-    "pick": "Pick a day"
+    "pick": "Pick a day",
+    "hint": "Scroll the sprout strip and tap a sprout to revisit that day"
   }
 }

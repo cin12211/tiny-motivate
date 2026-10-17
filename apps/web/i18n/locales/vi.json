@@ -280,8 +280,7 @@
     "dayOf": "Ngày {n}/{total}",
     "noJournal": "Chưa viết nhật ký ngày này",
     "empty": "Khu vườn còn trống hôm đó.",
-    "hintSwipe": "Cuộn dải ngày và chạm để đổi ngày",
-    "hintKeys": "Cuộn dải ngày hoặc dùng phím ← → để đổi ngày",
-    "pick": "Chọn ngày"
+    "pick": "Chọn ngày",
+    "hint": "Cuộn dải mầm và chạm vào một mầm để ghé lại ngày đó"
   }
 }

@@ -2,7 +2,8 @@
 export default defineNuxtPlugin(() => {
   const { public: { mobile } } = useRuntimeConfig()
   if (mobile || import.meta.dev || !('serviceWorker' in navigator)) return
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {})
-  })
+  const register = () => navigator.serviceWorker.register('/sw.js').catch(() => {})
+  // the SPA often boots after `load` has already fired
+  if (document.readyState === 'complete') register()
+  else window.addEventListener('load', register, { once: true })
 })

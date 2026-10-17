@@ -43,4 +43,6 @@
     document.getElementById('mb-tag').textContent = text.tagline
     document.getElementById('mb-load').textContent = text.loading
   })()
+  // The public landing page shows its own content straight away.
+  if (location.pathname === '/landing-page') document.getElementById('mochi-boot').remove();
 </script>

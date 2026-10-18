@@ -4,7 +4,7 @@ import 'vue-sonner/style.css'
 // Loading screen: shown while the app boots, gone once the first page has rendered
 // (the auth check and the layout's goal fetch run before that).
 // (not on the public landing page, which should show its content straight away)
-const splash = ref(useRoute().path !== '/landing-page')
+const splash = ref(!['/landing-page', '/privacy'].includes(useRoute().path))
 const nuxtApp = useNuxtApp()
 nuxtApp.hooks.hookOnce('page:finish', () => { splash.value = false })
 nuxtApp.hooks.hookOnce('app:error', () => { splash.value = false })

@@ -1,6 +1,6 @@
 const PUBLIC = new Set(['/login', '/signup', '/auth/callback'])
 /** Open to everyone, signed in or not (no redirect either way). */
-const OPEN = new Set(['/landing-page'])
+const OPEN = new Set(['/landing-page', '/privacy'])
 
 /** Send signed-out visitors to /login and signed-in ones away from it. */
 export default defineNuxtRouteMiddleware(async (to) => {

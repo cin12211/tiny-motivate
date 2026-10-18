@@ -238,7 +238,7 @@ const links = [['lp-how', 'Cách hoạt động'], ['lp-reward', 'Phần thưở
       <span class="lp-brand"><LogoTile icon="p2" :size="24" /><b>tiny motivate</b></span>
       <span class="lp-flinks">
         <a href="#">Điều khoản</a>
-        <a href="#">Quyền riêng tư</a>
+        <NuxtLink to="/privacy">Quyền riêng tư</NuxtLink>
         <a href="mailto:hello@motivation.app">hello@motivation.app</a>
       </span>
       <small>© 2026 Tiny Motivate · Mỗi ngày một mầm nhỏ</small>

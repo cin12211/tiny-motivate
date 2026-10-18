@@ -31,3 +31,5 @@ apps/web/data/uploads/*
 # Cloudflare local secrets / state
 .dev.vars
 .wrangler
+
+AuthKey_SNQ7TG4NAP.p8

@@ -39,8 +39,9 @@ export function widgetSnapshot(goals: Goal[], settings: UserSettings, auth: { ap
   let streakBase = 0
   for (let d = addDays(today, -1); doneMap.get(d); d = addDays(d, -1)) streakBase++
 
-  // today − 39 … today + 7: the widget can move on by itself for a week
-  const garden = Array.from({ length: 47 }, (_, i) => {
+  // today − 39 … today + 31: the whole current month (large widget), and the
+  // widget can move on into the next month by itself
+  const garden = Array.from({ length: 71 }, (_, i) => {
     const d = addDays(today, i - 39)
     return { d, i: growIconForDate(d), done: d < today && !!doneMap.get(d) }
   })

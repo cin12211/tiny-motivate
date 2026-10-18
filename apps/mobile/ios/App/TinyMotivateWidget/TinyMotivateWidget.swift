@@ -48,7 +48,7 @@ struct Snapshot: Codable {
     var goals: [Goal]
     /** Days in a row with at least one tick, ending yesterday. */
     var streakBase: Int
-    /** today − 39 … today + 7 */
+    /** today − 39 … today + 31 */
     var garden: [Cell]
 
     static func load() -> Snapshot? {
@@ -83,12 +83,14 @@ struct Snapshot: Codable {
 
     var todayCell: Cell? { garden.first { $0.d == date } }
 
-    /** 40 days ending today; today counts as done when any goal is ticked. */
-    var last40: [Cell] {
-        guard let end = garden.firstIndex(where: { $0.d == date }) else { return [] }
-        var cells = Array(garden[max(0, end - 39)...end])
-        cells[cells.count - 1].done = doneCount > 0
-        return cells
+    /** Every day of the current month; today counts as done when any goal is ticked. */
+    var month: [Cell] {
+        let prefix = String(date.prefix(7))
+        return garden.filter { $0.d.hasPrefix(prefix) }.map { c in
+            var c = c
+            if c.d == date { c.done = doneCount > 0 }
+            return c
+        }
     }
 
     /** The reward closest to being unlocked across the running goals. */
@@ -108,7 +110,7 @@ struct Snapshot: Codable {
             Goal(id: "3", title: "Uống đủ nước", icon: "droplet", day: 3, totalDays: 14, doneCount: 2, done: false),
         ],
         streakBase: 6,
-        garden: (0..<47).map { i in
+        garden: (0..<71).map { i in
             let d = Calendar.current.date(byAdding: .day, value: i - 39, to: Date())!
             return Cell(d: isoDate(d), i: "p\(i % 55 + 1)", done: i < 39 && i % 3 != 1)
         })
@@ -392,7 +394,7 @@ struct GoalList: View {
     }
 }
 
-/** 40 days, 10 square cells per row, odd rows shifted right by a quarter cell (like the app). */
+/** The month, 10 square cells per row, odd rows shifted right by a quarter cell (like the app). */
 struct GardenGrid: View {
     let cells: [Snapshot.Cell]
     let today: String
@@ -412,7 +414,7 @@ struct GardenGrid: View {
                                 if c.done {
                                     IconView(id: c.i, size: cell * 0.86)
                                 } else {
-                                    Circle().fill(p.ink.opacity(c.d == today ? 1 : 0.5)).frame(width: c.d == today ? 5 : 3, height: c.d == today ? 5 : 3)
+                                    Circle().fill(p.ink.opacity(c.d == today ? 1 : c.d > today ? 0.25 : 0.5)).frame(width: c.d == today ? 5 : 3, height: c.d == today ? 5 : 3)
                                 }
                             }
                             .frame(width: cell, height: cell)
@@ -440,7 +442,7 @@ struct LargeView: View {
                 }
                 Spacer()
             }
-            GardenGrid(cells: snap.last40, today: snap.date, p: p).frame(height: min(28, 300 / 10.25) * 4)
+            GardenGrid(cells: snap.month, today: snap.date, p: p).frame(height: min(28, 300 / 10.25) * 4)
             DashedLine().stroke(p.ink.opacity(0.25), style: StrokeStyle(lineWidth: 1, dash: [3, 3])).frame(height: 1)
             GoalList(snap: snap, t: t, p: p)
             if let r = snap.nextReward {

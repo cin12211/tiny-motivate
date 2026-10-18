@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "app.motivation.mochi"
+    namespace "app.motivation.tinymotivate"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "app.motivation.mochi"
+        applicationId "app.motivation.tinymotivate"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -11,7 +11,7 @@ import type { CapacitorConfig } from '@capacitor/cli'
 const liveUrl = process.env.CAP_SERVER_URL
 
 const config: CapacitorConfig = {
-  appId: 'app.motivation.mochi',
+  appId: 'app.motivation.tinymotivate',
   appName: 'Tiny Motivate',
   webDir: '../web/.output/public',
   backgroundColor: '#E6E5EA',

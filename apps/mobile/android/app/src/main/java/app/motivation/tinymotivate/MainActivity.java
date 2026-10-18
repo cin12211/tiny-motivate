@@ -1,4 +1,4 @@
-package app.motivation.mochi;
+package app.motivation.tinymotivate;
 
 import com.getcapacitor.BridgeActivity;
 

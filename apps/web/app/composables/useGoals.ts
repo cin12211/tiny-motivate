@@ -11,8 +11,12 @@ export function useGoals() {
     loaded.value = true
   }
 
+  // one request in flight at a time (the start-up fetch and the layout share it)
+  let loading: Promise<void> | null = null
   async function ensureLoaded() {
-    if (!loaded.value) await refresh()
+    if (loaded.value) return
+    loading ??= refresh().finally(() => (loading = null))
+    await loading
   }
 
   function reset() {
@@ -36,12 +40,42 @@ export function useGoals() {
     goals.value = goals.value.filter(g => g.id !== id)
   }
 
-  async function updateDay(id: string, day: number, input: UpdateDayInput) {
-    return replace(await useApi()<Goal>(`/api/goals/${id}/days/${day}`, { method: 'PUT', body: input }))
+  /**
+   * Optimistic: the change shows up at once (the patch is applied before the
+   * first await), the server's answer replaces it, and a failed request puts
+   * the goal back the way it was before rethrowing.
+   */
+  function optimistic(id: string, patch: (g: Goal) => void, send: () => Promise<Goal>) {
+    const before = goals.value.find(g => g.id === id)
+    if (before) {
+      const draft: Goal = structuredClone(toRaw(before))
+      patch(draft)
+      replace(draft)
+    }
+    return send().then(replace, (err) => {
+      if (before) replace(before)
+      throw err
+    })
   }
 
-  async function openReward(id: string, rewardId: string) {
-    return replace(await useApi()<Goal>(`/api/goals/${id}/rewards/${rewardId}/open`, { method: 'POST' }))
+  function updateDay(id: string, day: number, input: UpdateDayInput) {
+    return optimistic(id, (g) => {
+      const prev = g.days[String(day)]
+      g.days[String(day)] = {
+        journal: input.journal ?? prev?.journal ?? '',
+        mood: input.mood !== undefined ? input.mood : prev?.mood ?? null,
+        done: input.done ?? prev?.done ?? false,
+        doneAt: input.done === undefined ? prev?.doneAt ?? null : input.done ? new Date().toISOString() : null,
+        updatedAt: new Date().toISOString(),
+      }
+    }, () => useApi()<Goal>(`/api/goals/${id}/days/${day}`, { method: 'PUT', body: input }))
+  }
+
+  function openReward(id: string, rewardId: string) {
+    return optimistic(id, (g) => {
+      const r = g.rewards.find(x => x.id === rewardId)
+      if (r && !r.openedAt) r.openedAt = new Date().toISOString()
+    }, () => useApi()<Goal>(`/api/goals/${id}/rewards/${rewardId}/open`, { method: 'POST' }))
   }
 
   async function upload(file: File) {

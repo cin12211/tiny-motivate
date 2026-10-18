@@ -6,7 +6,8 @@ const OPEN = new Set(['/landing-page'])
 export default defineNuxtRouteMiddleware(async (to) => {
   if (OPEN.has(to.path)) return
   const { token, user, fetchMe } = useAuth()
-  if (token.value && !user.value) await fetchMe()
+  // first load: ask for the user and the goals at the same time
+  if (token.value && !user.value) await Promise.all([fetchMe(), useGoals().ensureLoaded().catch(() => {})])
   const signedIn = !!user.value
 
   if (!signedIn && !PUBLIC.has(to.path)) return navigateTo('/login')

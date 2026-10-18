@@ -22,5 +22,9 @@
     "BETTER_AUTH_URL": "https://motivation.noteddy.com",
     "BETTER_AUTH_TRUSTED_ORIGINS": "https://motivation.taccin03.workers.dev"
   },
+  // Run the Worker next to the database (Neon + Upstash are in Singapore) instead of
+  // the visitor's entry location: some Vietnamese ISPs reach Cloudflare via Europe,
+  // which made every DB/cache call cross the world.
+  "placement": { "mode": "targeted", "region": "aws:ap-southeast-1" },
   "observability": { "enabled": true }
 }

@@ -9,9 +9,9 @@ export default defineEventHandler((event) => {
   const handled = handleCors(event, {
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowHeaders: ['Authorization', 'Content-Type'],
+    allowHeaders: ['Authorization', 'Content-Type', 'X-Auth-Jwt'],
     // Better Auth returns the session token for the app in this header
-    exposeHeaders: ['set-auth-token'],
+    exposeHeaders: ['set-auth-token', 'x-auth-jwt', 'server-timing'],
     maxAge: '86400',
   })
   if (handled) return ''

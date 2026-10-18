@@ -8,6 +8,6 @@ export default defineEventHandler(async (event): Promise<User> => {
     name: user.name,
     email: user.email,
     createdAt: new Date(user.createdAt).toISOString(),
-    settings: await getSettings(user.id),
+    settings: await timed(event, 'settings', () => getSettings(user.id)),
   }
 })

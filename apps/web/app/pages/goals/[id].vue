@@ -62,26 +62,34 @@ const ticking = ref(false)
 const rewardOpen = ref(false)
 const unlockedReward = ref<Reward | null>(null)
 
+/**
+ * Optimistic: the tick, confetti and reward show up straight away; the save
+ * runs in the background and an error puts the day back (and says so).
+ */
 async function toggleDone() {
-  if (!isToday.value) return
+  if (!isToday.value || ticking.value) return
   ticking.value = true
   const before = s.value.unlocked.length
-  try {
-    const g = await updateDay(goal.value!.id, selected.value, { journal: draft.value, done: !entry.value?.done })
-    if (!g.days[String(selected.value)]?.done) return
+  const saving = updateDay(goal.value!.id, selected.value, { journal: draft.value, done: !entry.value?.done })
+  const g = goal.value!
+  if (g.days[String(selected.value)]?.done) {
     confettiBurst()
     const now = goalStats(g)
     if (now.unlocked.length > before) {
       const reward = now.unlocked.at(-1)!
       unlockedReward.value = reward
       setTimeout(() => (rewardOpen.value = true), 500)
-      openReward(g.id, reward.id).catch(() => {})
+      saving.then(() => openReward(g.id, reward.id)).catch(() => {})
     }
     else {
       toast(t('goal.planted', { n: now.streak }), { icon: h(Mochi, { pose: 'cheer', size: 28, class: 'text-on-indigo' }) })
     }
   }
+  try {
+    await saving
+  }
   catch (err) {
+    rewardOpen.value = false
     toast(errorMessage(err, t('goal.errTick')))
   }
   finally {

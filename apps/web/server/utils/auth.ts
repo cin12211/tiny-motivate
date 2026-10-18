@@ -69,9 +69,20 @@ export function useServerAuth() {
 
 export type AuthUser = ReturnType<typeof createAuth>['$Infer']['Session']['user']
 
-/** Resolve the signed-in user (cookie or `Authorization: Bearer`) or throw 401. */
-export async function requireUser(event: H3Event): Promise<AuthUser> {
-  const session = await useServerAuth().api.getSession({ headers: event.headers })
-  if (!session) throw createError({ statusCode: 401, statusMessage: 'Bạn cần đăng nhập' })
-  return session.user
+/**
+ * Resolve the signed-in user or throw 401. Tries the JWT / in-memory fast
+ * paths first (server/utils/fast-auth.ts), then Better Auth's session check
+ * (cookie or `Authorization: Bearer`).
+ */
+export async function requireUser(event: H3Event): Promise<FastUser> {
+  return timed(event, 'auth', async () => {
+    const fast = await fastUser(event)
+    if (fast) return fast
+    const session = await useServerAuth().api.getSession({ headers: event.headers })
+    if (!session) throw createError({ statusCode: 401, statusMessage: 'Bạn cần đăng nhập' })
+    const { id, name, email, createdAt } = session.user
+    const user = { id, name, email, createdAt }
+    await rememberUser(event, user)
+    return user
+  })
 }

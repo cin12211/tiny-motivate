@@ -1,6 +1,7 @@
 {
   "name": "@motivation/mobile",
   "version": "0.1.0",
+  "appVersion": "1.0",
   "private": true,
   "type": "module",
   "description": "Capacitor shell (iOS + Android) around the static build of @motivation/web.",

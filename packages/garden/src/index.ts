@@ -461,19 +461,30 @@ export function growIconForGoal(goalId: string, day: number) {
   return pool[(Math.max(1, Math.floor(day)) - 1) % pool.length]!
 }
 
+const baseIconCache = new Map<string, string>()
 /** Seeded pick for a date on its own (before the no-repeat rule). */
 function baseIconForDate(iso: string) {
+  let cached = baseIconCache.get(iso)
+  if (cached) return cached
   const next = rng(iso)
   const set = next() < PLANT_SHARE ? PLANT_IDS : FARM_ICONS
-  return set[Math.floor(next() * set.length)]!
+  cached = set[Math.floor(next() * set.length)]!
+  baseIconCache.set(iso, cached)
+  return cached
 }
 
+const dayBeforeCache = new Map<string, string>()
 function dayBefore(iso: string) {
+  let cached = dayBeforeCache.get(iso)
+  if (cached) return cached
   const [y, m, d] = iso.split('-').map(Number)
   const t = new Date(Date.UTC(y!, m! - 1, d! - 1))
-  return t.toISOString().slice(0, 10)
+  cached = t.toISOString().slice(0, 10)
+  dayBeforeCache.set(iso, cached)
+  return cached
 }
 
+const dateIconCache = new Map<string, string>()
 /**
  * Icon for a date in the home garden / day page (all goals together), seeded by
  * the date (yyyy-mm-dd): a plant with 65% chance, otherwise a farm icon. It is
@@ -481,6 +492,9 @@ function dayBefore(iso: string) {
  * it only depends on the date, so every screen shows the same icon for it.
  */
 export function growIconForDate(iso: string): string {
+  const cached = dateIconCache.get(iso)
+  if (cached) return cached
+
   const prev = dayBefore(iso)
   const avoid = new Set([baseIconForDate(prev), settledIcon(prev)])
   const next = rng(`${iso}#`)
@@ -489,11 +503,16 @@ export function growIconForDate(iso: string): string {
     const set = next() < PLANT_SHARE ? PLANT_IDS : FARM_ICONS
     id = set[Math.floor(next() * set.length)]!
   }
+  dateIconCache.set(iso, id)
   return id
 }
 
+const settledIconCache = new Map<string, string>()
 /** The icon of `iso` after avoiding the base pick of the day before (one step deep). */
 function settledIcon(iso: string) {
+  let cached = settledIconCache.get(iso)
+  if (cached) return cached
+
   const prevBase = baseIconForDate(dayBefore(iso))
   const next = rng(`${iso}#`)
   let id = baseIconForDate(iso)
@@ -501,6 +520,7 @@ function settledIcon(iso: string) {
     const set = next() < PLANT_SHARE ? PLANT_IDS : FARM_ICONS
     id = set[Math.floor(next() * set.length)]!
   }
+  settledIconCache.set(iso, id)
   return id
 }
 

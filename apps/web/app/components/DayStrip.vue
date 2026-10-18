@@ -15,21 +15,32 @@ const scroller = ref<HTMLElement>()
 const stats = computed(() => goalStats(props.goal))
 const doneCount = computed(() => stats.value.doneCount)
 
-const days = computed(() =>
-  Array.from({ length: props.goal.totalDays }, (_, i) => {
+const rewardsMap = computed(() => {
+  const map = new Map<number, NonNullable<ReturnType<typeof rewardAt>>>()
+  for (const r of props.goal.rewards) {
+    map.set(r.day, r)
+  }
+  return map
+})
+
+const days = computed(() => {
+  const rewards = rewardsMap.value
+  const today = stats.value.today
+  const done = doneCount.value
+  return Array.from({ length: props.goal.totalDays }, (_, i) => {
     const n = i + 1
-    const reward = rewardAt(props.goal, n)
+    const reward = rewards.get(n)
     return {
       n,
       status: dayStatus(props.goal, n),
       date: slashShort(dayDate(props.goal, n)),
       label: dotShort(dayDate(props.goal, n)),
-      isToday: n === stats.value.today,
+      isToday: n === today,
       reward,
-      got: !!reward && doneCount.value >= reward.day,
+      got: !!reward && done >= reward.day,
     }
-  }),
-)
+  })
+})
 
 function center(behavior: ScrollBehavior = 'smooth') {
   const strip = scroller.value

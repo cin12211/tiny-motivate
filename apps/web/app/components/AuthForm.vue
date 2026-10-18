@@ -7,7 +7,7 @@ import { toast } from 'vue-sonner'
  */
 const props = defineProps<{ mode: 'login' | 'signup' }>()
 const up = computed(() => props.mode === 'signup')
-const { login, signup, loginWithGoogle } = useAuth()
+const { login, signup, loginWithGoogle, loginWithApple, user } = useAuth()
 const { t } = useI18n()
 
 const name = ref('')
@@ -49,6 +49,19 @@ async function submit() {
 }
 
 const soon = (what: string) => toast(t('common.soon', { what }))
+
+/** Apple: native sheet on iOS (then straight in), Apple's page in the browser elsewhere. */
+async function onApple() {
+  try {
+    await loginWithApple()
+    if (user.value) await navigateTo('/')
+  }
+  catch (err: any) {
+    // closing the Apple sheet is not an error
+    if (/cancel|1001/i.test(String(err?.message ?? err?.code ?? ''))) return
+    toast(authErrorMessage(err))
+  }
+}
 </script>
 
 <template>
@@ -66,7 +79,7 @@ const soon = (what: string) => toast(t('common.soon', { what }))
       <Button type="button" variant="outline" size="sm" class="h-11" @click="loginWithGoogle">
         <HandIcon name="google" /> {{ $t('auth.continueGoogle') }}
       </Button>
-      <Button type="button" variant="outline" size="sm" class="h-11" @click="soon($t('auth.appleSoon'))">
+      <Button type="button" variant="outline" size="sm" class="h-11" @click="onApple">
         <HandIcon name="apple" /> {{ $t('auth.continueApple') }}
       </Button>
     </div>

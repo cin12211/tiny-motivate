@@ -19,6 +19,7 @@
     "preview:cloudflare": "pnpm build:cloudflare && wrangler dev"
   },
   "dependencies": {
+    "@capacitor-community/apple-sign-in": "6.0.0",
     "@capacitor/app": "^6.0.3",
     "@capacitor/browser": "^6.0.6",
     "@capacitor/core": "6.2.2",
@@ -44,6 +45,7 @@
     "cn": "^0.4.0",
     "drizzle-orm": "^0.45.4",
     "ioredis": "^6.0.0",
+    "jose": "^6.2.12",
     "nanoid": "^6.0.2",
     "nuxt": "4.6.1",
     "postgres": "^3.4.9",

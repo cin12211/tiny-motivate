@@ -1,5 +1,5 @@
 /**
- * Google sign-in landed here with a session cookie. Hand the session token
+ * Google / Apple sign-in landed here with a session cookie. Hand the session token
  * to the client: back to the SPA (/auth/callback) or the iOS app through
  * the motivation:// URL scheme.
  */

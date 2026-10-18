@@ -15,6 +15,7 @@
     "pwa-icons": "node scripts/gen-pwa-icons.ts"
   },
   "dependencies": {
+    "@capacitor-community/apple-sign-in": "6.0.0",
     "@capacitor/android": "6.2.2",
     "@capacitor/app": "^6.0.3",
     "@capacitor/browser": "^6.0.6",

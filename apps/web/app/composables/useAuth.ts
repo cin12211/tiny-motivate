@@ -55,7 +55,45 @@ export function useAuth() {
     await Browser.open({ url, presentationStyle: 'popover' })
   }
 
-  /** Finish a Google sign-in with the token from the callback. */
+  /**
+   * Sign in with Apple. iOS app: the native Apple sheet (Face ID), then the
+   * identity token goes to Better Auth. Web (and Android): Apple's sign-in
+   * page in the browser, same round trip as Google.
+   */
+  async function loginWithApple() {
+    if (Capacitor.getPlatform() === 'ios') {
+      const { SignInWithApple } = await import('@capacitor-community/apple-sign-in')
+      const nonce = crypto.randomUUID()
+      const { response } = await SignInWithApple.authorize({
+        clientId: 'app.motivation.tinymotivate',
+        redirectURI: `${useRuntimeConfig().public.apiBase}/api/auth/callback/apple`,
+        scopes: 'email name',
+        nonce,
+      })
+      const name = { firstName: response.givenName ?? undefined, lastName: response.familyName ?? undefined }
+      const res = await api.raw<{ token?: string }>('/api/auth/sign-in/social', {
+        method: 'POST',
+        body: { provider: 'apple', idToken: { token: response.identityToken, nonce, user: { name, ...(response.email && { email: response.email }) } } },
+      })
+      const sessionToken = res.headers.get('set-auth-token') || res._data?.token
+      if (!sessionToken) throw new Error('missing session token')
+      setToken(sessionToken)
+      useGoals().reset()
+      await fetchMe()
+      return
+    }
+    const native = Capacitor.isNativePlatform()
+    const base = useRuntimeConfig().public.apiBase || window.location.origin
+    const url = `${base}/api/oauth/start?provider=apple&to=${native ? 'app' : 'web'}`
+    if (!native) {
+      window.location.href = url
+      return
+    }
+    const { Browser } = await import('@capacitor/browser')
+    await Browser.open({ url, presentationStyle: 'popover' })
+  }
+
+  /** Finish a Google / Apple sign-in with the token from the callback. */
   async function acceptToken(sessionToken: string) {
     setToken(sessionToken)
     useGoals().reset()
@@ -73,7 +111,7 @@ export function useAuth() {
     await navigateTo('/login')
   }
 
-  return { user, token, fetchMe, login, signup, loginWithGoogle, acceptToken, logout }
+  return { user, token, fetchMe, login, signup, loginWithGoogle, loginWithApple, acceptToken, logout }
 }
 
 /** Friendly message for Better Auth error codes (falls back to the server message). */

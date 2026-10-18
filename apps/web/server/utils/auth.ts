@@ -37,15 +37,16 @@ function createAuth() {
     },
     // The Capacitor app has no cookies across origins: it sends the session as a bearer token.
     plugins: [bearer()],
-    socialProviders: process.env.GOOGLE_CLIENT_ID
-      ? {
-          google: {
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-            prompt: 'select_account',
-          },
-        }
-      : undefined,
+    socialProviders: {
+      ...(process.env.GOOGLE_CLIENT_ID && {
+        google: {
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+          prompt: 'select_account' as const,
+        },
+      }),
+      ...(appleEnabled() && { apple: appleProvider() }),
+    },
     // The session token is the long-lived "refresh token": 30 days, extended by
     // a day whenever it is checked. Sessions are cached in Upstash / Redis when
     // available; Postgres stays the source of truth.
@@ -60,6 +61,8 @@ function createAuth() {
       'https://localhost',
       'http://localhost',
       'http://localhost:3000',
+      // Apple posts the sign-in result back to us (form_post)
+      'https://appleid.apple.com',
       ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(',').map(o => o.trim()).filter(Boolean) ?? []),
     ],
   })

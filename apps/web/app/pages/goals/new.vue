@@ -121,17 +121,19 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
 
         <div class="mb-[22px]">
           <TypographyH3 class="mb-2">{{ $t('create.icon') }}</TypographyH3>
-          <div class="flex flex-wrap gap-1.5">
+          <!-- fills the row: as many ≥40px squares as fit (7 on a phone), 24px icons -->
+          <div class="grid grid-cols-[repeat(auto-fill,minmax(40px,1fr))] gap-1.5">
             <button
               v-for="ic in GOAL_ICONS"
               :key="ic"
               type="button"
-              :class="pick('grid size-[42px] place-items-center rounded-lg border border-line bg-surface text-indigo transition-colors', icon === ic)"
+              :class="pick('relative h-0 rounded-lg border border-line bg-surface pt-[calc(100%-2px)] text-indigo transition-colors', icon === ic)"
               :aria-pressed="icon === ic"
               :aria-label="ic"
               @click="icon = ic"
             >
-              <HandIcon :name="ic" />
+              <!-- padding-box square: aspect-ratio grid items size unreliably in iOS WebKit -->
+              <span class="absolute inset-0 grid place-items-center"><HandIcon :name="ic" class="size-6" /></span>
             </button>
           </div>
         </div>

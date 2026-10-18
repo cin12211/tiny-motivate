@@ -1,5 +1,5 @@
 # Build the iOS app on GitHub's macOS runner (Xcode 26) and upload it to TestFlight.
-# Run it by hand: Actions → "iOS → TestFlight" → Run workflow.
+# Runs on every push to main that touches the app, or by hand: Actions → "iOS → TestFlight" → Run workflow.
 #
 # Repository secrets (Settings → Secrets and variables → Actions):
 #   ASC_KEY_ID      App Store Connect API key ID
@@ -10,10 +10,27 @@ name: iOS → TestFlight
 
 on:
   workflow_dispatch:
+  # every new commit on main that can change the app ships a TestFlight build
+  # (server-only changes under apps/web/server don't touch the iOS app)
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'apps/web/app/**'
+      - 'apps/web/public/**'
+      - 'apps/web/i18n/**'
+      - 'apps/web/shared/**'
+      - 'apps/web/nuxt.config.ts'
+      - 'apps/web/package.json'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/ios-testflight.yml'
 
+# a newer push replaces a build that is still running
 concurrency:
   group: ios-testflight
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   testflight:
@@ -63,7 +80,7 @@ jobs:
             -authenticationKeyIssuerID "${{ secrets.ASC_ISSUER_ID }}" \
             DEVELOPMENT_TEAM="${{ secrets.APPLE_TEAM_ID }}" \
             CODE_SIGN_STYLE=Automatic \
-            CURRENT_PROJECT_VERSION="${{ github.run_number }}"
+            CURRENT_PROJECT_VERSION="$((100 + ${{ github.run_number }}))"
 
       - name: Upload to TestFlight
         working-directory: apps/mobile/ios/App

@@ -3,18 +3,21 @@ import type { H3Event } from 'h3'
 /**
  * Fast paths in front of Better Auth's session lookup:
  *
- * 1. Short-lived JWT (HS256, 15 min). After a normal session check the server
- *    hands the app a signed token in the `x-auth-jwt` response header; the app
- *    sends it back in the same header and the server only verifies the
- *    signature - no cache or database call. Trade-off: after logging out or
- *    revoking a session, a JWT stays valid until it expires (≤ 15 min).
+ * 1. JWT (HS256, lives 30 days). After a normal session check the server hands
+ *    the app a signed token in the `x-auth-jwt` response header; the app sends
+ *    it back in the same header and the server only verifies the signature -
+ *    no cache or database call. Once a JWT is more than a day old the server
+ *    checks the session (the 30-day "refresh token") once more and issues a
+ *    fresh JWT, which also extends the session. So signing out / revoking a
+ *    session takes effect within about a day.
  * 2. L1 in-memory cache (per Worker isolate, 60 s) keyed by session token, for
  *    requests without a valid JWT.
  * Otherwise Better Auth checks the session (Upstash, then Neon).
  */
 export interface FastUser { id: string, name: string, email: string, createdAt: string | Date }
 
-const JWT_TTL = 15 * 60 // seconds
+const JWT_TTL = 30 * 24 * 60 * 60 // seconds (30 days)
+const JWT_RECHECK = 24 * 60 * 60 // seconds: re-check the session once a day
 const L1_TTL = 60_000 // ms
 const L1_MAX = 500
 const l1 = new Map<string, { user: FastUser, until: number }>()
@@ -40,7 +43,7 @@ export async function signJwt(user: FastUser) {
   return `${header}.${payload}.${b64url(sig)}`
 }
 
-export async function verifyJwt(token: string): Promise<FastUser | null> {
+export async function verifyJwt(token: string): Promise<(FastUser & { iat?: number }) | null> {
   const [header, payload, sig] = token.split('.')
   if (!header || !payload || !sig) return null
   try {
@@ -48,7 +51,7 @@ export async function verifyJwt(token: string): Promise<FastUser | null> {
     if (!ok) return null
     const claims = JSON.parse(new TextDecoder().decode(fromB64url(payload)))
     if (typeof claims.exp !== 'number' || claims.exp * 1000 < Date.now()) return null
-    return { id: claims.sub, name: claims.name, email: claims.email, createdAt: claims.createdAt }
+    return { id: claims.sub, name: claims.name, email: claims.email, createdAt: claims.createdAt, iat: claims.iat }
   }
   catch {
     return null
@@ -65,8 +68,12 @@ function sessionToken(event: H3Event) {
 export async function fastUser(event: H3Event): Promise<FastUser | null> {
   const jwt = getHeader(event, 'x-auth-jwt')
   if (jwt) {
-    const user = await verifyJwt(jwt)
-    if (user) return user
+    const claims = await verifyJwt(jwt)
+    // older than a day: fall through to a real session check (renews the JWT + session)
+    if (claims && (claims.iat ?? 0) > Date.now() / 1000 - JWT_RECHECK) {
+      const { iat: _iat, ...user } = claims
+      return user
+    }
   }
   const token = sessionToken(event)
   const hit = token ? l1.get(token) : undefined

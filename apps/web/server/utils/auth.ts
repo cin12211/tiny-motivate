@@ -46,11 +46,15 @@ function createAuth() {
           },
         }
       : undefined,
-    // Sessions are cached in Redis when available; Postgres stays the source of truth.
-    ...(cacheEnabled() && {
-      secondaryStorage: authSecondaryStorage(),
-      session: { storeSessionInDatabase: true },
-    }),
+    // The session token is the long-lived "refresh token": 30 days, extended by
+    // a day whenever it is checked. Sessions are cached in Upstash / Redis when
+    // available; Postgres stays the source of truth.
+    session: {
+      expiresIn: 60 * 60 * 24 * 30,
+      updateAge: 60 * 60 * 24,
+      ...(cacheEnabled() && { storeSessionInDatabase: true }),
+    },
+    ...(cacheEnabled() && { secondaryStorage: authSecondaryStorage() }),
     trustedOrigins: [
       'capacitor://localhost',
       'https://localhost',

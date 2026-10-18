@@ -7,7 +7,7 @@ import Mochi from '~/components/Mochi.vue'
 
 const route = useRoute()
 const { t } = useI18n()
-const { goals, refresh, updateDay, openReward, remove } = useGoals()
+const { goals, refresh, updateDay, patchDay, openReward, remove } = useGoals()
 
 const goal = computed(() => goals.value.find(g => g.id === route.params.id))
 if (!goal.value) await refresh()
@@ -40,7 +40,7 @@ watch(selected, () => {
 
 async function save(input: { journal?: string, mood?: MoodId | null }, day = selected.value) {
   try {
-    await updateDay(goal.value!.id, day, input)
+    await patchDay(goal.value!.id, day, input)
   }
   catch (err) {
     toast(errorMessage(err, t('goal.errSave')))

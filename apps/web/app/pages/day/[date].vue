@@ -52,6 +52,7 @@ const stripDays = computed(() => {
   })
 })
 function centerActive(behavior: ScrollBehavior) {
+  // offsetLeft is measured from the strip itself (it is position: relative)
   const el = strip.value?.querySelector<HTMLElement>('[aria-current="date"]')
   if (!strip.value || !el) return
   strip.value.scrollTo({ left: el.offsetLeft - strip.value.clientWidth / 2 + el.clientWidth / 2, behavior })
@@ -101,10 +102,12 @@ function onTouchEnd(e: TouchEvent) {
       <span class="app-header-btn w-9 md:w-[120px]" />
     </div>
 
-    <!-- day strip: the active day is big and centred -->
+    <!-- day strip: the active day is big and centred; the edges fade out under
+         two static gradients (a mask on the scrolling strip repaints every frame) -->
+    <div class="relative -mx-[22px] md:-mx-7">
     <div
       ref="strip"
-      class="scrollbar-none -mx-[22px] flex snap-x snap-proximity items-center gap-1 overflow-x-auto px-[50%] pt-2 pb-1 [mask-image:linear-gradient(to_right,transparent,#000_18%,#000_82%,transparent)] md:-mx-7"
+      class="scrollbar-none relative flex snap-x snap-proximity items-center gap-1 overflow-x-auto px-[50%] pt-2 pb-1"
       role="listbox"
       :aria-label="$t('day.pick')"
     >
@@ -113,19 +116,28 @@ function onTouchEnd(e: TouchEvent) {
         :key="d.iso"
         type="button"
         role="option"
-        class="flex shrink-0 snap-center flex-col items-center gap-1 transition-[width] duration-200"
-        :class="d.iso === date ? 'w-[108px]' : 'w-[46px] opacity-55 hover:opacity-90'"
+        class="flex shrink-0 snap-center flex-col items-center gap-1"
+        :class="d.iso === date ? 'w-[108px]' : 'w-[46px] opacity-55 md:hover:opacity-90'"
         :aria-current="d.iso === date ? 'date' : undefined"
         :aria-selected="d.iso === date"
         :aria-label="dotDate(d.iso)"
         @click="go(d.iso)"
       >
-        <span class="grid place-items-center text-indigo transition-[width,height] duration-200" :class="d.iso === date ? 'size-24' : 'size-[34px]'">
-          <GardenIcon v-if="d.grew" :icon="growIconForDate(d.iso)" class="size-full" />
+        <!-- the icon is always drawn at 96px and scaled down (transform, no layout work per frame) -->
+        <span class="relative grid w-full place-items-center text-indigo" :class="d.iso === date ? 'h-24' : 'h-[34px]'">
+          <GardenIcon
+            v-if="d.grew"
+            :icon="growIconForDate(d.iso)"
+            class="absolute top-1/2 left-1/2 -mt-12 -ml-12 size-24 transition-transform duration-200 motion-reduce:transition-none"
+            :class="d.iso === date ? 'scale-100' : 'scale-[0.354]'"
+          />
           <i v-else class="block rounded-full bg-indigo opacity-40" :class="d.iso === date ? 'size-2' : 'size-1'" />
         </span>
         <small class="text-[9.5px] leading-none whitespace-nowrap" :class="d.iso === date ? 'font-semibold text-indigo' : 'text-muted-foreground'">{{ d.label }}</small>
       </button>
+    </div>
+    <i class="pointer-events-none absolute inset-y-0 left-0 w-[18%] bg-gradient-to-r from-background to-background/0" />
+    <i class="pointer-events-none absolute inset-y-0 right-0 w-[18%] bg-gradient-to-l from-background to-background/0" />
     </div>
 
     <div class="mx-auto max-w-[560px]">

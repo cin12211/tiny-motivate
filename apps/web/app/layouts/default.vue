@@ -31,7 +31,7 @@ const onSettings = computed(() => route.path === '/settings')
       class="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col items-center gap-2.5 bg-gradient-to-t from-background from-60% to-transparent pt-[30px] pb-[calc(20px+env(safe-area-inset-bottom))] md:hidden"
       :aria-label="$t('common.nav')"
     >
-      <div class="pointer-events-auto flex gap-1 rounded-[10px] border border-line bg-surface p-1 shadow-[0_8px_20px_-12px_var(--m-glow)]">
+      <div class="pointer-events-auto flex gap-1 rounded-[10px] border border-line bg-surface p-1">
         <NuxtLink
           to="/settings"
           class="grid h-[42px] w-[46px] place-items-center rounded-[7px] text-indigo"

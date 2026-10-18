@@ -206,8 +206,12 @@ function openDay(iso: string) {
   inset: -5px;
   border-radius: 10px;
   border: 1.5px solid var(--m-indigo);
-  animation: pulse-ring 1.8s ease-out infinite;
+  /* a few pulses to point at today, then still (an endless animation keeps the GPU busy) */
+  animation: pulse-ring 1.8s ease-out 3 forwards;
   pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .forest-cell.is-today::before { animation: none; opacity: 0; }
 }
 .forest-cell.is-today.is-dense::before {
   inset: -3px;

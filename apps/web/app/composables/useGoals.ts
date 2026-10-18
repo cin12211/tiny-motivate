@@ -71,6 +71,34 @@ export function useGoals() {
     }, () => useApi()<Goal>(`/api/goals/${id}/days/${day}`, { method: 'PUT', body: input }))
   }
 
+  /**
+   * Journal / mood only: edits the day in place (no new goal object, so the
+   * rest of the page doesn't re-render while typing) and ignores the echo from
+   * the server; a failed save puts the old values back.
+   */
+  async function patchDay(id: string, day: number, input: Pick<UpdateDayInput, 'journal' | 'mood'>) {
+    const g = goals.value.find(x => x.id === id)
+    const key = String(day)
+    const prev = g?.days[key]
+    const before = prev && { journal: prev.journal, mood: prev.mood }
+    if (g && prev) {
+      if (input.journal !== undefined) prev.journal = input.journal
+      if (input.mood !== undefined) prev.mood = input.mood
+    }
+    else if (g) {
+      g.days[key] = { journal: input.journal ?? '', mood: input.mood ?? null, done: false, doneAt: null, updatedAt: new Date().toISOString() }
+    }
+    try {
+      await useApi()<Goal>(`/api/goals/${id}/days/${day}`, { method: 'PUT', body: input })
+    }
+    catch (err) {
+      const cur = g?.days[key]
+      if (cur && before) Object.assign(cur, before)
+      else if (g && !prev) delete g.days[key]
+      throw err
+    }
+  }
+
   function openReward(id: string, rewardId: string) {
     return optimistic(id, (g) => {
       const r = g.rewards.find(x => x.id === rewardId)
@@ -84,7 +112,7 @@ export function useGoals() {
     return useApi()<{ url: string }>('/api/uploads', { method: 'POST', body: form })
   }
 
-  return { goals, loaded, refresh, ensureLoaded, reset, create, remove, updateDay, openReward, upload }
+  return { goals, loaded, refresh, ensureLoaded, reset, create, remove, updateDay, patchDay, openReward, upload }
 }
 
 export type DayStatus = 'done' | 'today' | 'missed' | 'future'

@@ -15,6 +15,12 @@ const { t } = useI18n()
 const props = defineProps<{ placeholder?: string, label?: string }>()
 const html = defineModel<string>({ default: '' })
 
+// focus state from TipTap instead of a :has(.ProseMirror:focus) selector,
+// which the browser re-checks on every keystroke
+const focused = ref(false)
+// last HTML sent up, so the echo coming back through v-model isn't serialised again
+let emitted = html.value
+
 const editor = useEditor({
   content: html.value,
   immediatelyRender: false,
@@ -25,13 +31,18 @@ const editor = useEditor({
   ],
   editorProps: { attributes: { 'class': 'journal-prose', 'aria-label': props.label ?? t('journal.label') } },
   onUpdate: ({ editor }) => {
-    html.value = editor.isEmpty ? '' : editor.getHTML()
+    emitted = editor.isEmpty ? '' : editor.getHTML()
+    html.value = emitted
   },
+  onFocus: () => (focused.value = true),
+  onBlur: () => (focused.value = false),
 })
 
 watch(html, (v) => {
   const e = editor.value
-  if (e && v !== (e.isEmpty ? '' : e.getHTML())) e.commands.setContent(v || '', { emitUpdate: false })
+  if (!e || v === emitted) return
+  emitted = v
+  e.commands.setContent(v || '', { emitUpdate: false })
 })
 onBeforeUnmount(() => editor.value?.destroy())
 
@@ -50,7 +61,8 @@ const tools = computed(() => {
   <div class="group/journal flex min-h-[230px] flex-col px-1.5 pt-7 pb-2 md:min-h-0 md:pt-3.5">
     <EditorContent :editor="editor" class="min-h-[150px] flex-1 md:min-h-24" />
     <div
-      class="invisible mt-2.5 -ml-[3px] flex h-[38px] w-fit translate-y-[-4px] gap-0.5 rounded-[9px] border border-line bg-surface p-[3px] opacity-0 shadow-[0_4px_14px_-8px_rgba(0,0,0,.25)] transition-[opacity,transform,visibility] delay-[0s,0s,150ms] duration-150 group-has-[.ProseMirror:focus]/journal:visible group-has-[.ProseMirror:focus]/journal:translate-y-0 group-has-[.ProseMirror:focus]/journal:opacity-100 group-has-[.ProseMirror:focus]/journal:delay-0 motion-reduce:transition-none"
+      class="mt-2.5 -ml-[3px] flex h-[38px] w-fit gap-0.5 rounded-[9px] border border-line bg-surface p-[3px] opacity-0 transition-[opacity,transform,visibility] delay-[0s,0s,150ms] duration-150 motion-reduce:transition-none"
+      :class="focused ? 'visible translate-y-0 opacity-100 delay-0' : 'invisible translate-y-[-4px]'"
       role="toolbar"
       :aria-label="$t('journal.format')"
     >

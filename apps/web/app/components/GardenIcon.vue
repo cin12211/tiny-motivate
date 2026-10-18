@@ -10,15 +10,19 @@ import { FOREST, HAND_ICONS, HAND_VIEWBOX, VIEWBOX, iconById, moodById, plantFor
 const props = defineProps<{ day?: number, mood?: string | null, forest?: boolean, icon?: string }>()
 
 const svg = computed(() => {
-  if (props.icon?.startsWith('g-')) return { viewBox: HAND_VIEWBOX, body: HAND_ICONS[props.icon] ?? '' }
-  if (props.icon) return { viewBox: VIEWBOX, body: iconById(props.icon)?.body ?? '' }
-  if (props.forest) return { viewBox: VIEWBOX, body: FOREST.body }
-  if (props.mood) return { viewBox: VIEWBOX, body: moodById(props.mood)?.body ?? '' }
-  return { viewBox: VIEWBOX, body: plantForDay(props.day ?? 1).body }
+  if (props.icon?.startsWith('g-')) return { id: `h-${props.icon}`, viewBox: HAND_VIEWBOX, body: HAND_ICONS[props.icon] }
+  if (props.icon) return { id: `i-${props.icon}`, viewBox: VIEWBOX, body: iconById(props.icon)?.body }
+  if (props.forest) return { id: 'i-forest', viewBox: VIEWBOX, body: FOREST.body }
+  if (props.mood) return { id: `i-${props.mood}`, viewBox: VIEWBOX, body: moodById(props.mood)?.body }
+  const plant = plantForDay(props.day ?? 1)
+  return { id: `i-p${plant.id}`, viewBox: VIEWBOX, body: plant.body }
 })
+// one shared <symbol> per icon (utils/icon-sprite.ts)
+const href = computed(() => iconHref(svg.value.id, svg.value.viewBox, svg.value.body))
 </script>
 
 <template>
-  <!-- eslint-disable-next-line vue/no-v-html -->
-  <svg :viewBox="svg.viewBox" aria-hidden="true" class="shrink-0" v-html="svg.body" />
+  <svg :viewBox="svg.viewBox" aria-hidden="true" class="shrink-0">
+    <use v-if="href" :href="href" />
+  </svg>
 </template>

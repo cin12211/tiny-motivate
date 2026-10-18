@@ -109,14 +109,14 @@ async function onDelete() {
 <template>
   <div v-if="goal">
     <!-- top bar: back · day chip · goal icon (sticky, under the web header on md+) -->
-    <div class="sticky top-0 z-10 -mx-[22px] bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-3.5 pb-2.5 md:top-0 md:-mx-7 md:px-7 max-[860px]:md:-mx-4 max-[860px]:md:px-4 md:pt-3">
+    <div class="app-header sticky top-0 z-10 -mx-[22px] bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-3.5 pb-2.5 md:top-0 md:-mx-7 md:px-7 max-[860px]:md:-mx-4 max-[860px]:md:px-4 md:pt-3">
       <div class="flex items-center justify-between">
-        <Button as-child variant="ghost" size="icon" class="text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" 
+        <Button as-child variant="ghost" size="icon" class="app-header-btn text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" 
           :aria-label="$t('common.back')">
           <NuxtLink to="/"><HandIcon name="arrow-left-01" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
         </Button>
-        <Badge class="md:absolute md:left-1/2 md:-translate-x-1/2">{{ dayLabel }}</Badge>
-        <span class="grid w-9 place-items-center text-indigo md:invisible">
+        <Badge class="app-header-chip md:absolute md:left-1/2 md:-translate-x-1/2">{{ dayLabel }}</Badge>
+        <span class="app-header-btn grid w-9 place-items-center text-indigo md:invisible">
           <HandIcon :name="goal.icon" />
         </span>
       </div>

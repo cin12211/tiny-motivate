@@ -92,14 +92,14 @@ function onTouchEnd(e: TouchEvent) {
 <template>
   <div class="min-h-[70dvh]" @touchstart.passive="onTouchStart" @touchend.passive="onTouchEnd">
     <!-- top bar: back · date chip -->
-    <div class="sticky top-0 z-10 -mx-[22px] flex items-center justify-between bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-3.5 pb-2.5 md:-mx-7 md:px-7 max-[860px]:md:-mx-4 max-[860px]:md:px-4">
-      <Button as-child variant="ghost" size="icon" class="text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" :aria-label="$t('common.back')">
+    <div class="app-header sticky top-0 z-10 -mx-[22px] flex items-center justify-between bg-gradient-to-b from-background from-75% to-transparent px-[22px] pt-3.5 pb-2.5 md:-mx-7 md:px-7 max-[860px]:md:-mx-4 max-[860px]:md:px-4">
+      <Button as-child variant="ghost" size="icon" class="app-header-btn text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" :aria-label="$t('common.back')">
         <NuxtLink to="/"><HandIcon name="arrow-left-01" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
       </Button>
       <CalendarChip v-model="picked" :label="chipLabel" :max="today" :marked="doneOn">
         <TypographyMuted as="small" class="pt-2 text-[10.5px] dashed-top">• {{ $t('day.legend') }}</TypographyMuted>
       </CalendarChip>
-      <span class="w-9 md:w-[120px]" />
+      <span class="app-header-btn w-9 md:w-[120px]" />
     </div>
 
     <!-- day strip: the active day is big and centred -->

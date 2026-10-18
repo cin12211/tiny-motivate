@@ -195,6 +195,34 @@
   }
 }
 
+/*
+ * Mobile page header (goal detail, new goal, day page): stays visible while
+ * scrolling, full-bleed solid background, 44px tap targets with 26px icons and
+ * a bigger date chip. Unlayered, so it wins over the Tailwind utilities on
+ * phones; the md: utilities in the markup still style the web header.
+ */
+@media (max-width: 767px) {
+  .app-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin-top: calc(-1 * env(safe-area-inset-top));
+    padding: calc(14px + env(safe-area-inset-top)) 16px 8px;
+    background: var(--m-paper);
+  }
+  .app-header .app-header-btn { width: 44px; height: 44px; }
+  .app-header .app-header-btn .iconify { width: 26px; height: 26px; }
+  .app-header .app-header-chip,
+  .app-header [aria-haspopup="dialog"] { height: 32px; padding: 0 13px; font-size: 14px; border-radius: 7px; }
+
+  /* no vertical scroll bar on phones */
+  html { scrollbar-width: none; }
+  html::-webkit-scrollbar { display: none; }
+}
+/* native app (any screen size): no scroll bar either */
+html.native { scrollbar-width: none; }
+html.native::-webkit-scrollbar { display: none; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

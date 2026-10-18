@@ -56,6 +56,8 @@ class MainViewController: CAPBridgeViewController {
         bridge?.registerPluginInstance(AppIconPlugin())
         // iOS edge-swipe back/forward through the SPA's history (pushState entries)
         webView?.allowsBackForwardNavigationGestures = true
+        // no vertical scroll bar in the app (design v52)
+        webView?.scrollView.showsVerticalScrollIndicator = false
     }
 }
 

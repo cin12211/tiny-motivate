@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
+import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { growIconForDate } from '@motivation/garden'
 import type { Goal } from '#shared/types'
 import { addDays, dayNumberOf, parseISODate, toISODate } from '#shared/utils/dates'
@@ -61,19 +61,32 @@ const grown = computed(() => cells.value.filter(c => c.done).length)
 const dense = computed(() => (props.web ? months.value === 12 : months.value === 6))
 
 /**
- * Fixed square columns, centred (v49c–e). Every second row (odd 0-based row)
- * shifts right by a quarter cell so the garden looks planted rather than
- * gridded. Uses `left` (not a transform) to keep the hover scale / tooltip
- * transforms intact; the grid gets the same quarter cell of right padding.
- *   mobile 1–3 months: 11 × 28px · mobile 6 months: 15 × 20px
- *   web 3/6 months: 20 × 30px (gap 2) · web 12 months: 30 × 24px (gap 1)
- *   web ≤860px: 10 × 30px, or 15 × 24px for 12 months
+ * Square cells, as many per row as fit the width, centred (v49f). Every second
+ * row (odd 0-based row) shifts right by a quarter cell so the garden looks
+ * planted rather than gridded; the grid keeps that quarter cell as right
+ * padding. Uses `left` (not a transform) to keep the hover scale / tooltip
+ * transforms intact. The column count is measured from the grid width, so the
+ * stagger always matches the real rows (recomputed on resize / months change).
+ *   mobile: 28px cells (20px for 6 months), no gaps
+ *   web: 30px cells, 2px column gap (24px / 1px for 12 months)
  */
-const wide = useMediaQuery('(min-width: 861px)')
+const grid = ref<HTMLElement>()
+// content width = grid width minus the quarter-cell right padding
+const gridWidth = ref(0)
+function measure() {
+  const el = grid.value
+  if (el) gridWidth.value = el.clientWidth - Number.parseFloat(getComputedStyle(el).paddingRight || '0')
+}
+useResizeObserver(grid, measure)
+// the web / mobile copies swap visibility at the md breakpoint: re-measure on window resize too
+useEventListener('resize', measure)
+onMounted(() => nextTick(measure))
 const layout = computed(() => {
-  if (!props.web) return dense.value ? { cols: 15, cell: 20, gap: 0 } : { cols: 11, cell: 28, gap: 0 }
-  if (dense.value) return { cols: wide.value ? 30 : 15, cell: 24, gap: 1 }
-  return { cols: wide.value ? 20 : 10, cell: 30, gap: 2 }
+  const { cell, gap } = props.web
+    ? (dense.value ? { cell: 24, gap: 1 } : { cell: 30, gap: 2 })
+    : (dense.value ? { cell: 20, gap: 0 } : { cell: 28, gap: 0 })
+  const fit = Math.floor((gridWidth.value + gap) / (cell + gap))
+  return { cell, gap, cols: fit > 0 ? fit : 10 }
 })
 const gridStyle = computed(() => ({
   gridTemplateColumns: `repeat(${layout.value.cols}, ${layout.value.cell}px)`,
@@ -127,7 +140,7 @@ function openDay(iso: string) {
     </CalendarChip>
 
     <!-- one continuous grid -->
-    <div class="grid w-full justify-center gap-y-0" :style="gridStyle">
+    <div ref="grid" class="grid w-full justify-center gap-y-0" :style="gridStyle">
       <span
         v-for="(c, i) in cells"
         :key="c.iso"

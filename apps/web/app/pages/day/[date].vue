@@ -59,11 +59,10 @@ function centerActive(behavior: ScrollBehavior) {
 onMounted(() => nextTick(() => centerActive('instant')))
 watch(date, () => nextTick(() => centerActive('smooth')))
 
+const doneDatesMap = computed(() => goalsDoneDateMap(goals.value))
+
 function doneOn(iso: string) {
-  return goals.value.some((g) => {
-    const k = dayNumberOf(g.startDate, iso)
-    return k >= 1 && k <= g.totalDays && !!g.days[String(k)]?.done
-  })
+  return (doneDatesMap.value.get(iso) || 0) > 0
 }
 
 /* ---------- change day: keys (web) + swipe (mobile) ---------- */

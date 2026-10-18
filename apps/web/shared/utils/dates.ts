@@ -13,6 +13,7 @@ export function parseISODate(s: string): Date {
 }
 
 export function addDays(s: string, n: number): string {
+  if (n === 0) return s
   const d = parseISODate(s)
   d.setDate(d.getDate() + n)
   return toISODate(d)

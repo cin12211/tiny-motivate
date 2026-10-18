@@ -5,12 +5,17 @@ import type { Goal } from '#shared/types'
 const props = defineProps<{ goal: Goal }>()
 const s = computed(() => goalStats(props.goal))
 
-const dots = computed(() =>
-  Array.from({ length: props.goal.totalDays }, (_, i) => {
+const rewardDays = computed(() => new Set(props.goal.rewards.map(r => r.day)))
+
+const dots = computed(() => {
+  const rewards = rewardDays.value
+  const today = s.value.today
+  const days = props.goal.days
+  return Array.from({ length: props.goal.totalDays }, (_, i) => {
     const n = i + 1
-    return { n, done: !!props.goal.days[String(n)]?.done, today: n === s.value.today, reward: !!rewardAt(props.goal, n) }
-  }),
-)
+    return { n, done: !!days[String(n)]?.done, today: n === today, reward: rewards.has(n) }
+  })
+})
 </script>
 
 <template>

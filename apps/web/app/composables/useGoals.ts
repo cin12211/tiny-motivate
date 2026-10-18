@@ -125,6 +125,23 @@ export function dayDate(goal: Goal, day: number) {
   return addDays(goal.startDate, day - 1)
 }
 
+/** Precomputed map of ISO dates to number of completed goals on that date. */
+export function goalsDoneDateMap(goals: Goal[]): Map<string, number> {
+  const map = new Map<string, number>()
+  for (const g of goals) {
+    for (const [kStr, entry] of Object.entries(g.days)) {
+      if (entry?.done) {
+        const k = Number(kStr)
+        if (k >= 1 && k <= g.totalDays) {
+          const iso = addDays(g.startDate, k - 1)
+          map.set(iso, (map.get(iso) || 0) + 1)
+        }
+      }
+    }
+  }
+  return map
+}
+
 export function rewardAt(goal: Goal, day: number) {
   return goal.rewards.find(r => r.day === day)
 }

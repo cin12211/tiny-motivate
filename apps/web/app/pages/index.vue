@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
+
 useHead({ title: 'Tiny Motivate' })
 
+const isDesktop = useMediaQuery('(min-width: 768px)')
 const { goals } = useGoals()
 const { user, logout } = useAuth()
 const stats = computed(() => overallStats(goals.value))
@@ -33,9 +36,9 @@ const name = computed(() => user.value?.name || t('home.you'))
       </TypographyLead>
     </div>
 
-    <!-- 60-day garden on phones, 120-day forest on the web -->
-    <Forest :goals="goals" class="md:hidden" />
-    <Forest :goals="goals" web class="hidden md:flex" />
+    <!-- 60-day garden on phones, 120-day forest on the web (only render the active one) -->
+    <Forest v-if="!isDesktop" :goals="goals" />
+    <Forest v-else :goals="goals" web />
 
     <section class="flex flex-col pt-1.5 md:pt-1">
       <Badge class="mb-1 self-center md:mb-2.5">{{ $t('home.yourGoals') }}</Badge>

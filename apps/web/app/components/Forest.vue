@@ -32,13 +32,15 @@ const range = computed(() => {
   return { from, to, days: dayNumberOf(from, to) }
 })
 
-const cells = computed(() =>
-  Array.from({ length: range.value.days }, (_, i) => {
-    const iso = addDays(range.value.from, i)
-    const done = props.goals.filter((g) => {
-      const k = dayNumberOf(g.startDate, iso)
-      return k >= 1 && k <= g.totalDays && g.days[String(k)]?.done
-    }).length
+const doneDatesMap = computed(() => goalsDoneDateMap(props.goals))
+
+const cells = computed(() => {
+  const doneMap = doneDatesMap.value
+  const { from, days } = range.value
+  const viewedVal = viewed.value
+  return Array.from({ length: days }, (_, i) => {
+    const iso = addDays(from, i)
+    const done = doneMap.get(iso) || 0
     const isToday = iso === today
     const future = iso > today
     const label = dotShort(iso)
@@ -49,13 +51,13 @@ const cells = computed(() =>
       done,
       isToday,
       future,
-      viewed: iso === viewed.value && !isToday,
+      viewed: iso === viewedVal && !isToday,
       // web: dd.mm on the first and last cell and on each month start
-      monthLabel: i === 0 || i === range.value.days - 1 || iso.endsWith('-01') ? label : '',
+      monthLabel: i === 0 || i === days - 1 || iso.endsWith('-01') ? label : '',
       tip: `${isToday ? `${t('common.today')} · ` : ''}${label} · ${done ? t('forest.tipDone', { n: done }) : future ? t('forest.tipFuture') : t('forest.tipEmpty')}`,
     }
-  }),
-)
+  })
+})
 const grown = computed(() => cells.value.filter(c => c.done).length)
 
 const dense = computed(() => (props.web ? months.value === 12 : months.value === 6))
@@ -104,10 +106,7 @@ const chipLabel = computed(() =>
 
 /** Any goal ticked on this date (calendar dots). */
 function doneOn(iso: string) {
-  return props.goals.some((g) => {
-    const k = dayNumberOf(g.startDate, iso)
-    return k >= 1 && k <= g.totalDays && !!g.days[String(k)]?.done
-  })
+  return (doneDatesMap.value.get(iso) || 0) > 0
 }
 
 /** Today and past cells open the day page. */

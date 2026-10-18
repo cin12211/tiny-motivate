@@ -12,7 +12,7 @@ const liveUrl = process.env.CAP_SERVER_URL
 
 const config: CapacitorConfig = {
   appId: 'app.motivation.mochi',
-  appName: 'Motivation',
+  appName: 'Tiny Motivate',
   webDir: '../web/.output/public',
   backgroundColor: '#E6E5EA',
   server: liveUrl ? { url: liveUrl, cleartext: true } : { androidScheme: 'https' },

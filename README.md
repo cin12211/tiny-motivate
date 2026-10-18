@@ -1,4 +1,4 @@
-# Motivation
+# Tiny Motivate
 
 Ứng dụng mini-goal kiểu TinyHabits với linh vật **Mochi** (chú kiến nét mảnh). Tạo mục tiêu N ngày, tự đặt phần thưởng cho từng chặng, ghi nhật ký + cảm xúc mỗi ngày và bấm **done** để trồng một cây trong khu vườn. Lỡ một ngày không mất quà: quà mở khoá theo **tổng số ngày đã hoàn thành**.
 

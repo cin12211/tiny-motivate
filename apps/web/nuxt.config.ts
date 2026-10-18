@@ -35,7 +35,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      title: 'Motivation',
+      title: 'Tiny Motivate',
       htmlAttrs: { lang: 'vi' },
       meta: [
         // maximum-scale=1 stops iOS from zooming in when an input (font < 16px) gets focus
@@ -44,7 +44,7 @@ export default defineNuxtConfig({
         // installable web app (PWA): see public/manifest.webmanifest + public/sw.js
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'mobile-web-app-capable', content: 'yes' },
-        { name: 'apple-mobile-web-app-title', content: 'Motivation' },
+        { name: 'apple-mobile-web-app-title', content: 'Tiny Motivate' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
       ],
       // default favicon; app.vue swaps it (same key) for the user's logo / accent / theme

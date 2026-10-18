@@ -5,7 +5,7 @@
  */
 definePageMeta({ layout: false })
 useHead({
-  title: 'Motivation · Mỗi ngày một mầm nhỏ',
+  title: 'Tiny Motivate · Mỗi ngày một mầm nhỏ',
   meta: [{ name: 'description', content: 'Gieo một thói quen nhỏ, tự đặt phần thưởng, và nhìn khu vườn của bạn lớn lên mỗi ngày.' }],
 })
 
@@ -77,7 +77,7 @@ const links = [['lp-how', 'Cách hoạt động'], ['lp-reward', 'Phần thưở
   <div class="lp">
     <!-- 1. nav -->
     <nav class="lp-nav">
-      <NuxtLink to="/landing-page" class="lp-brand"><LogoTile icon="p2" :size="30" /><b>motivation</b></NuxtLink>
+      <NuxtLink to="/landing-page" class="lp-brand"><LogoTile icon="p2" :size="30" /><b>tiny motivate</b></NuxtLink>
       <span class="lp-links">
         <a v-for="[id, label] in links" :key="id" :href="`#${id}`" @click.prevent="scrollTo(id)">{{ label }}</a>
       </span>
@@ -235,13 +235,13 @@ const links = [['lp-how', 'Cách hoạt động'], ['lp-reward', 'Phần thưở
 
     <!-- 12. footer -->
     <footer class="lp-foot">
-      <span class="lp-brand"><LogoTile icon="p2" :size="24" /><b>motivation</b></span>
+      <span class="lp-brand"><LogoTile icon="p2" :size="24" /><b>tiny motivate</b></span>
       <span class="lp-flinks">
         <a href="#">Điều khoản</a>
         <a href="#">Quyền riêng tư</a>
         <a href="mailto:hello@motivation.app">hello@motivation.app</a>
       </span>
-      <small>© 2026 motivation · Mỗi ngày một mầm nhỏ</small>
+      <small>© 2026 Tiny Motivate · Mỗi ngày một mầm nhỏ</small>
     </footer>
   </div>
 </template>

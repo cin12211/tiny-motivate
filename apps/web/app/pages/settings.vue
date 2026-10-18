@@ -4,7 +4,7 @@ import { ACCENTS, LANGS, LOGOS, THEMES } from '#shared/utils/settings'
 import type { UserSettings } from '#shared/types'
 
 const { t } = useI18n()
-useHead({ title: () => `${t('settings.pageTitle')} · Motivation` })
+useHead({ title: () => `${t('settings.pageTitle')} · Tiny Motivate` })
 
 const { settings, update } = useSettings()
 const { logout } = useAuth()
@@ -202,7 +202,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
           <TypographyH2 :class="rowTitle">{{ $t('settings.help') }}</TypographyH2>
           <TypographySmall as="p" :class="rowDesc">{{ $t('settings.helpDesc') }}</TypographySmall>
         </div>
-        <a href="mailto:hello@motivation.app?subject=Motivation" :class="[tile, pressable, 'border-line']" :aria-label="$t('settings.helpAria')">
+        <a href="mailto:hello@motivation.app?subject=Tiny%20Motivate" :class="[tile, pressable, 'border-line']" :aria-label="$t('settings.helpAria')">
           <GardenIcon icon="p4" class="size-[34px]" />
         </a>
       </div>

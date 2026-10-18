@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Mochi — the Motivation mascot, Mini style: a single-line ant drawn with
+ * Mochi — the Tiny Motivate mascot, Mini style: a single-line ant drawn with
  * currentColor (so it follows the indigo accent and dark mode).
  */
 export type MochiPose = 'idle' | 'wave' | 'cheer' | 'gift' | 'sleepy' | 'sprout'

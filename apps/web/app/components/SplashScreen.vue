@@ -17,7 +17,7 @@ const seeds = [1, 4, 9, 2, 13, 6, 21]
       <div class="animate-bob">
         <Mochi pose="wave" :size="112" />
       </div>
-      <TypographyHand as="h1" class="mt-3.5 text-[40px] font-medium">motivation</TypographyHand>
+      <TypographyHand as="h1" class="mt-3.5 text-[40px] font-medium">tiny motivate</TypographyHand>
       <TypographyMuted class="mt-0.5 text-[12.5px]">{{ $t('splash.tagline') }}</TypographyMuted>
 
       <div class="mt-6.5 flex gap-1.5" aria-hidden="true">

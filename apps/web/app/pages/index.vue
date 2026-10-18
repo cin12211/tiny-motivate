@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useHead({ title: 'Motivation' })
+useHead({ title: 'Tiny Motivate' })
 
 const { goals } = useGoals()
 const { user, logout } = useAuth()

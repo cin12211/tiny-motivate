@@ -18,7 +18,7 @@ const date = computed(() => {
   const d = String(route.params.date || '')
   return /^\d{4}-\d{2}-\d{2}$/.test(d) && d <= today ? d : today
 })
-useHead({ title: () => `${dotDate(date.value)} · Motivation` })
+useHead({ title: () => `${dotDate(date.value)} · Tiny Motivate` })
 
 function go(iso: string) {
   if (iso > today || iso === date.value) return

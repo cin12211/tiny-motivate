@@ -6,7 +6,7 @@ import Mochi from '~/components/Mochi.vue'
 import { cn } from '@/lib/utils'
 
 const { t } = useI18n()
-useHead({ title: () => `${t('create.pageTitle')} · Motivation` })
+useHead({ title: () => `${t('create.pageTitle')} · Tiny Motivate` })
 
 const { create, upload } = useGoals()
 

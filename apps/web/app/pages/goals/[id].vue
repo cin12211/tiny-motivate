@@ -13,7 +13,7 @@ const goal = computed(() => goals.value.find(g => g.id === route.params.id))
 if (!goal.value) await refresh()
 if (!goal.value) throw createError({ statusCode: 404, statusMessage: t('goal.notFound'), fatal: true })
 
-useHead({ title: () => `${goal.value?.title ?? t('goal.title')} · Motivation` })
+useHead({ title: () => `${goal.value?.title ?? t('goal.title')} · Tiny Motivate` })
 
 const s = computed(() => goalStats(goal.value!))
 // ?day=N (from the day page) opens that day; otherwise today

@@ -33,3 +33,6 @@ apps/web/data/uploads/*
 .wrangler
 
 AuthKey_SNQ7TG4NAP.p8
+# Apple / App Store Connect private keys (never commit)
+*.p8
+AuthKey_*

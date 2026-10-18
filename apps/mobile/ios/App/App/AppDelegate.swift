@@ -1,5 +1,6 @@
 import UIKit
 import Capacitor
+import WidgetKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -54,6 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 class MainViewController: CAPBridgeViewController {
     override open func capacitorDidLoad() {
         bridge?.registerPluginInstance(AppIconPlugin())
+        bridge?.registerPluginInstance(WidgetPlugin())
         // iOS edge-swipe back/forward through the SPA's history (pushState entries)
         webView?.allowsBackForwardNavigationGestures = true
         // no vertical scroll bar in the app (design v52)
@@ -91,5 +93,26 @@ public class AppIconPlugin: CAPPlugin, CAPBridgedPlugin {
                 }
             }
         }
+    }
+}
+
+// MARK: - Home-screen widget
+
+/// `Widget.save({ json })` from JS (apps/web/app/utils/widget.ts): stores the
+/// widget snapshot in the shared App Group and redraws the widgets.
+@objc(WidgetPlugin)
+public class WidgetPlugin: CAPPlugin, CAPBridgedPlugin {
+    public let identifier = "WidgetPlugin"
+    public let jsName = "Widget"
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "save", returnType: CAPPluginReturnPromise)
+    ]
+    private let defaults = UserDefaults(suiteName: "group.app.motivation.tinymotivate")
+
+    @objc func save(_ call: CAPPluginCall) {
+        let json = call.getString("json")
+        if let json = json { defaults?.set(json, forKey: "snapshot") } else { defaults?.removeObject(forKey: "snapshot") }
+        if #available(iOS 14.0, *) { WidgetCenter.shared.reloadAllTimelines() }
+        call.resolve()
     }
 }

@@ -13,7 +13,8 @@
     "run:ios": "cap run ios",
     "run:android": "cap run android",
     "icons": "node scripts/gen-icons.ts",
-    "pwa-icons": "node scripts/gen-pwa-icons.ts"
+    "pwa-icons": "node scripts/gen-pwa-icons.ts",
+    "widget-icons": "node scripts/gen-widget-icons.ts"
   },
   "dependencies": {
     "@capacitor-community/apple-sign-in": "6.0.0",

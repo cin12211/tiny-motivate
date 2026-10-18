@@ -5,6 +5,8 @@ PODS:
     - Capacitor
   - CapacitorBrowser (6.0.6):
     - Capacitor
+  - CapacitorCommunityAppleSignIn (6.0.0):
+    - Capacitor
   - CapacitorCordova (6.2.2)
   - CapacitorKeyboard (6.0.4):
     - Capacitor
@@ -17,6 +19,7 @@ DEPENDENCIES:
   - "Capacitor (from `../../../../node_modules/.pnpm/@capacitor+ios@6.2.2_@capacitor+core@6.2.2/node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../../../node_modules/.pnpm/@capacitor+app@6.0.3_@capacitor+core@6.2.2/node_modules/@capacitor/app`)"
   - "CapacitorBrowser (from `../../../../node_modules/.pnpm/@capacitor+browser@6.0.6_@capacitor+core@6.2.2/node_modules/@capacitor/browser`)"
+  - "CapacitorCommunityAppleSignIn (from `../../../../node_modules/.pnpm/@capacitor-community+apple-sign-in@6.0.0_@capacitor+core@6.2.2/node_modules/@capacitor-community/apple-sign-in`)"
   - "CapacitorCordova (from `../../../../node_modules/.pnpm/@capacitor+ios@6.2.2_@capacitor+core@6.2.2/node_modules/@capacitor/ios`)"
   - "CapacitorKeyboard (from `../../../../node_modules/.pnpm/@capacitor+keyboard@6.0.4_@capacitor+core@6.2.2/node_modules/@capacitor/keyboard`)"
   - "CapacitorLocalNotifications (from `../../../../node_modules/.pnpm/@capacitor+local-notifications@6.1.3_@capacitor+core@6.2.2/node_modules/@capacitor/local-notifications`)"
@@ -29,6 +32,8 @@ EXTERNAL SOURCES:
     :path: "../../../../node_modules/.pnpm/@capacitor+app@6.0.3_@capacitor+core@6.2.2/node_modules/@capacitor/app"
   CapacitorBrowser:
     :path: "../../../../node_modules/.pnpm/@capacitor+browser@6.0.6_@capacitor+core@6.2.2/node_modules/@capacitor/browser"
+  CapacitorCommunityAppleSignIn:
+    :path: "../../../../node_modules/.pnpm/@capacitor-community+apple-sign-in@6.0.0_@capacitor+core@6.2.2/node_modules/@capacitor-community/apple-sign-in"
   CapacitorCordova:
     :path: "../../../../node_modules/.pnpm/@capacitor+ios@6.2.2_@capacitor+core@6.2.2/node_modules/@capacitor/ios"
   CapacitorKeyboard:
@@ -42,11 +47,12 @@ SPEC CHECKSUMS:
   Capacitor: 6591a78b923b7e6dde28506ffeea820356e68013
   CapacitorApp: a19ccb4f5f32d2534be5c6f524d5a9b614a1e8a7
   CapacitorBrowser: 825163a1d6adce944ac7b9e3cab101146b5a9df8
+  CapacitorCommunityAppleSignIn: c9c2541ee7580618055a91b3516c3f0313fe2544
   CapacitorCordova: c2c76283b5c00cf6073bab0b1311e3b10bd17254
   CapacitorKeyboard: e8cd50fd5cbdd023a5947a5c0f5cca6e5aa5a253
   CapacitorLocalNotifications: 801867e687c42dd2b33c1e22e08f48e6738d2f72
   CapacitorStatusBar: 149cde8f1328ec3aa6cbdd872a55137ae3f98b16
 
-PODFILE CHECKSUM: 438c32a8e8cd35a8ef37528cc5a4f141a4f16e5d
+PODFILE CHECKSUM: 872da43144eccf19f6714a6d856c5e86707f6507
 
 COCOAPODS: 1.16.2

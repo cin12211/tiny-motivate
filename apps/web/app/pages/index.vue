@@ -44,7 +44,7 @@ const name = computed(() => user.value?.name || t('home.you'))
       <Badge class="mb-1 self-center md:mb-2.5">{{ $t('home.yourGoals') }}</Badge>
       <GoalCard v-for="g in goals" :key="g.id" :goal="g" />
       <div v-if="!goals.length" class="flex flex-col items-center gap-3 py-8 text-center dashed-top">
-        <Mochi pose="sleepy" :size="84" />
+        <Germi pose="sleepy" :size="84" />
         <TypographyMuted>{{ $t('home.empty') }}</TypographyMuted>
       </div>
       <Button as-child variant="dashed" class="mt-2.5 w-full">
@@ -53,7 +53,7 @@ const name = computed(() => user.value?.name || t('home.you'))
     </section>
 
     <div class="mt-[22px] hidden flex-col items-center md:flex">
-      <TypographyMuted class="text-center leading-relaxed">{{ $t('home.sign') }}<br><TypographyHand class="mr-1 text-[30px]">Mochi</TypographyHand><HandIcon name="favourite" class="-translate-y-1 text-indigo" /></TypographyMuted>
+      <TypographyMuted class="text-center leading-relaxed">{{ $t('home.sign') }}<br><TypographyHand class="mr-1 text-[30px]">Germi</TypographyHand><HandIcon name="favourite" class="-translate-y-1 text-indigo" /></TypographyMuted>
     </div>
     <!-- web only: phones log out from the settings page -->
     <Button variant="ghost" size="sm" class="mx-auto mt-3.5 hidden text-[11.5px] md:flex" @click="logout">

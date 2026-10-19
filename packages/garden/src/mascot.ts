@@ -1,5 +1,5 @@
 /**
- * Mầm — the Tiny Motivate mascot (design v54 / v54b): a two-leaf sprout like
+ * Germi — the Tiny Motivate mascot ("germ" = sprout) (design v54 / v54b): a two-leaf sprout like
  * logo p2 on a round seed body, drawn in the same wobbly hand-drawn line as the
  * icons. Each pose is the inner markup of `<svg viewBox="0 0 100 100">` with
  * fill none, stroke currentColor, stroke-width MASCOT_STROKE and round caps.

@@ -21,7 +21,7 @@ onMounted(async () => {
 
 <template>
   <div class="flex flex-col items-center justify-center gap-3 pt-24">
-    <Mochi pose="wave" :size="84" class="animate-bob" />
+    <Germi pose="wave" :size="84" class="animate-bob" />
     <TypographyMuted>{{ $t('splash.loading') }}…</TypographyMuted>
   </div>
 </template>

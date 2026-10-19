@@ -2,7 +2,7 @@
 import { h } from 'vue'
 import { toast } from 'vue-sonner'
 import { toISODate } from '#shared/utils/dates'
-import Mochi from '~/components/Mochi.vue'
+import Germi from '~/components/Germi.vue'
 import { cn } from '@/lib/utils'
 
 const { t } = useI18n()
@@ -80,7 +80,7 @@ async function submit() {
       rewards: rewards.value.map(({ day, title, icon, image }) => ({ day, title, icon, image })),
     })
     confettiBurst()
-    toast(t('create.started', { n: goal.totalDays }), { icon: h(Mochi, { pose: 'cheer', size: 28, class: 'text-on-indigo' }) })
+    toast(t('create.started', { n: goal.totalDays }), { icon: h(Germi, { pose: 'cheer', size: 28, class: 'text-on-indigo' }) })
     await navigateTo(`/goals/${goal.id}`)
   }
   catch (err) {
@@ -109,7 +109,7 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
 
     <div class="mx-auto max-w-[560px]">
       <div class="flex items-center justify-center gap-2.5 pt-1 pb-5">
-        <Mochi pose="gift" :size="60" />
+        <Germi pose="gift" :size="60" />
         <TypographyLead>{{ $t('create.lead1') }}<br>{{ $t('create.lead2') }}<span class="hidden md:inline"><br>{{ $t('create.lead3') }}</span></TypographyLead>
       </div>
 

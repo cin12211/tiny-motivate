@@ -9,7 +9,7 @@ const open = defineModel<boolean>('open', { default: false })
 <template>
   <Dialog v-model:open="open">
     <DialogContent class="max-w-[320px] justify-items-center gap-3 px-5 py-[22px] text-center" :show-close-button="false">
-      <Mochi pose="gift" :size="110" />
+      <Germi pose="gift" :size="110" />
       <template v-if="reward">
         <span class="grid size-[120px] place-items-center overflow-hidden rounded-2xl border border-line bg-surface text-indigo">
           <RewardBadge :reward="reward" icon-class="size-14" />

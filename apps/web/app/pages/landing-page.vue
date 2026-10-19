@@ -110,7 +110,7 @@ const links = [['lp-how', 'Cách hoạt động'], ['lp-reward', 'Phần thưở
           <div class="lp-prow"><HandIcon name="books-01" /><b>Đọc sách 10 phút</b><small>9/30</small></div>
           <div class="lp-prow"><HandIcon name="yoga-01" /><b>Giãn cơ buổi sáng</b><small>5/14</small></div>
         </div>
-        <span class="lp-pm"><Mochi pose="sprout" :size="64" /></span>
+        <span class="lp-pm"><Germi pose="sprout" :size="64" /></span>
       </div>
     </header>
 
@@ -159,7 +159,7 @@ const links = [['lp-how', 'Cách hoạt động'], ['lp-reward', 'Phần thưở
     <!-- 6. missed a day -->
     <section class="lp-sec lp-miss">
       <div class="lp-missill">
-        <Mochi pose="sleepy" :size="84" />
+        <Germi pose="sleepy" :size="84" />
         <span class="lp-dots"><i v-for="d in 12" :key="d" :class="d === 6 ? 'miss' : 'on'" /></span>
       </div>
       <div>
@@ -225,7 +225,7 @@ const links = [['lp-how', 'Cách hoạt động'], ['lp-reward', 'Phần thưở
 
     <!-- 11. final CTA -->
     <section id="lp-cta" class="lp-cta">
-      <Mochi pose="wave" :size="120" class="max-[720px]:size-24" />
+      <Germi pose="wave" :size="120" class="max-[720px]:size-24" />
       <h2>Khu vườn của bạn<br>đang chờ mầm đầu tiên.</h2>
       <div class="lp-ctas">
         <NuxtLink to="/signup" class="lp-btn"><HandIcon name="apple" />Tải trên App Store <small class="lp-soon">Sắp có</small></NuxtLink>

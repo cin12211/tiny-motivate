@@ -176,7 +176,7 @@ function onTouchEnd(e: TouchEvent) {
         </NuxtLink>
       </section>
       <div v-else class="flex flex-col items-center gap-3 py-8 text-center">
-        <Mochi pose="sleepy" :size="84" />
+        <Germi pose="sleepy" :size="84" />
         <TypographyMuted>{{ $t('day.empty') }}</TypographyMuted>
       </div>
 

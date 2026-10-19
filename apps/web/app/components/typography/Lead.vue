@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 
-/** Intro text under a title, e.g. Mochi's greeting (Typography lead). */
+/** Intro text under a title, e.g. Germi's greeting (Typography lead). */
 const props = withDefaults(defineProps<{ as?: string, class?: HTMLAttributes['class'] }>(), { as: 'p' })
 </script>
 

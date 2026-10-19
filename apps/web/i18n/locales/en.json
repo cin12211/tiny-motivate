@@ -11,7 +11,7 @@
     "settings": "Settings",
     "newGoal": "New goal",
     "errorGeneric": "Something went wrong, please try again",
-    "soon": "{what} is coming soon, Mochi is on it"
+    "soon": "{what} is coming soon, Germi is on it"
   },
   "weekdays": [
     "Sunday",
@@ -22,13 +22,13 @@
     "Friday",
     "Saturday"
   ],
-  "mochi": {
-    "idle": "Mầm",
-    "wave": "Mầm waving",
-    "cheer": "Mầm cheering",
-    "gift": "Mầm holding a gift",
-    "sleepy": "Mầm, sleepy",
-    "sprout": "Mầm watering a sprout"
+  "germi": {
+    "idle": "Germi",
+    "wave": "Germi waving",
+    "cheer": "Germi cheering",
+    "gift": "Germi holding a gift",
+    "sleepy": "Germi, sleepy",
+    "sprout": "Germi watering a sprout"
   },
   "splash": {
     "tagline": "One little sprout a day",
@@ -46,7 +46,7 @@
     "password": "Password",
     "showPw": "Show password",
     "hidePw": "Hide password",
-    "pwNote": "At least 8 characters. Mochi keeps it secret.",
+    "pwNote": "At least 8 characters. Germi keeps it secret.",
     "remember": "Remember me",
     "forgot": "Forgot password?",
     "resetPw": "Password reset",
@@ -60,7 +60,7 @@
     "noAccount": "No account yet?",
     "login": "Log in",
     "signup": "Sign up",
-    "errName": "Tell Mochi your name",
+    "errName": "Tell Germi your name",
     "errEmail": "That email doesn't look right",
     "errPw": "Password needs at least 8 characters",
     "welcomeBack": "Welcome back, {name}",
@@ -82,7 +82,7 @@
     "allDone": "All done for today.",
     "streak": "Longest streak {n} days",
     "yourGoals": "Your goals",
-    "empty": "No goals yet. Mochi is napping until you add one.",
+    "empty": "No goals yet. Germi is napping until you add one.",
     "sign": "Every day counts,"
   },
   "forest": {
@@ -238,7 +238,7 @@
     "languageDesc": "Choose the display language",
     "review": "Review",
     "reviewDesc": "Leave a review on the app store :)",
-    "reviewThanks": "Thanks for loving Mochi",
+    "reviewThanks": "Thanks for loving Germi",
     "help": "Help",
     "helpDesc": "Need help? Send us an email",
     "helpAria": "Email support",
@@ -268,7 +268,7 @@
     "home": "Back home"
   },
   "reminder": {
-    "title": "A nudge from Mochi",
+    "title": "A nudge from Germi",
     "body": "Ticked your goals today? Grow one more sprout :)"
   },
   "day": {

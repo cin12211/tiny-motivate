@@ -2,7 +2,7 @@
 /**
  * Loading screen shown while the app starts (auth check, settings, first page data).
  * app.vue removes it as soon as the first page has rendered.
- * Seven seeds sprout one after another while Mochi bobs.
+ * Seven seeds sprout one after another while Germi bobs.
  */
 const seeds = [1, 4, 9, 2, 13, 6, 21]
 </script>
@@ -15,7 +15,7 @@ const seeds = [1, 4, 9, 2, 13, 6, 21]
   >
     <div class="flex flex-col items-center gap-1.5 text-center">
       <div class="animate-bob">
-        <Mochi pose="wave" :size="112" />
+        <Germi pose="wave" :size="112" />
       </div>
       <TypographyHand as="h1" class="mt-3.5 text-[40px] font-medium">tiny motivate</TypographyHand>
       <TypographyMuted class="mt-0.5 text-[12.5px]">{{ $t('splash.tagline') }}</TypographyMuted>

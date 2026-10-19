@@ -3,7 +3,7 @@ import { h } from 'vue'
 import { toast } from 'vue-sonner'
 import { useDebounceFn } from '@vueuse/core'
 import type { MoodId, Reward } from '#shared/types'
-import Mochi from '~/components/Mochi.vue'
+import Germi from '~/components/Germi.vue'
 
 const route = useRoute()
 const { t } = useI18n()
@@ -82,7 +82,7 @@ async function toggleDone() {
       saving.then(() => openReward(g.id, reward.id)).catch(() => {})
     }
     else {
-      toast(t('goal.planted', { n: now.streak }), { icon: h(Mochi, { pose: 'cheer', size: 28, class: 'text-on-indigo' }) })
+      toast(t('goal.planted', { n: now.streak }), { icon: h(Germi, { pose: 'cheer', size: 28, class: 'text-on-indigo' }) })
     }
   }
   try {
@@ -129,7 +129,7 @@ async function onDelete() {
 
     <!-- journal -->
     <div v-if="isFuture" class="flex min-h-[230px] flex-col items-center justify-center gap-3 px-1.5 pt-7 pb-2 text-center">
-      <Mochi pose="sleepy" :size="84" />
+      <Germi pose="sleepy" :size="84" />
       <TypographyP>
         {{ $t('goal.notYet') }}
         <template v-if="selectedReward"><br><i18n-t keypath="goal.willOpen" tag="span" scope="global"><template #reward><em>{{ selectedReward.title }}</em></template></i18n-t></template>

@@ -2,7 +2,7 @@
 import { FOREST, HAND_ICONS, HAND_VIEWBOX, VIEWBOX, iconById, moodById, plantForDay } from '@motivation/garden'
 
 /**
- * One icon from the Mochi garden set (packages/garden):
+ * One icon from the garden set (packages/garden):
  * pass `day` for that day's plant, `mood` for a mood flower, `forest` for the
  * forest icon, or `icon` with any id ("forest", "p4", "m2"…, or a garden/farm
  * hand icon like "g-shovel" - those are drawn on their own 24px grid).

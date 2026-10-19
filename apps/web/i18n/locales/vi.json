@@ -11,7 +11,7 @@
     "settings": "Cài đặt",
     "newGoal": "Mục tiêu mới",
     "errorGeneric": "Có lỗi xảy ra, thử lại nhé",
-    "soon": "{what} sẽ có sớm thôi, Mochi đang làm"
+    "soon": "{what} sẽ có sớm thôi, Germi đang làm"
   },
   "weekdays": [
     "Chủ nhật",
@@ -22,13 +22,13 @@
     "Thứ sáu",
     "Thứ bảy"
   ],
-  "mochi": {
-    "idle": "Mầm",
-    "wave": "Mầm vẫy tay",
-    "cheer": "Mầm đang vui",
-    "gift": "Mầm cầm quà",
-    "sleepy": "Mầm buồn ngủ",
-    "sprout": "Mầm đang tưới cây"
+  "germi": {
+    "idle": "Germi",
+    "wave": "Germi vẫy tay",
+    "cheer": "Germi đang vui",
+    "gift": "Germi cầm quà",
+    "sleepy": "Germi buồn ngủ",
+    "sprout": "Germi đang tưới cây"
   },
   "splash": {
     "tagline": "Mỗi ngày một mầm nhỏ",
@@ -46,7 +46,7 @@
     "password": "Mật khẩu",
     "showPw": "Hiện mật khẩu",
     "hidePw": "Ẩn mật khẩu",
-    "pwNote": "Tối thiểu 8 ký tự. Mochi sẽ giữ bí mật.",
+    "pwNote": "Tối thiểu 8 ký tự. Germi sẽ giữ bí mật.",
     "remember": "Nhớ tôi",
     "forgot": "Quên mật khẩu?",
     "resetPw": "Đặt lại mật khẩu",
@@ -60,7 +60,7 @@
     "noAccount": "Chưa có tài khoản?",
     "login": "Đăng nhập",
     "signup": "Đăng ký",
-    "errName": "Cho Mochi biết tên bạn nhé",
+    "errName": "Cho Germi biết tên bạn nhé",
     "errEmail": "Email chưa đúng định dạng",
     "errPw": "Mật khẩu cần ít nhất 8 ký tự",
     "welcomeBack": "Chào mừng trở lại, {name}",
@@ -82,7 +82,7 @@
     "allDone": "Hôm nay xong hết rồi.",
     "streak": "Chuỗi dài nhất {n} ngày",
     "yourGoals": "Mục tiêu của bạn",
-    "empty": "Chưa có mục tiêu nào. Mochi đang ngủ chờ bạn đó.",
+    "empty": "Chưa có mục tiêu nào. Germi đang ngủ chờ bạn đó.",
     "sign": "Mỗi ngày đều đáng giá,"
   },
   "forest": {
@@ -238,7 +238,7 @@
     "languageDesc": "Chọn ngôn ngữ hiển thị",
     "review": "Đánh giá",
     "reviewDesc": "Để lại một đánh giá trên app store :)",
-    "reviewThanks": "Cảm ơn bạn đã thương Mochi",
+    "reviewThanks": "Cảm ơn bạn đã thương Germi",
     "help": "Trợ giúp",
     "helpDesc": "Cần giúp đỡ? Gửi email cho tụi mình",
     "helpAria": "Gửi email trợ giúp",
@@ -268,7 +268,7 @@
     "home": "Về trang chủ"
   },
   "reminder": {
-    "title": "Mochi nhắc bạn nè",
+    "title": "Germi nhắc bạn nè",
     "body": "Hôm nay tick mục tiêu chưa? Thêm một mầm cho khu vườn nhé :)"
   },
   "day": {

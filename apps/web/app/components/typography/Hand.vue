@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 
-/** Handwritten accent (Caveat), e.g. the Mochi signature and splash tagline. */
+/** Handwritten accent (Caveat), e.g. the Germi signature and splash tagline. */
 const props = withDefaults(defineProps<{ as?: string, class?: HTMLAttributes['class'] }>(), { as: 'span' })
 </script>
 

@@ -217,6 +217,7 @@
     "notify": "Notifications",
     "notifyOn": "Remind you to tick your goals every day at this time",
     "notifyOff": "Reminders are off",
+    "notifyBlocked": "Your phone is blocking notifications from the app. Turn them on in Settings → Tiny Motivate → Notifications.",
     "time": "Reminder time",
     "turnOff": "Off",
     "turnOn": "On",

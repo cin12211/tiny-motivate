@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { toast } from 'vue-sonner'
+import { useEventListener } from '@vueuse/core'
 import { ACCENTS, LANGS, LOGOS, THEMES } from '#shared/utils/settings'
 import type { UserSettings } from '#shared/types'
 
@@ -14,6 +15,12 @@ const open = ref<Panel | null>(null)
 const THEME_ICONS: Record<UserSettings['theme'], string> = { system: 'theme-auto', light: 'sun', dark: 'g-moon' }
 const LANG_NAMES: Record<UserSettings['lang'], string> = { vi: 'Tiếng Việt', en: 'English' }
 
+// reminders are on but the phone blocks our notifications → say where to fix it
+const blocked = ref(false)
+const checkBlocked = async () => (blocked.value = await notificationsBlocked())
+onMounted(checkBlocked)
+useEventListener(document, 'visibilitychange', () => document.visibilityState === 'visible' && checkBlocked())
+
 async function save(patch: Partial<UserSettings>, message?: () => string) {
   try {
     await update(patch)
@@ -22,6 +29,7 @@ async function save(patch: Partial<UserSettings>, message?: () => string) {
   catch (err) {
     toast(errorMessage(err, t('settings.errSave')))
   }
+  if ('notify' in patch || 'time' in patch) setTimeout(checkBlocked, 600)
 }
 
 function toggle(panel: Panel) {
@@ -60,6 +68,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
         <div>
           <TypographyH2 :class="rowTitle">{{ $t('settings.notify') }}</TypographyH2>
           <TypographySmall as="p" :class="rowDesc">{{ settings.notify ? $t('settings.notifyOn') : $t('settings.notifyOff') }}</TypographySmall>
+          <TypographySmall v-if="settings.notify && blocked" as="p" :class="[rowDesc, 'mt-1.5 font-medium']">{{ $t('settings.notifyBlocked') }}</TypographySmall>
         </div>
         <div :class="[tile, 'border-line p-1.5']">
           <input

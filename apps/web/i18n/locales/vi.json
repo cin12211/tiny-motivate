@@ -217,6 +217,7 @@
     "notify": "Thông báo",
     "notifyOn": "Nhắc bạn tick mục tiêu mỗi ngày lúc này",
     "notifyOff": "Đang tắt nhắc nhở",
+    "notifyBlocked": "Điện thoại đang chặn thông báo của app. Bật lại trong Cài đặt → Tiny Motivate → Thông báo.",
     "time": "Giờ nhắc",
     "turnOff": "Tắt",
     "turnOn": "Bật",

@@ -53,7 +53,7 @@ const name = computed(() => user.value?.name || t('home.you'))
     </section>
 
     <div class="mt-[22px] hidden flex-col items-center md:flex">
-      <TypographyMuted class="text-center leading-relaxed">{{ $t('home.sign') }}<br><TypographyHand class="mr-1 text-[30px]">Germi</TypographyHand><HandIcon name="favourite" class="-translate-y-1 text-indigo" /></TypographyMuted>
+      <TypographyMuted class="text-center leading-relaxed">{{ $t('home.sign') }}<br><TypographyHand class="mr-1 text-[30px]">Tiny Motivate</TypographyHand><HandIcon name="favourite" class="-translate-y-1 text-indigo" /></TypographyMuted>
     </div>
     <!-- web only: phones log out from the settings page -->
     <Button variant="ghost" size="sm" class="mx-auto mt-3.5 hidden text-[11.5px] md:flex" @click="logout">

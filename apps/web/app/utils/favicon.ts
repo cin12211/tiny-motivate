@@ -8,6 +8,11 @@ import { ACCENTS } from '#shared/utils/settings'
  * Returned as a PNG data URL (rendered through a canvas) because not every
  * browser accepts SVG favicons. app.vue feeds it to useHead.
  */
+/** Every stroke ×1.375 (the hand-drawn 1.31 line becomes 1.8) so it reads at 16px. */
+function bolder(body: string) {
+  return body.replace(/stroke-width="([\d.]+)"/g, (_, w) => `stroke-width="${(Number(w) * 1.375).toFixed(2)}"`)
+}
+
 export async function faviconHref(settings: Pick<UserSettings, 'accent' | 'logo'>, dark: boolean, px = 64) {
   const accent = ACCENTS[settings.accent] ?? ACCENTS[0]!
   const body = iconById(settings.logo)?.body ?? iconById('p2')!.body
@@ -16,7 +21,7 @@ export async function faviconHref(settings: Pick<UserSettings, 'accent' | 'logo'
     + `<rect width="${w}" height="${w}" rx="${w * 0.2}" fill="${dark ? '#1F1E27' : '#FFFFFF'}"/>`
     // icon fills ~96% of the tile with a bolder line so it stays readable at 16px;
     // nudged up 1.5 units because the garden drawings sit on a ground line near the bottom
-    + `<g transform="translate(${w * 0.02} ${w * 0.02 - 1.5}) scale(.96)" style="color:${dark ? accent.dark : accent.light}">${body.replace(/stroke-width="1\.6"/g, 'stroke-width="2.2"')}</g></svg>`
+    + `<g transform="translate(${w * 0.02} ${w * 0.02 - 1.5}) scale(.96)" style="color:${dark ? accent.dark : accent.light}">${bolder(body)}</g></svg>`
   const svgUrl = `data:image/svg+xml,${encodeURIComponent(svg)}`
   try {
     const img = new Image()

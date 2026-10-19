@@ -70,6 +70,9 @@ jobs:
           printf '%s' "$ASC_KEY_P8" > "$RUNNER_TEMP/asc/AuthKey_${ASC_KEY_ID}.p8"
           echo "ASC_KEY_PATH=$RUNNER_TEMP/asc/AuthKey_${ASC_KEY_ID}.p8" >> "$GITHUB_ENV"
 
+      # Archive unsigned, then sign it ad hoc with the entitlements; the export
+      # step below re-signs it with Apple's cloud-managed distribution
+      # certificate. No development certificate is created on the runner.
       - name: Archive
         working-directory: apps/mobile/ios/App
         run: |
@@ -79,14 +82,11 @@ jobs:
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/App.xcarchive" \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath "$ASC_KEY_PATH" \
-            -authenticationKeyID "${{ secrets.ASC_KEY_ID }}" \
-            -authenticationKeyIssuerID "${{ secrets.ASC_ISSUER_ID }}" \
             DEVELOPMENT_TEAM="${{ secrets.APPLE_TEAM_ID }}" \
-            CODE_SIGN_STYLE=Automatic \
+            CODE_SIGNING_ALLOWED=NO \
             MARKETING_VERSION="$APP_VERSION" \
             CURRENT_PROJECT_VERSION="$((100 + ${{ github.run_number }}))"
+          ../../scripts/adhoc-sign-archive.sh "$RUNNER_TEMP/App.xcarchive" ios
 
       - name: Upload to TestFlight
         working-directory: apps/mobile/ios/App

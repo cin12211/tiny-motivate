@@ -1,0 +1,119 @@
+# Build the Mac app (Mac Catalyst build of the iOS app, same bundle ID) and upload it to TestFlight for macOS.
+# Runs on every push to main that touches the app, or by hand: Actions → "Mac → TestFlight" → Run workflow.
+# Needs the macOS platform added to the app in App Store Connect (Apps → Tiny Motivate → "+" next to iOS → macOS).
+# Version shown in TestFlight = "appVersion" in apps/mobile/package.json; build number = 100 + run number.
+#
+# Repository secrets (Settings → Secrets and variables → Actions):
+#   ASC_KEY_ID      App Store Connect API key ID
+#   ASC_ISSUER_ID   App Store Connect API issuer ID
+#   ASC_KEY_P8      full contents of the AuthKey_XXXX.p8 file
+#   APPLE_TEAM_ID   Apple Developer team ID (10 characters)
+name: Mac → TestFlight
+
+on:
+  workflow_dispatch:
+  # every new commit on main that can change the app ships a TestFlight build
+  # (server-only changes under apps/web/server don't touch the iOS app)
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'apps/web/app/**'
+      - 'apps/web/public/**'
+      - 'apps/web/i18n/**'
+      - 'apps/web/shared/**'
+      - 'apps/web/nuxt.config.ts'
+      - 'apps/web/package.json'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/mac-testflight.yml'
+
+# a newer push replaces a build that is still running
+concurrency:
+  group: mac-testflight
+  cancel-in-progress: true
+
+jobs:
+  testflight-mac:
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      LANG: en_US.UTF-8
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Static SPA (talks to the production API) + cap sync ios (runs pod install)
+      - name: Build web app and sync iOS project
+        run: pnpm mobile:build
+
+      # the app version (e.g. 1.0) is "appVersion" in apps/mobile/package.json
+      - name: Read app version
+        run: echo "APP_VERSION=$(node -p "require('./apps/mobile/package.json').appVersion")" >> "$GITHUB_ENV"
+
+      - name: Write App Store Connect API key
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/asc"
+          printf '%s' "$ASC_KEY_P8" > "$RUNNER_TEMP/asc/AuthKey_${ASC_KEY_ID}.p8"
+          echo "ASC_KEY_PATH=$RUNNER_TEMP/asc/AuthKey_${ASC_KEY_ID}.p8" >> "$GITHUB_ENV"
+
+      - name: Archive
+        working-directory: apps/mobile/ios/App
+        run: |
+          xcodebuild archive \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -destination 'generic/platform=macOS,variant=Mac Catalyst' \
+            -archivePath "$RUNNER_TEMP/App-mac.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "${{ secrets.ASC_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ secrets.ASC_ISSUER_ID }}" \
+            DEVELOPMENT_TEAM="${{ secrets.APPLE_TEAM_ID }}" \
+            CODE_SIGN_STYLE=Automatic \
+            MARKETING_VERSION="$APP_VERSION" \
+            CURRENT_PROJECT_VERSION="$((100 + ${{ github.run_number }}))"
+
+      - name: Upload to TestFlight
+        working-directory: apps/mobile/ios/App
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions-mac.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>${{ secrets.APPLE_TEAM_ID }}</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/App-mac.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions-mac.plist" \
+            -exportPath "$RUNNER_TEMP/export-mac" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "${{ secrets.ASC_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ secrets.ASC_ISSUER_ID }}"
+
+      - name: Remove API key
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/asc"

@@ -23,12 +23,12 @@
     "Thứ bảy"
   ],
   "mochi": {
-    "idle": "Mochi",
-    "wave": "Mochi vẫy tay",
-    "cheer": "Mochi đang vui",
-    "gift": "Mochi cầm quà",
-    "sleepy": "Mochi buồn ngủ",
-    "sprout": "Mochi cầm mầm cây"
+    "idle": "Mầm",
+    "wave": "Mầm vẫy tay",
+    "cheer": "Mầm đang vui",
+    "gift": "Mầm cầm quà",
+    "sleepy": "Mầm buồn ngủ",
+    "sprout": "Mầm đang tưới cây"
   },
   "splash": {
     "tagline": "Mỗi ngày một mầm nhỏ",

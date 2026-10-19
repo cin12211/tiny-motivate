@@ -23,12 +23,12 @@
     "Saturday"
   ],
   "mochi": {
-    "idle": "Mochi",
-    "wave": "Mochi waving",
-    "cheer": "Mochi cheering",
-    "gift": "Mochi holding a gift",
-    "sleepy": "Mochi sleepy",
-    "sprout": "Mochi holding a sprout"
+    "idle": "Mầm",
+    "wave": "Mầm waving",
+    "cheer": "Mầm cheering",
+    "gift": "Mầm holding a gift",
+    "sleepy": "Mầm, sleepy",
+    "sprout": "Mầm watering a sprout"
   },
   "splash": {
     "tagline": "One little sprout a day",

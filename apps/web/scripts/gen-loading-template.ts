@@ -1,18 +1,18 @@
 /**
  * Builds app/spa-loading-template.html: the static copy of <SplashScreen> that
  * shows while the JS bundle downloads, so the hand-off to the Vue splash is seamless.
- * Re-run after changing SplashScreen.vue, Mochi.vue or the splash texts:
+ * Re-run after changing SplashScreen.vue, the mascot (packages/garden/src/mascot.ts) or the splash texts:
  *   pnpm gen:loading
  */
 import { readFileSync, writeFileSync } from 'node:fs'
-import { VIEWBOX, plantForDay } from '@motivation/garden'
+import { MASCOT_POSES, MASCOT_STROKE, MASCOT_VIEWBOX, VIEWBOX, plantForDay } from '@motivation/garden'
 import { ACCENTS, DEFAULT_SETTINGS } from '../shared/utils/settings.ts'
 
 const SEEDS = [1, 4, 9, 2, 13, 6, 21] // same as SplashScreen.vue
 const locale = (lang: string) => JSON.parse(readFileSync(new URL(`../i18n/locales/${lang}.json`, import.meta.url), 'utf8')).splash
 const TEXT = { vi: locale('vi'), en: locale('en') }
 
-const mochi = `<svg class="mb-mochi" width="112" height="112" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M43 31q-4-12-10-17M57 31q4-12 10-17"/><path d="M33 14c-2-3-7-1-5 3l5 4 5-4c2-4-3-6-5-3zM67 14c-2-3-7-1-5 3l5 4 5-4c2-4-3-6-5-3z" stroke-width="1.8"/><path d="M80 62a11 11 0 1 1-2 18"/><ellipse cx="50" cy="58" rx="29" ry="25"/><g fill="currentColor" stroke="none"><circle cx="40" cy="54" r="2.6"/><circle cx="60" cy="54" r="2.6"/></g><path d="M45 63q2.5 3 5 0q2.5 3 5 0"/><path d="M29 62l4-2M31 66l4-2M65 60l4 2M67 64l4 2" stroke-width="1.4"/><path d="M38 82l-2 7M50 83v7M62 82l2 7"/><path d="M77 54q9-4 11-15"/><path d="M85 36l3 3"/></svg>`
+const mochi = `<svg class="mb-mochi" width="112" height="112" viewBox="${MASCOT_VIEWBOX}" fill="none" stroke="currentColor" stroke-width="${MASCOT_STROKE}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${MASCOT_POSES.wave}</svg>`
 
 const seeds = SEEDS.map((day, i) =>
   `<span style="--d:${(i * 0.28).toFixed(2)}s"><i></i><svg viewBox="${VIEWBOX}">${plantForDay(day).body}</svg></span>`,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GERMI_BOLD_STROKE, MASCOT_POSES, MASCOT_STROKE, MASCOT_VIEWBOX, type MascotPose } from '@motivation/garden'
+import { GERMI_BOLD_STROKE, MASCOT_POSES, MASCOT_VIEWBOX, type MascotPose } from '@motivation/garden'
 
 /**
  * Germi — the Tiny Motivate mascot ("germ" = sprout) (packages/garden/src/mascot.ts), hand-drawn
@@ -9,8 +9,8 @@ import { GERMI_BOLD_STROKE, MASCOT_POSES, MASCOT_STROKE, MASCOT_VIEWBOX, type Ma
  */
 export type GermiPose = MascotPose
 
-/** `bold`: one thick 3.4 line for every stroke (loading / splash screen, v59c). */
-const props = withDefaults(defineProps<{ pose?: GermiPose, size?: number | string, bold?: boolean }>(), {
+/** Every Germi is drawn with one thick 3.4 line for all strokes (v59c / v59e). */
+const props = withDefaults(defineProps<{ pose?: GermiPose, size?: number | string }>(), {
   pose: 'idle',
   size: 76,
 })
@@ -19,7 +19,7 @@ const { t } = useI18n()
 const label = computed(() => t(`germi.${props.pose}`))
 const body = computed(() => {
   const pose = MASCOT_POSES[props.pose]
-  return props.bold ? pose.replace(/stroke-width="[\d.]+"/g, `stroke-width="${GERMI_BOLD_STROKE}"`) : pose
+  return pose.replace(/stroke-width="[\d.]+"/g, `stroke-width="${GERMI_BOLD_STROKE}"`)
 })
 </script>
 
@@ -32,7 +32,7 @@ const body = computed(() => {
     :viewBox="MASCOT_VIEWBOX"
     fill="none"
     stroke="currentColor"
-    :stroke-width="bold ? GERMI_BOLD_STROKE : MASCOT_STROKE"
+    :stroke-width="GERMI_BOLD_STROKE"
     stroke-linecap="round"
     stroke-linejoin="round"
     role="img"

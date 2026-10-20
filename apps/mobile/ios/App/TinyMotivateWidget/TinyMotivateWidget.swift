@@ -469,7 +469,7 @@ struct WidgetView: View {
                 }
             } else {
                 VStack(spacing: 8) {
-                    IconView(id: "p2", size: 44)
+                    IconView(id: "gm-idle", size: 44)
                     Text(t.openApp).font(.system(size: 11, design: mono)).multilineTextAlignment(.center)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

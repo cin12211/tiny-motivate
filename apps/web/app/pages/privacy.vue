@@ -98,7 +98,7 @@ const sections = computed(() => (en.value ? enSections : vi))
 <template>
   <div class="pv">
     <nav class="pv-nav">
-      <NuxtLink to="/landing-page" class="pv-brand"><LogoTile icon="p2" :size="28" /><b>tiny motivate</b></NuxtLink>
+      <NuxtLink to="/landing-page" class="pv-brand"><LogoTile icon="gm-idle" :size="28" /><b>tiny motivate</b></NuxtLink>
       <NuxtLink :to="en ? '/privacy?lang=vi' : '/privacy?lang=en'" class="pv-lang">{{ en ? 'Tiếng Việt' : 'English' }}</NuxtLink>
     </nav>
 

@@ -32,7 +32,7 @@ export const LOGOS: readonly string[] = LOGO_IDS
 export const LANGS = ['vi', 'en'] as const
 export const THEMES = ['system', 'light', 'dark'] as const
 
-export const DEFAULT_SETTINGS: UserSettings = { accent: 0, logo: 'p2', theme: 'system', notify: true, time: '20:00', lang: 'vi' }
+export const DEFAULT_SETTINGS: UserSettings = { accent: 0, logo: 'gm-idle', theme: 'system', notify: true, time: '20:00', lang: 'vi' }
 
 /** Merge untrusted input over current settings, keeping only valid values. */
 export function sanitizeSettings(input: Partial<UserSettings> | undefined, base: UserSettings = DEFAULT_SETTINGS): UserSettings {

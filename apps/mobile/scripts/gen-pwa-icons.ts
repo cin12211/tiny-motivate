@@ -1,6 +1,6 @@
 /**
  * Generate the web app (PWA) icons into apps/web/public from the default logo
- * (p2 "mầm đôi", ink accent): white tile, accent icon - same look as the iOS icon.
+ * (Germi standing, ink accent): white tile, accent icon - same look as the iOS icon.
  *   pwa-192.png, pwa-512.png        any purpose
  *   pwa-maskable-512.png            extra padding for Android masks
  *   apple-touch-icon.png (180px)    iOS "Add to Home Screen"
@@ -9,19 +9,20 @@
  */
 import { join } from 'node:path'
 import sharp from 'sharp'
-import { iconById } from '@motivation/garden'
+import { logoIcon } from '@motivation/garden'
 import { ACCENTS, DEFAULT_SETTINGS } from '../../web/shared/utils/settings.ts'
 
 const OUT = join(import.meta.dirname, '..', '..', 'web', 'public')
-const body = iconById(DEFAULT_SETTINGS.logo)!.body
+const { viewBox, body, ground } = logoIcon(DEFAULT_SETTINGS.logo, '#FFFFFF')!
+const [vx, vy, vw] = viewBox.split(' ').map(Number) as [number, number, number]
 const fg = ACCENTS[DEFAULT_SETTINGS.accent]!.light
 
 function render(px: number, fill: number) {
-  const scale = (px * fill) / 32
-  const offset = (px - 32 * scale) / 2
+  const scale = (px * fill) / vw
+  const offset = (px - vw * scale) / 2
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}">
   <rect width="${px}" height="${px}" fill="#FFFFFF"/>
-  <g transform="translate(${offset} ${offset - 1.5 * scale}) scale(${scale})" style="color:${fg}">${body}</g>
+  <g transform="translate(${offset - vx * scale} ${offset - vy * scale - (ground ? vw * 0.047 : 0) * scale}) scale(${scale})" style="color:${fg}">${body}</g>
 </svg>`
   return sharp(Buffer.from(svg)).removeAlpha().png()
 }

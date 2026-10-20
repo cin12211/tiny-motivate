@@ -77,7 +77,7 @@ const links = [['lp-how', 'Cách hoạt động'], ['lp-reward', 'Phần thưở
   <div class="lp">
     <!-- 1. nav -->
     <nav class="lp-nav">
-      <NuxtLink to="/landing-page" class="lp-brand"><LogoTile icon="p2" :size="30" /><b>tiny motivate</b></NuxtLink>
+      <NuxtLink to="/landing-page" class="lp-brand"><LogoTile icon="gm-idle" :size="30" /><b>tiny motivate</b></NuxtLink>
       <span class="lp-links">
         <a v-for="[id, label] in links" :key="id" :href="`#${id}`" @click.prevent="scrollTo(id)">{{ label }}</a>
       </span>
@@ -235,7 +235,7 @@ const links = [['lp-how', 'Cách hoạt động'], ['lp-reward', 'Phần thưở
 
     <!-- 12. footer -->
     <footer class="lp-foot">
-      <span class="lp-brand"><LogoTile icon="p2" :size="24" /><b>tiny motivate</b></span>
+      <span class="lp-brand"><LogoTile icon="gm-idle" :size="24" /><b>tiny motivate</b></span>
       <span class="lp-flinks">
         <a href="#">Điều khoản</a>
         <NuxtLink to="/privacy">Quyền riêng tư</NuxtLink>

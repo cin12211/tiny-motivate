@@ -16,7 +16,7 @@ function bolder(body: string) {
 export async function faviconHref(settings: Pick<UserSettings, 'accent' | 'logo'>, dark: boolean, px = 64) {
   const accent = ACCENTS[settings.accent] ?? ACCENTS[0]!
   const tile = dark ? '#1F1E27' : '#FFFFFF'
-  const logo = logoIcon(settings.logo, tile) ?? logoIcon('p2')!
+  const logo = logoIcon(settings.logo, tile) ?? logoIcon('gm-idle', tile)!
   const [x, y, w] = logo.viewBox.split(' ').map(Number) as [number, number, number]
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 ${w} ${w}">`
     + `<rect width="${w}" height="${w}" rx="${w * 0.2}" fill="${tile}"/>`

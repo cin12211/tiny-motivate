@@ -2,12 +2,13 @@ import { FOREST, VIEWBOX, iconById } from './index.ts'
 import { MASCOT_POSES, MASCOT_STROKE, type MascotPose } from './mascot.ts'
 
 /**
- * The 20 app logos offered in Settings (design v58i), in this order:
- * the forest, 11 plants, 2 mood flowers and Germi in its 6 poses.
+ * The 20 app logos offered in Settings (design v58i / v59d), in this order:
+ * Germi standing (the default logo), the forest, 11 plants, 2 mood flowers
+ * and Germi's 5 other poses.
  */
 export const LOGO_IDS = [
-  'forest', 'p1', 'p2', 'p4', 'p5', 'p7', 'p10', 'p12', 'p13', 'p21', 'p23', 'p28', 'm2', 'm5',
-  'gm-idle', 'gm-wave', 'gm-cheer', 'gm-gift', 'gm-sleepy', 'gm-sprout',
+  'gm-idle', 'forest', 'p1', 'p2', 'p4', 'p5', 'p7', 'p10', 'p12', 'p13', 'p21', 'p23', 'p28', 'm2', 'm5',
+  'gm-wave', 'gm-cheer', 'gm-gift', 'gm-sleepy', 'gm-sprout',
 ] as const
 
 /** Germi logos are cropped to the mascot and drawn 2.4× thicker so they read as an icon. */

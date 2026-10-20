@@ -1,7 +1,14 @@
 import { Capacitor } from '@capacitor/core'
 import type { UserSettings } from '#shared/types'
-import en from '~~/i18n/locales/en.json'
-import vi from '~~/i18n/locales/vi.json'
+// raw text: the i18n module compiles imported locale JSON into message
+// functions, and the native plugin needs plain strings for title / body
+import enRaw from '~~/i18n/locales/en.json?raw'
+import viRaw from '~~/i18n/locales/vi.json?raw'
+
+const REMINDER_TEXT = {
+  en: JSON.parse(enRaw).reminder as { title: string, body: string },
+  vi: JSON.parse(viRaw).reminder as { title: string, body: string },
+}
 
 const REMINDER_ID = 1001
 
@@ -24,7 +31,7 @@ export async function scheduleReminder(settings: Pick<UserSettings, 'notify' | '
     else if (ask && perm.display === 'denied') perm = await LocalNotifications.requestPermissions()
     if (perm.display !== 'granted') return
     const [hour, minute] = settings.time.split(':').map(Number)
-    const text = (settings.lang === 'en' ? en : vi).reminder
+    const text = REMINDER_TEXT[settings.lang === 'en' ? 'en' : 'vi']
     await LocalNotifications.schedule({
       notifications: [{
         id: REMINDER_ID,

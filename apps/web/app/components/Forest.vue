@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEventListener, useResizeObserver } from '@vueuse/core'
+import { useEventListener, useLocalStorage, useResizeObserver } from '@vueuse/core'
 import { growIconForDate } from '@motivation/garden'
 import type { Goal } from '#shared/types'
 import { addDays, dayNumberOf, parseISODate, toISODate } from '#shared/utils/dates'
@@ -14,13 +14,21 @@ import { addDays, dayNumberOf, parseISODate, toISODate } from '#shared/utils/dat
  * the viewed date and opens a popover with a month calendar, the number of
  * months to show and "back to today".
  * Mobile: 1 / 2 / 3 / 6 months (default 2). Web: 3 / 6 / 12 (default 6).
+ * The choice is saved on the device (localStorage, also in the app).
  */
 const { t, locale } = useI18n()
 const props = defineProps<{ goals: Goal[], web?: boolean }>()
 
 const today = toISODate()
 const OPTIONS = computed(() => (props.web ? [3, 6, 12] : [1, 2, 3, 6]))
-const months = ref(props.web ? 6 : 2)
+// remembered on this device (separately for the phone and web layouts), so
+// leaving home or reopening the app keeps the user's choice (v60b)
+const DEFAULT_MONTHS = props.web ? 6 : 2
+const savedMonths = useLocalStorage(props.web ? 'motivation-garden-months-web' : 'motivation-garden-months', DEFAULT_MONTHS)
+const months = computed({
+  get: () => (OPTIONS.value.includes(Number(savedMonths.value)) ? Number(savedMonths.value) : DEFAULT_MONTHS),
+  set: (n: number) => { savedMonths.value = n },
+})
 const viewed = ref(today)
 
 /* ---------- range ---------- */

@@ -98,7 +98,7 @@ const links = [['lp-how', 'Cách hoạt động'], ['lp-reward', 'Phần thưở
       </div>
       <div class="lp-phone" aria-hidden="true">
         <div class="lp-ps">
-          <p class="lp-hi"><GardenIcon icon="p2" class="size-6" />Chào bạn :)</p>
+          <p class="lp-hi"><GardenIcon icon="gm-idle" class="size-6" />Chào bạn :)</p>
           <p class="lp-streak">Chuỗi dài nhất · <em>12 ngày</em></p>
           <Badge size="sm" class="self-start">Hôm nay · 14.10</Badge>
           <div class="lp-garden" style="--c: 7">

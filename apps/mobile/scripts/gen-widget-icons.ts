@@ -4,13 +4,14 @@
  * tinted by SwiftUI with the accent colour, so one black-on-clear PNG per icon.
  *   plant-p1 … plant-p55   garden plants (32px grid)
  *   hand-<name>            hand-drawn UI / goal / farm icons (24px grid)
+ *   hand-gm-idle           Germi standing, bold (v59b), inside left transparent
  *
  * Run: pnpm --filter @motivation/mobile widget-icons
  */
 import { mkdir, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import sharp from 'sharp'
-import { HAND_ICONS, HAND_VIEWBOX, PLANTS, VIEWBOX } from '@motivation/garden'
+import { GERMI_LOGO_VIEWBOX, HAND_ICONS, HAND_VIEWBOX, PLANTS, VIEWBOX, logoIcon } from '@motivation/garden'
 
 const ASSETS = join(import.meta.dirname, '..', 'ios', 'App', 'TinyMotivateWidget', 'Assets.xcassets')
 
@@ -35,4 +36,5 @@ await mkdir(ASSETS, { recursive: true })
 await writeFile(join(ASSETS, 'Contents.json'), JSON.stringify({ info: { author: 'xcode', version: 1 } }, null, 2))
 for (const p of PLANTS) await writeIcon(`plant-p${p.id}`, p.body, VIEWBOX, 56)
 for (const [name, body] of Object.entries(HAND_ICONS)) await writeIcon(`hand-${name}`, body, HAND_VIEWBOX, 24)
-console.log(`wrote ${PLANTS.length + Object.keys(HAND_ICONS).length} widget icons`)
+await writeIcon('hand-gm-idle', logoIcon('gm-idle', 'none')!.body, GERMI_LOGO_VIEWBOX, 56)
+console.log(`wrote ${PLANTS.length + Object.keys(HAND_ICONS).length + 1} widget icons`)

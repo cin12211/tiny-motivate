@@ -2,7 +2,7 @@
 import { toast } from 'vue-sonner'
 
 /**
- * Login / signup card from the Mini design (v19): p2 sprout hero, Google / Apple first,
+ * Login / signup card from the Mini design (v19): Germi hero, Google / Apple first,
  * then "or continue with email" and the form. The link at the bottom switches between them.
  */
 const props = defineProps<{ mode: 'login' | 'signup' }>()
@@ -67,7 +67,7 @@ async function onApple() {
 <template>
   <div class="flex w-full max-w-[360px] flex-col gap-[18px]">
     <div class="mb-1.5 flex flex-col items-center gap-1 text-center">
-      <GardenIcon icon="p2" class="size-[72px] text-indigo" />
+      <GardenIcon icon="gm-idle" class="size-[72px] text-indigo" />
       <TypographyH1 class="mt-2 text-[19px] font-semibold">{{ up ? $t('auth.titleSignup') : $t('auth.titleLogin') }}</TypographyH1>
       <TypographyLead class="text-[12.5px] opacity-75">
         <template v-if="up">{{ $t('auth.leadSignup1') }}<br>{{ $t('auth.leadSignup2') }}</template>

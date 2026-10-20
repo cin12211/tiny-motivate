@@ -82,7 +82,7 @@ async function toggleDone() {
       saving.then(() => openReward(g.id, reward.id)).catch(() => {})
     }
     else {
-      toast(t('goal.planted', { n: now.streak }), { icon: h(Germi, { pose: 'cheer', size: 28, class: 'text-on-indigo' }) })
+      toast(t('goal.planted', { n: now.streak }), { icon: h(Germi, { pose: 'cheer', size: 28, class: 'text-on-indigo [--gm-bg:var(--m-indigo)]' }) })
     }
   }
   try {

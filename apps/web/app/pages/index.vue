@@ -22,7 +22,7 @@ const name = computed(() => user.value?.name || t('home.you'))
 
     <!-- phones: small sprout beside the greeting; web: bigger sprout above it -->
     <div class="flex items-center justify-center gap-3.5 pt-3.5 pb-3.5 text-left md:flex-col md:gap-1 md:pt-5 md:pb-4 md:text-center">
-      <GardenIcon icon="p2" class="size-14 shrink-0 text-indigo md:size-[72px]" />
+      <GardenIcon icon="gm-idle" class="size-14 shrink-0 text-indigo md:size-[72px]" />
       <TypographyH1 class="hidden md:block">{{ $t('home.hello', { name }) }}</TypographyH1>
       <TypographyLead class="max-md:text-[13px] max-md:leading-normal">
         <span class="md:hidden">{{ $t('home.hello', { name }) }}<br></span>

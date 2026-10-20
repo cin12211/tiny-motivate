@@ -5,14 +5,14 @@
  *   pnpm gen:loading
  */
 import { readFileSync, writeFileSync } from 'node:fs'
-import { MASCOT_POSES, MASCOT_STROKE, MASCOT_VIEWBOX, VIEWBOX, plantForDay } from '@motivation/garden'
+import { GERMI_BOLD_STROKE, MASCOT_POSES, MASCOT_VIEWBOX, VIEWBOX, plantForDay } from '@motivation/garden'
 import { ACCENTS, DEFAULT_SETTINGS } from '../shared/utils/settings.ts'
 
 const SEEDS = [1, 4, 9, 2, 13, 6, 21] // same as SplashScreen.vue
 const locale = (lang: string) => JSON.parse(readFileSync(new URL(`../i18n/locales/${lang}.json`, import.meta.url), 'utf8')).splash
 const TEXT = { vi: locale('vi'), en: locale('en') }
 
-const mochi = `<svg class="mb-mochi" width="112" height="112" viewBox="${MASCOT_VIEWBOX}" fill="none" stroke="currentColor" stroke-width="${MASCOT_STROKE}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${MASCOT_POSES.wave}</svg>`
+const mochi = `<svg class="mb-mochi" width="112" height="112" viewBox="${MASCOT_VIEWBOX}" fill="none" stroke="currentColor" stroke-width="${GERMI_BOLD_STROKE}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${MASCOT_POSES.wave.replace(/stroke-width="[\d.]+"/g, `stroke-width="${GERMI_BOLD_STROKE}"`)}</svg>`
 
 const seeds = SEEDS.map((day, i) =>
   `<span style="--d:${(i * 0.28).toFixed(2)}s"><i></i><svg viewBox="${VIEWBOX}">${plantForDay(day).body}</svg></span>`,

@@ -339,7 +339,7 @@ struct SmallView: View {
                 Text(dotShort(snap.date)).font(.system(size: 10.5, design: mono)).foregroundStyle(p.muted)
             }
             Spacer(minLength: 2)
-            IconView(id: snap.doneCount > 0 ? (snap.todayCell?.i ?? "p2") : "p2", size: 52)
+            IconView(id: snap.doneCount > 0 ? (snap.todayCell?.i ?? "gm-idle") : "gm-idle", size: 52)
                 .frame(maxWidth: .infinity)
             Spacer(minLength: 2)
             Count(snap: snap, t: t, p: p)
@@ -360,7 +360,7 @@ struct MediumView: View {
                 Text(t.today).font(.system(size: 12, weight: .semibold, design: mono))
                 Text(dotShort(snap.date)).font(.system(size: 10.5, design: mono)).foregroundStyle(p.muted)
                 Spacer(minLength: 2)
-                IconView(id: snap.doneCount > 0 ? (snap.todayCell?.i ?? "p2") : "p2", size: 44)
+                IconView(id: snap.doneCount > 0 ? (snap.todayCell?.i ?? "gm-idle") : "gm-idle", size: 44)
                 Spacer(minLength: 2)
                 Count(snap: snap, t: t, p: p)
                 Text(t.streak(snap.streak)).font(.system(size: 10, design: mono)).foregroundStyle(p.muted).lineLimit(1)
@@ -435,7 +435,7 @@ struct LargeView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
-                IconView(id: "p2", size: 26)
+                IconView(id: "gm-idle", size: 26)
                 VStack(alignment: .leading, spacing: 1) {
                     Text(t.garden).font(.system(size: 13, weight: .semibold, design: mono))
                     Text("\(dotShort(snap.date)) · \(snap.doneCount)/\(snap.goals.count) \(t.done)").font(.system(size: 10.5, design: mono)).foregroundStyle(p.muted)

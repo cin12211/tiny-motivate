@@ -9,6 +9,8 @@
 
 export const MASCOT_VIEWBOX = '0 0 100 100'
 export const MASCOT_STROKE = 1.63
+/** Loading / splash screen: every stroke drawn with this one thick line (v59c). */
+export const GERMI_BOLD_STROKE = 3.4
 
 export type MascotPose = 'idle' | 'wave' | 'cheer' | 'gift' | 'sleepy' | 'sprout'
 

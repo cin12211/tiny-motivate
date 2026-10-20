@@ -80,7 +80,7 @@ async function submit() {
       rewards: rewards.value.map(({ day, title, icon, image }) => ({ day, title, icon, image })),
     })
     confettiBurst()
-    toast(t('create.started', { n: goal.totalDays }), { icon: h(Germi, { pose: 'cheer', size: 28, class: 'text-on-indigo' }) })
+    toast(t('create.started', { n: goal.totalDays }), { icon: h(Germi, { pose: 'cheer', size: 28, class: 'text-on-indigo [--gm-bg:var(--m-indigo)]' }) })
     await navigateTo(`/goals/${goal.id}`)
   }
   catch (err) {

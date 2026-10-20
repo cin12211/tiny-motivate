@@ -549,3 +549,4 @@ export function toSvg(icon: Pick<GardenIcon, 'body'>, size = 32) {
 
 export * from './hand-icons.ts'
 export * from './mascot.ts'
+export * from './logos.ts'

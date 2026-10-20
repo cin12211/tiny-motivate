@@ -283,5 +283,13 @@
     "empty": "Khu vườn còn trống hôm đó.",
     "pick": "Chọn ngày",
     "hint": "Cuộn dải mầm và chạm vào một mầm để ghé lại ngày đó"
+  },
+  "logos": {
+    "gm-idle": "Germi đứng yên",
+    "gm-wave": "Germi vẫy lá",
+    "gm-cheer": "Germi reo vui",
+    "gm-gift": "Germi ôm quà",
+    "gm-sleepy": "Germi rũ lá ngủ",
+    "gm-sprout": "Germi tưới nước"
   }
 }

@@ -177,14 +177,14 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
         </button>
       </div>
       <div v-if="open === 'logo'" class="-mt-1 mb-2 flex flex-col gap-3 rounded-xl border border-dashed border-faint p-3.5">
-        <div class="grid max-h-[300px] grid-cols-7 gap-1 overflow-y-auto">
+        <div class="grid grid-cols-5 gap-1.5 md:grid-cols-10">
           <button
             v-for="id in LOGOS"
             :key="id"
             type="button"
             class="grid aspect-square place-items-center rounded-[9px] border transition-colors"
-            :class="settings.logo === id ? 'border-indigo bg-primary text-primary-foreground' : 'border-transparent text-indigo hover:bg-surface'"
-            :aria-label="`logo ${id}`"
+            :class="settings.logo === id ? 'border-indigo bg-primary text-primary-foreground [--gm-fill:var(--primary)]' : 'border-transparent text-indigo hover:bg-surface [--gm-fill:var(--background)]'"
+            :aria-label="id.startsWith('gm-') ? $t(`logos.${id}`) : `logo ${id}`"
             :aria-pressed="settings.logo === id"
             @click="save({ logo: id })"
           >

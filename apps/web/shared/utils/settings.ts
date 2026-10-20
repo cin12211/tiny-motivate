@@ -1,4 +1,4 @@
-import { PLANTS, MOODS } from '@motivation/garden'
+import { LOGO_IDS } from '@motivation/garden'
 import type { UserSettings } from '../types'
 
 export interface Accent {
@@ -23,8 +23,11 @@ export const ACCENTS: ReadonlyArray<Accent> = [
   { key: 'mustard', light: '#8A6A00', dark: '#E3C155' },
 ]
 
-/** Every garden icon can be the app logo: the forest, all 55 plants and the 5 mood flowers. */
-export const LOGOS: readonly string[] = ['forest', ...PLANTS.map(p => `p${p.id}`), ...MOODS.map(m => m.id)]
+/**
+ * The 20 app logos offered in Settings (packages/garden/src/logos.ts). A logo
+ * saved earlier that is no longer offered falls back to the default.
+ */
+export const LOGOS: readonly string[] = LOGO_IDS
 
 export const LANGS = ['vi', 'en'] as const
 export const THEMES = ['system', 'light', 'dark'] as const

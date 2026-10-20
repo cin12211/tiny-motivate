@@ -1,4 +1,4 @@
-import { VIEWBOX, iconById } from '@motivation/garden'
+import { logoIcon } from '@motivation/garden'
 import type { UserSettings } from '#shared/types'
 import { ACCENTS } from '#shared/utils/settings'
 
@@ -15,13 +15,14 @@ function bolder(body: string) {
 
 export async function faviconHref(settings: Pick<UserSettings, 'accent' | 'logo'>, dark: boolean, px = 64) {
   const accent = ACCENTS[settings.accent] ?? ACCENTS[0]!
-  const body = iconById(settings.logo)?.body ?? iconById('p2')!.body
-  const w = Number(VIEWBOX.split(' ')[2]) // 32
+  const tile = dark ? '#1F1E27' : '#FFFFFF'
+  const logo = logoIcon(settings.logo, tile) ?? logoIcon('p2')!
+  const [x, y, w] = logo.viewBox.split(' ').map(Number) as [number, number, number]
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 ${w} ${w}">`
-    + `<rect width="${w}" height="${w}" rx="${w * 0.2}" fill="${dark ? '#1F1E27' : '#FFFFFF'}"/>`
+    + `<rect width="${w}" height="${w}" rx="${w * 0.2}" fill="${tile}"/>`
     // icon fills ~96% of the tile with a bolder line so it stays readable at 16px;
-    // nudged up 1.5 units because the garden drawings sit on a ground line near the bottom
-    + `<g transform="translate(${w * 0.02} ${w * 0.02 - 1.5}) scale(.96)" style="color:${dark ? accent.dark : accent.light}">${bolder(body)}</g></svg>`
+    // garden drawings sit on a ground line near the bottom, so they are nudged up a little
+    + `<g transform="translate(${w * 0.02 - x * 0.96} ${w * 0.02 - y * 0.96 - (logo.ground ? w * 0.047 : 0)}) scale(.96)" style="color:${dark ? accent.dark : accent.light}">${logo.ground ? bolder(logo.body) : logo.body}</g></svg>`
   const svgUrl = `data:image/svg+xml,${encodeURIComponent(svg)}`
   try {
     const img = new Image()

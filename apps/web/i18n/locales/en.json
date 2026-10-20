@@ -283,5 +283,13 @@
     "empty": "The garden was empty that day.",
     "pick": "Pick a day",
     "hint": "Scroll the sprout strip and tap a sprout to revisit that day"
+  },
+  "logos": {
+    "gm-idle": "Germi standing",
+    "gm-wave": "Germi waving a leaf",
+    "gm-cheer": "Germi cheering",
+    "gm-gift": "Germi hugging a gift",
+    "gm-sleepy": "Germi sleepy",
+    "gm-sprout": "Germi watering"
   }
 }

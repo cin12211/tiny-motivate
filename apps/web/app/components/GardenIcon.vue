@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FOREST, HAND_ICONS, HAND_VIEWBOX, VIEWBOX, iconById, moodById, plantForDay } from '@motivation/garden'
+import { FOREST, HAND_ICONS, HAND_VIEWBOX, VIEWBOX, iconById, logoIcon, moodById, plantForDay } from '@motivation/garden'
 
 /**
  * One icon from the garden set (packages/garden):
@@ -10,6 +10,11 @@ import { FOREST, HAND_ICONS, HAND_VIEWBOX, VIEWBOX, iconById, moodById, plantFor
 const props = defineProps<{ day?: number, mood?: string | null, forest?: boolean, icon?: string }>()
 
 const svg = computed(() => {
+  if (props.icon?.startsWith('gm-')) {
+    // Germi logo: the gift box is filled with --gm-fill (the tile colour by default)
+    const logo = logoIcon(props.icon)
+    return { id: `i-${props.icon}`, viewBox: logo?.viewBox ?? VIEWBOX, body: logo?.body }
+  }
   if (props.icon?.startsWith('g-')) return { id: `h-${props.icon}`, viewBox: HAND_VIEWBOX, body: HAND_ICONS[props.icon] }
   if (props.icon) return { id: `i-${props.icon}`, viewBox: VIEWBOX, body: iconById(props.icon)?.body }
   if (props.forest) return { id: 'i-forest', viewBox: VIEWBOX, body: FOREST.body }

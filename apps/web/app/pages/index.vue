@@ -23,9 +23,10 @@ const name = computed(() => user.value?.name || t('home.you'))
     <!-- phones: small sprout beside the greeting; web: bigger sprout above it -->
     <div class="flex items-center justify-center gap-3.5 pt-3.5 pb-3.5 text-left md:flex-col md:gap-1 md:pt-5 md:pb-4 md:text-center">
       <GardenIcon icon="gm-idle" class="size-14 shrink-0 text-indigo md:size-[72px]" />
-      <TypographyH1 class="hidden md:block">{{ $t('home.hello', { name }) }}</TypographyH1>
+      <!-- the user's name in Caveat (v59g) -->
+      <TypographyH1 class="hidden md:block"><i18n-t keypath="home.hello" tag="span" scope="global"><template #name><span class="font-hand text-[1.6em] leading-none font-bold text-indigo">{{ name }}</span></template></i18n-t></TypographyH1>
       <TypographyLead class="max-md:text-[13px] max-md:leading-normal">
-        <span class="md:hidden">{{ $t('home.hello', { name }) }}<br></span>
+        <span class="md:hidden"><i18n-t keypath="home.hello" tag="span" scope="global"><template #name><span class="font-hand text-[1.6em] leading-none font-bold text-indigo">{{ name }}</span></template></i18n-t><br></span>
         <i18n-t v-if="stats.pending.length" keypath="home.pending" tag="span" scope="global"><template #goals><em>{{ $t('home.pendingGoals', stats.pending.length, { n: stats.pending.length }) }}</em></template></i18n-t>
         <template v-else>{{ $t('home.allDone') }}</template>
         <br class="md:hidden">

@@ -36,10 +36,10 @@ const preview = computed(() => goalReminderBody(props.goal, locale.value, Math.m
 </script>
 
 <template>
-  <section class="flex flex-col items-center gap-2 pt-[22px] md:pt-3">
+  <section class="flex flex-col items-center gap-2.5 pt-[26px] pb-[30px] md:pt-3">
     <Badge class="mb-1">{{ $t('remind.title') }}</Badge>
-    <RemindPicker v-model="remind" class="w-full" />
-    <TypographyMuted class="w-full text-[11.5px] leading-relaxed">
+    <RemindPicker v-model="remind" class="justify-center" />
+    <TypographyMuted class="max-w-[320px] text-center text-xs leading-normal">
       <template v-if="!goal.remind">{{ $t('remind.noteOff') }}</template>
       <template v-else-if="same">{{ $t('remind.noteSame', { time: goal.remind }) }}</template>
       <template v-else>
@@ -49,8 +49,8 @@ const preview = computed(() => goalReminderBody(props.goal, locale.value, Math.m
     </TypographyMuted>
 
     <!-- preview of the notification (only when the goal has its own time) -->
-    <div v-if="goal.remind && !same" class="flex w-full flex-col gap-1.5">
-      <div class="flex items-start gap-2.5 rounded-2xl border border-line bg-surface p-3">
+    <div v-if="goal.remind && !same" class="flex w-full max-w-[340px] flex-col items-center gap-2.5">
+      <div class="flex w-full items-start gap-2.5 rounded-2xl border border-line bg-surface px-3 py-[11px] shadow-[0_10px_24px_-16px_rgba(20,10,80,.45)]">
         <LogoTile :size="34" />
         <div class="min-w-0 flex-1">
           <div class="flex items-baseline justify-between gap-2">
@@ -60,7 +60,7 @@ const preview = computed(() => goalReminderBody(props.goal, locale.value, Math.m
           <TypographySmall as="p" class="mt-0.5 leading-snug text-indigo">{{ preview }}</TypographySmall>
         </div>
       </div>
-      <button type="button" class="self-end text-[11.5px] text-indigo underline underline-offset-[3px]" @click="pick++">{{ $t('remind.another') }}</button>
+      <button type="button" class="text-xs text-indigo underline underline-offset-[3px]" @click="pick++">{{ $t('remind.another') }}</button>
     </div>
   </section>
 </template>

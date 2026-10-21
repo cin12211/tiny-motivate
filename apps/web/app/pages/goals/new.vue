@@ -17,6 +17,7 @@ const title = ref('')
 const icon = ref(GOAL_ICONS[0]!)
 const totalDays = ref(30)
 const startDate = ref(toISODate())
+const remind = ref<string | null>(null)
 const rewards = ref<DraftReward[]>([
   { key: seq++, day: 3, title: t('create.defaultReward1'), icon: 'bubble-tea-01', image: null },
   { key: seq++, day: 7, title: t('create.defaultReward2'), icon: 'restaurant-01', image: null },
@@ -77,6 +78,7 @@ async function submit() {
       icon: icon.value,
       totalDays: totalDays.value,
       startDate: startDate.value,
+      remind: remind.value,
       rewards: rewards.value.map(({ day, title, icon, image }) => ({ day, title, icon, image })),
     })
     confettiBurst()
@@ -153,6 +155,12 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
         <div class="mb-[22px]">
           <Label for="c-start" class="mb-2 block"><TypographyH3 as="span">{{ $t('create.start') }}</TypographyH3></Label>
           <Input id="c-start" v-model="startDate" type="date" />
+        </div>
+
+        <div class="mb-[22px]">
+          <TypographyH3 class="mb-2">{{ $t('remind.title') }}</TypographyH3>
+          <TypographyMuted class="-mt-1 mb-2.5">{{ $t('remind.hint') }}</TypographyMuted>
+          <RemindPicker v-model="remind" />
         </div>
 
         <div class="mb-[22px]">

@@ -31,6 +31,8 @@ export interface Goal {
   totalDays: number
   /** First day of the challenge, YYYY-MM-DD (local date). */
   startDate: string
+  /** Daily reminder for this goal, HH:MM (local), or null for none. */
+  remind: string | null
   rewards: Reward[]
   /** Keyed by day number (1..totalDays). */
   days: Record<string, DayEntry>
@@ -66,7 +68,12 @@ export interface CreateGoalInput {
   icon: string
   totalDays: number
   startDate?: string
+  remind?: string | null
   rewards: Array<Pick<Reward, 'day' | 'title' | 'icon' | 'image'>>
+}
+
+export interface UpdateGoalInput {
+  remind?: string | null
 }
 
 export interface UpdateDayInput {

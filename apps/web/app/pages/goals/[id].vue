@@ -175,6 +175,7 @@ async function onDelete() {
 
     <GardenGrid v-model="selected" :goal="goal" />
     <RewardList :goal="goal" />
+    <GoalRemind :goal="goal" />
 
     <Button variant="ghost" size="sm" class="mx-auto mt-8 flex text-[11.5px]" @click="onDelete">
       <HandIcon name="delete-02" /> {{ $t('goal.delete') }}

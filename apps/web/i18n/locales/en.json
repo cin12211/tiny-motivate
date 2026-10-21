@@ -269,7 +269,11 @@
   },
   "reminder": {
     "title": "A nudge from Germi",
-    "body": "Ticked your goals today? Grow one more sprout :)"
+    "body": "Ticked your goals today? Grow one more sprout :)",
+    "goal1": "It's time for “{goal}”, even a tiny bit counts :)",
+    "goal2": "Your “{goal}” sprout is waiting to be watered today.",
+    "goal3": "Day {n}/{total} of “{goal}”, {x} more days until “{reward}”.",
+    "goal4": "Germi has been waiting for you at “{goal}” for a while."
   },
   "day": {
     "legend": "Days that grew a plant",
@@ -291,5 +295,21 @@
     "gm-gift": "Germi hugging a gift",
     "gm-sleepy": "Germi sleepy",
     "gm-sprout": "Germi watering"
+  },
+  "remind": {
+    "title": "Reminder",
+    "hint": "Every day at this time Germi sends a notification to nudge you back. No nudge on days you have already ticked.",
+    "off": "No reminder",
+    "other": "Pick another time",
+    "toastOn": "Will remind you of “{title}” at {time} every day",
+    "toastSame": "Same time as the general reminder, Germi will nudge you once at {time}",
+    "toastOff": "Reminder turned off for this goal",
+    "noteOff": "No reminder set for this goal.",
+    "noteSame": "Same time as the general reminder ({time}) in Settings, so only the general one is sent.",
+    "noteOn": "Every day at {time} for {n} days, except days you have ticked.",
+    "noteTicked": "You ticked today, so Germi will not nudge you.",
+    "another": "See another message",
+    "now": "now",
+    "errSave": "Could not save the reminder, try again"
   }
 }

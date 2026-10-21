@@ -8,7 +8,7 @@ export default defineEventHandler((event) => {
   if (!path.startsWith('/api/') && !path.startsWith('/uploads/')) return
   const handled = handleCors(event, {
     origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Authorization', 'Content-Type', 'X-Auth-Jwt'],
     // Better Auth returns the session token for the app in this header
     exposeHeaders: ['set-auth-token', 'x-auth-jwt', 'server-timing'],

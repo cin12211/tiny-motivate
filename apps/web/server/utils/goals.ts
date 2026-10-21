@@ -1,12 +1,13 @@
 import { and, asc, eq, inArray } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
-import type { CreateGoalInput, DayEntry, Goal, MoodId, UpdateDayInput } from '#shared/types'
+import type { CreateGoalInput, DayEntry, Goal, MoodId, UpdateDayInput, UpdateGoalInput } from '#shared/types'
 import { dayNumberOf, toISODate } from '#shared/utils/dates'
 import { schema, useDb } from '../db'
 
 const { goal, goalDay, reward } = schema
 const MOODS = new Set(['m1', 'm2', 'm3', 'm4', 'm5'])
 const iso = (d: Date | null | undefined) => (d ? d.toISOString() : null)
+const isTime = (v: unknown): v is string => typeof v === 'string' && /^([01]\d|2[0-3]):[0-5]\d$/.test(v)
 
 const goalsKey = (userId: string) => `goals:${userId}`
 const GOALS_TTL = 300
@@ -35,6 +36,7 @@ export async function loadGoals(userId: string, goalId?: string): Promise<Goal[]
     icon: g.icon,
     totalDays: g.totalDays,
     startDate: g.startDate,
+    remind: g.remind ?? null,
     createdAt: g.createdAt.toISOString(),
     rewards: rewards.filter(r => r.goalId === g.id).map(r => ({
       id: r.id, day: r.day, title: r.title, icon: r.icon, image: r.image, openedAt: iso(r.openedAt),
@@ -74,10 +76,24 @@ export async function createGoal(userId: string, body: CreateGoalInput): Promise
     }))
 
   const db = useDb()
-  await db.insert(goal).values({ id, userId, title, icon: body.icon || 'plant-01', totalDays, startDate })
+  const remind = isTime(body.remind) ? body.remind : null
+  await db.insert(goal).values({ id, userId, title, icon: body.icon || 'plant-01', totalDays, startDate, remind })
   if (rewards.length) await db.insert(reward).values(rewards)
   await invalidate(goalsKey(userId))
   return getGoal(userId, id)
+}
+
+/** Change a goal's settings (for now: its daily reminder time). */
+export async function updateGoal(userId: string, goalId: string, body: UpdateGoalInput): Promise<Goal> {
+  if (body?.remind !== undefined && body.remind !== null && !isTime(body.remind))
+    throw createError({ statusCode: 400, statusMessage: 'Giờ nhắc không hợp lệ' })
+  if (body?.remind !== undefined) {
+    const updated = await useDb().update(goal).set({ remind: body.remind })
+      .where(and(eq(goal.id, goalId), eq(goal.userId, userId))).returning({ id: goal.id })
+    if (!updated.length) throw createError({ statusCode: 404, statusMessage: 'Không tìm thấy mục tiêu' })
+    await invalidate(goalsKey(userId))
+  }
+  return getGoal(userId, goalId)
 }
 
 export async function deleteGoal(userId: string, goalId: string) {

@@ -269,7 +269,11 @@
   },
   "reminder": {
     "title": "Germi nhắc bạn nè",
-    "body": "Hôm nay tick mục tiêu chưa? Thêm một mầm cho khu vườn nhé :)"
+    "body": "Hôm nay tick mục tiêu chưa? Thêm một mầm cho khu vườn nhé :)",
+    "goal1": "Tới giờ “{goal}” rồi nè, làm một chút thôi cũng được :)",
+    "goal2": "Mầm “{goal}” đang chờ bạn tưới hôm nay.",
+    "goal3": "Ngày {n}/{total} của “{goal}”, còn {x} ngày nữa là tới quà “{reward}”.",
+    "goal4": "Germi ngồi đợi bạn ở “{goal}” nãy giờ rồi đó."
   },
   "day": {
     "legend": "Ngày đã mọc cây",
@@ -291,5 +295,21 @@
     "gm-gift": "Germi ôm quà",
     "gm-sleepy": "Germi rũ lá ngủ",
     "gm-sprout": "Germi tưới nước"
+  },
+  "remind": {
+    "title": "Giờ nhắc",
+    "hint": "Mỗi ngày tới giờ này Germi gửi một thông báo nhắc bạn vào làm tiếp. Hôm nào đã tick thì Germi không nhắc.",
+    "off": "Không nhắc",
+    "other": "Chọn giờ khác",
+    "toastOn": "Sẽ nhắc “{title}” lúc {time} mỗi ngày",
+    "toastSame": "Trùng giờ nhắc chung, Germi chỉ nhắc một lần lúc {time}",
+    "toastOff": "Đã tắt nhắc cho mục tiêu này",
+    "noteOff": "Chưa đặt giờ nhắc cho mục tiêu này.",
+    "noteSame": "Trùng giờ nhắc chung ({time}) trong cài đặt, nên chỉ gửi thông báo chung.",
+    "noteOn": "Mỗi ngày lúc {time} trong {n} ngày, trừ hôm đã tick.",
+    "noteTicked": "Hôm nay bạn tick rồi nên Germi không nhắc.",
+    "another": "Xem câu nhắc khác",
+    "now": "bây giờ",
+    "errSave": "Chưa lưu được giờ nhắc, thử lại nhé"
   }
 }

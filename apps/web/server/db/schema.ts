@@ -75,6 +75,8 @@ export const goal = pgTable('goal', {
   totalDays: integer('total_days').notNull(),
   /** First day of the challenge (local date). */
   startDate: date('start_date', { mode: 'string' }).notNull(),
+  /** Daily reminder time for this goal (HH:MM, local), or null for none. */
+  remind: text('remind'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 }, t => [index('goal_user_idx').on(t.userId)])
 

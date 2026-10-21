@@ -1,4 +1,4 @@
-import type { CreateGoalInput, Goal, Reward, UpdateDayInput } from '#shared/types'
+import type { CreateGoalInput, Goal, Reward, UpdateDayInput, UpdateGoalInput } from '#shared/types'
 import { addDays, dayNumberOf, parseISODate } from '#shared/utils/dates'
 
 /** Shared goal list backed by the Nitro JSON API. */
@@ -99,6 +99,13 @@ export function useGoals() {
     }
   }
 
+  /** Change the goal's own reminder time (optimistic). */
+  function updateGoal(id: string, input: UpdateGoalInput) {
+    return optimistic(id, (g) => {
+      if (input.remind !== undefined) g.remind = input.remind
+    }, () => useApi()<Goal>(`/api/goals/${id}`, { method: 'PATCH', body: input }))
+  }
+
   function openReward(id: string, rewardId: string) {
     return optimistic(id, (g) => {
       const r = g.rewards.find(x => x.id === rewardId)
@@ -112,7 +119,7 @@ export function useGoals() {
     return useApi()<{ url: string }>('/api/uploads', { method: 'POST', body: form })
   }
 
-  return { goals, loaded, refresh, ensureLoaded, reset, create, remove, updateDay, patchDay, openReward, upload }
+  return { goals, loaded, refresh, ensureLoaded, reset, create, remove, updateDay, patchDay, updateGoal, openReward, upload }
 }
 
 export type DayStatus = 'done' | 'today' | 'missed' | 'future'

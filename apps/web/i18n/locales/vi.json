@@ -310,6 +310,7 @@
     "noteTicked": "Hôm nay bạn tick rồi nên Germi không nhắc.",
     "another": "Xem câu nhắc khác",
     "now": "bây giờ",
-    "errSave": "Chưa lưu được giờ nhắc, thử lại nhé"
+    "errSave": "Chưa lưu được giờ nhắc, thử lại nhé",
+    "otherShort": "Giờ khác"
   }
 }

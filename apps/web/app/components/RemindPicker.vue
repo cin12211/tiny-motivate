@@ -25,15 +25,19 @@ function onTime(e: Event) {
   <div class="flex flex-wrap items-center gap-1.5">
     <button type="button" :class="cn(chip, !remind && chipOn)" :aria-pressed="!remind" @click="remind = null">{{ $t('remind.off') }}</button>
     <button v-for="p in PRESETS" :key="p" type="button" :class="cn(chip, 'tabular-nums', remind === p && chipOn)" :aria-pressed="remind === p" @click="remind = p">{{ p }}</button>
-    <label class="relative min-w-[108px] flex-1">
+    <!-- the label draws the box; the input fills it absolutely, because iOS WebKit
+         sizes a time input to its text and ignores width: 100% -->
+    <label class="relative h-[38px] min-w-[108px] flex-1 rounded-lg border bg-surface" :class="custom ? 'border-indigo' : 'border-line'">
       <input
         type="time"
         :value="custom"
         :aria-label="$t('remind.other')"
-        class="remind-time h-[38px] w-full rounded-lg border bg-surface pr-9 pl-2.5 text-[13px] font-medium text-indigo tabular-nums outline-none"
-        :class="custom ? 'border-indigo' : 'border-line'"
+        class="remind-time absolute inset-0 size-full min-w-0 appearance-none rounded-lg bg-transparent pr-9 pl-2.5 text-left text-[13px] font-medium tabular-nums outline-none"
+        :class="custom ? 'text-indigo' : 'text-transparent'"
         @change="onTime"
       >
+      <!-- empty: a hint instead of the browser's "--:--" (iOS shows nothing at all) -->
+      <span v-if="!custom" class="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-[13px] text-muted-foreground">{{ $t('remind.otherShort') }}</span>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <svg :viewBox="UI_CLOCK.viewBox" aria-hidden="true" class="pointer-events-none absolute top-1/2 right-2.5 size-[22px] -translate-y-1/2 text-indigo" v-html="UI_CLOCK.body" />
     </label>
@@ -50,7 +54,11 @@ function onTime(e: Event) {
   opacity: 0;
   cursor: pointer;
 }
+.remind-time {
+  -webkit-appearance: none;
+}
 .remind-time::-webkit-date-and-time-value {
   text-align: left;
+  min-height: 1.2em;
 }
 </style>

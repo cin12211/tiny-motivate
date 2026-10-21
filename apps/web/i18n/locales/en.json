@@ -310,6 +310,7 @@
     "noteTicked": "You ticked today, so Germi will not nudge you.",
     "another": "See another message",
     "now": "now",
-    "errSave": "Could not save the reminder, try again"
+    "errSave": "Could not save the reminder, try again",
+    "otherShort": "Other time"
   }
 }

@@ -23,7 +23,7 @@ function onTime(e: Event) {
 </script>
 
 <template>
-  <!-- design v60 / v60c: 36px chips, then the time box as one more chip, sized to its value -->
+  <!-- design v60 / v60c: 36px chips, then the time box as one more chip, just wide enough for HH:MM + the clock -->
   <div class="flex flex-wrap items-center gap-2">
     <button type="button" :class="cn(chip, !remind && chipOn)" :aria-pressed="!remind" @click="remind = null">{{ $t('remind.off') }}</button>
     <button v-for="p in PRESETS" :key="p" type="button" :class="cn(chip, 'tabular-nums', remind === p && chipOn)" :aria-pressed="remind === p" @click="remind = p">{{ p }}</button>
@@ -32,10 +32,12 @@ function onTime(e: Event) {
         type="time"
         :value="custom"
         :aria-label="$t('remind.other')"
-        class="remind-time relative h-9 w-auto min-w-[104px] rounded-[7px] border bg-surface pr-9 pl-2.5 text-[12.5px] font-medium text-indigo tabular-nums outline-none"
-        :class="custom ? 'border-indigo shadow-[inset_0_0_0_1px_var(--m-indigo)]' : 'border-line'"
+        class="remind-time relative h-9 w-[calc(5ch+48px)] min-w-0 rounded-[7px] border bg-surface pr-[34px] pl-2.5 text-[12.5px] font-medium tabular-nums outline-none"
+        :class="custom ? 'border-indigo text-indigo shadow-[inset_0_0_0_1px_var(--m-indigo)]' : 'border-line text-transparent'"
         @change="onTime"
       >
+      <!-- empty: "--:--" on every platform (iOS draws nothing for an empty time input) -->
+      <span v-if="!custom" class="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-[12.5px] font-medium text-muted-foreground tabular-nums">--:--</span>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <svg :viewBox="UI_CLOCK.viewBox" aria-hidden="true" class="pointer-events-none absolute top-1/2 right-2 size-[22px] -translate-y-1/2 text-indigo" v-html="UI_CLOCK.body" />
     </label>

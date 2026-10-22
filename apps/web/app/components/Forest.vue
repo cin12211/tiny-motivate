@@ -13,7 +13,7 @@ import { addDays, dayNumberOf, parseISODate, toISODate } from '#shared/utils/dat
  * [11,12]), so it never spills into another year. The solid chip above shows
  * the viewed date and opens a popover with a month calendar, the number of
  * months to show and "back to today".
- * Mobile: 1 / 2 / 3 / 6 months (default 2). Web: 3 / 6 / 12 (default 6).
+ * Mobile: 1 / 2 / 3 / 6 months (default 3). Web: 3 / 6 / 12 (default 6).
  * The choice is saved on the device (localStorage, also in the app).
  */
 const { t, locale } = useI18n()
@@ -23,7 +23,7 @@ const today = toISODate()
 const OPTIONS = computed(() => (props.web ? [3, 6, 12] : [1, 2, 3, 6]))
 // remembered on this device (separately for the phone and web layouts), so
 // leaving home or reopening the app keeps the user's choice (v60b)
-const DEFAULT_MONTHS = props.web ? 6 : 2
+const DEFAULT_MONTHS = props.web ? 6 : 3
 const savedMonths = useLocalStorage(props.web ? 'motivation-garden-months-web' : 'motivation-garden-months', DEFAULT_MONTHS)
 const months = computed({
   get: () => (OPTIONS.value.includes(Number(savedMonths.value)) ? Number(savedMonths.value) : DEFAULT_MONTHS),
@@ -69,6 +69,8 @@ const cells = computed(() => {
 const grown = computed(() => cells.value.filter(c => c.done).length)
 
 const dense = computed(() => (props.web ? months.value === 12 : months.value === 6))
+/** Mobile 6 months: 20px cells, so smaller dots (v61e). */
+const tinyDots = computed(() => !props.web && dense.value)
 
 /**
  * Square cells, as many per row as fit the width, centred (v49f). Every second
@@ -171,7 +173,7 @@ function openDay(iso: string) {
           <i
             v-else
             class="block rounded-full transition-transform group-hover:scale-[1.6]"
-            :class="c.isToday ? 'size-[7px] bg-indigo' : ['size-[3px] bg-indigo', c.future ? 'opacity-30' : 'opacity-60']"
+            :class="c.isToday ? ['bg-indigo', tinyDots ? 'size-[3.5px]' : 'size-[7px]'] : ['bg-indigo', tinyDots ? 'size-[2px]' : 'size-[3px]', c.future ? 'opacity-30' : 'opacity-60']"
           />
         </span>
         <b v-if="web && c.monthLabel && !c.done" class="absolute -top-0.5 left-1/2 -translate-x-1/2 text-[9px] font-medium whitespace-nowrap text-muted-foreground">{{ c.monthLabel }}</b>

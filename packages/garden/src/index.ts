@@ -425,8 +425,11 @@ function rng(seed: string) {
 }
 
 /** Share of picks that come from the 55 plants (the rest: the 40 farm icons). */
-export const PLANT_SHARE = 0.65
+export const PLANT_SHARE = 0.85
 const PLANT_IDS = PLANTS.map(p => `p${p.id}`)
+/** The first 15 things that ever grow are always plants p1..p15, in order. */
+export const FIRST_PLANTS = 15
+const FIRST_IDS = PLANT_IDS.slice(0, FIRST_PLANTS)
 
 function shuffle(items: readonly string[], next: () => number) {
   const out = [...items]
@@ -440,25 +443,45 @@ function shuffle(items: readonly string[], next: () => number) {
 const goalPools = new Map<string, string[]>()
 
 /**
- * Icon that grows on day `day` of a goal. The 95 icons are dealt once per goal
- * (seeded by the goal id) as one sequence with no repeats: each step takes the
- * next plant with 65% chance, otherwise the next farm icon (whichever pile is
- * left once the other runs out). The sequence repeats after 95 days.
+ * Icon for the `nth` done day of a goal (1 = its first tick). The first 15
+ * are plants p1..p15 in order; after that the other 80 icons are dealt once
+ * per goal (seeded by the goal id) with no repeats: each step takes the next
+ * plant with 85% chance, otherwise the next farm icon (whichever pile is left
+ * once the other runs out). The sequence repeats after 95 ticks.
  */
-export function growIconForGoal(goalId: string, day: number) {
+export function growIconForGoal(goalId: string, nth: number) {
   let pool = goalPools.get(goalId)
   if (!pool) {
     const next = rng(goalId)
-    const plants = shuffle(PLANT_IDS, next)
+    const plants = shuffle(PLANT_IDS.slice(FIRST_PLANTS), next)
     const farm = shuffle(FARM_ICONS, next)
-    pool = []
+    pool = [...FIRST_IDS]
     while (plants.length || farm.length) {
       const fromPlants = farm.length === 0 || (plants.length > 0 && next() < PLANT_SHARE)
       pool.push((fromPlants ? plants : farm).shift()!)
     }
     goalPools.set(goalId, pool)
   }
-  return pool[(Math.max(1, Math.floor(day)) - 1) % pool.length]!
+  return pool[(Math.max(1, Math.floor(nth)) - 1) % pool.length]!
+}
+
+/**
+ * Icons for the home garden (all goals together), by date: the first 15 dates
+ * with a tick get plants p1..p15 in order, every later date its own seeded
+ * pick (growIconForDate). `doneDates` are the dates with at least one tick.
+ * Dates not ticked yet get the icon they would grow next.
+ */
+export function gardenIcons(doneDates: Iterable<string>) {
+  const sorted = [...doneDates].sort()
+  const first = new Map(sorted.slice(0, FIRST_PLANTS).map((d, i) => [d, FIRST_IDS[i]!]))
+  const last = sorted.at(-1)
+  return (iso: string) => {
+    const fixed = first.get(iso)
+    if (fixed) return fixed
+    // a new tick (after the last one) while the first 15 are not all grown yet
+    if (sorted.length < FIRST_PLANTS && (!last || iso > last)) return FIRST_IDS[sorted.length]!
+    return growIconForDate(iso)
+  }
 }
 
 const baseIconCache = new Map<string, string>()

@@ -1,5 +1,5 @@
 import { Capacitor, registerPlugin } from '@capacitor/core'
-import { growIconForDate } from '@motivation/garden'
+import { gardenIcons } from '@motivation/garden'
 import type { Goal, UserSettings } from '#shared/types'
 import { ACCENTS } from '#shared/utils/settings'
 import { addDays, toISODate } from '#shared/utils/dates'
@@ -41,9 +41,10 @@ export function widgetSnapshot(goals: Goal[], settings: UserSettings, auth: { ap
 
   // today − 39 … today + 31: the whole current month (large widget), and the
   // widget can move on into the next month by itself
+  const iconFor = gardenIcons(doneMap.keys())
   const garden = Array.from({ length: 71 }, (_, i) => {
     const d = addDays(today, i - 39)
-    return { d, i: growIconForDate(d), done: d < today && !!doneMap.get(d) }
+    return { d, i: iconFor(d), done: d < today && !!doneMap.get(d) }
   })
 
   return {

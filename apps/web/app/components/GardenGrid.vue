@@ -18,15 +18,17 @@ const rewardsMap = computed(() => {
 const cells = computed(() => {
   const map = rewardsMap.value
   const { id, days, totalDays } = props.goal
+  let nth = 0 // done days so far: the k-th tick grows the k-th icon of the goal
   return Array.from({ length: totalDays }, (_, i) => {
     const n = i + 1
     const reward = map.get(n)
     const done = !!days[String(n)]?.done
+    if (done) nth++
     return {
       n,
       reward,
       done,
-      icon: done ? growIconForGoal(id, n) : undefined,
+      icon: done ? growIconForGoal(id, nth) : undefined,
     }
   })
 })

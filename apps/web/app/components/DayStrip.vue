@@ -27,11 +27,14 @@ const days = computed(() => {
   const rewards = rewardsMap.value
   const today = stats.value.today
   const done = doneCount.value
+  let nth = 0 // done days so far: the k-th tick grows the k-th icon of the goal
   return Array.from({ length: props.goal.totalDays }, (_, i) => {
     const n = i + 1
     const reward = rewards.get(n)
+    if (props.goal.days[String(n)]?.done) nth++
     return {
       n,
+      nth,
       status: dayStatus(props.goal, n),
       date: slashShort(dayDate(props.goal, n)),
       label: dotShort(dayDate(props.goal, n)),
@@ -74,7 +77,7 @@ watch(selected, () => nextTick(() => center()))
       <span v-if="d.reward" class="grid size-[34px] place-items-center overflow-hidden rounded-md">
         <RewardBadge :reward="d.reward" icon-class="size-[30px]" />
       </span>
-      <GardenIcon v-else-if="d.status === 'done'" :icon="growIconForGoal(goal.id, d.n)" class="size-9" />
+      <GardenIcon v-else-if="d.status === 'done'" :icon="growIconForGoal(goal.id, d.nth)" class="size-9" />
       <i
         v-else
         class="block rounded-full"

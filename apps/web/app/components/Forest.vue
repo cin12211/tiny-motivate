@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useEventListener, useLocalStorage, useResizeObserver } from '@vueuse/core'
-import { growIconForDate } from '@motivation/garden'
+import { gardenIcons } from '@motivation/garden'
 import type { Goal } from '#shared/types'
 import { addDays, dayNumberOf, parseISODate, toISODate } from '#shared/utils/dates'
 
@@ -41,6 +41,8 @@ const range = computed(() => {
 })
 
 const doneDatesMap = computed(() => goalsDoneDateMap(props.goals))
+/** first 15 ticked dates grow p1..p15, later dates a seeded pick */
+const iconFor = computed(() => gardenIcons(doneDatesMap.value.keys()))
 
 const cells = computed(() => {
   const doneMap = doneDatesMap.value
@@ -54,8 +56,8 @@ const cells = computed(() => {
     const label = dotShort(iso)
     return {
       iso,
-      // random from the 95-icon pool, seeded by the date (same on the day page)
-      grow: growIconForDate(iso),
+      // first 15 ticked dates: p1..p15; later: random from the pool, seeded by the date (same on the day page)
+      grow: iconFor.value(iso),
       done,
       isToday,
       future,

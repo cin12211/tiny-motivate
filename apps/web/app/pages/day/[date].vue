@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onKeyStroke } from '@vueuse/core'
-import { growIconForDate } from '@motivation/garden'
+import { gardenIcons } from '@motivation/garden'
 import { addDays, dayNumberOf, toISODate } from '#shared/utils/dates'
 
 /**
@@ -61,6 +61,7 @@ onMounted(() => nextTick(() => centerActive('instant')))
 watch(date, () => nextTick(() => centerActive('smooth')))
 
 const doneDatesMap = computed(() => goalsDoneDateMap(goals.value))
+const iconFor = computed(() => gardenIcons(doneDatesMap.value.keys()))
 
 function doneOn(iso: string) {
   return (doneDatesMap.value.get(iso) || 0) > 0
@@ -127,7 +128,7 @@ function onTouchEnd(e: TouchEvent) {
         <span class="relative grid w-full place-items-center text-indigo" :class="d.iso === date ? 'h-24' : 'h-[34px]'">
           <GardenIcon
             v-if="d.grew"
-            :icon="growIconForDate(d.iso)"
+            :icon="iconFor(d.iso)"
             class="absolute top-1/2 left-1/2 -mt-12 -ml-12 size-24 transition-transform duration-200 motion-reduce:transition-none"
             :class="d.iso === date ? 'scale-100' : 'scale-[0.354]'"
           />

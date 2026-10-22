@@ -73,6 +73,7 @@ async function toggleDone() {
   const saving = updateDay(goal.value!.id, selected.value, { journal: draft.value, done: !entry.value?.done })
   const g = goal.value!
   if (g.days[String(selected.value)]?.done) {
+    playDoneSound()
     confettiBurst()
     const now = goalStats(g)
     if (now.unlocked.length > before) {

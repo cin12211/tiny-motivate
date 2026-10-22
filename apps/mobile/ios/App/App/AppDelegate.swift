@@ -1,6 +1,7 @@
 import UIKit
 import Capacitor
 import WidgetKit
+import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -56,6 +57,7 @@ class MainViewController: CAPBridgeViewController {
     override open func capacitorDidLoad() {
         bridge?.registerPluginInstance(AppIconPlugin())
         bridge?.registerPluginInstance(WidgetPlugin())
+        bridge?.registerPluginInstance(SoundPlugin())
         // iOS edge-swipe back/forward through the SPA's history (pushState entries)
         webView?.allowsBackForwardNavigationGestures = true
         // no vertical scroll bar in the app (design v52)
@@ -114,5 +116,50 @@ public class WidgetPlugin: CAPPlugin, CAPBridgedPlugin {
         if let json = json { defaults?.set(json, forKey: "snapshot") } else { defaults?.removeObject(forKey: "snapshot") }
         if #available(iOS 14.0, *) { WidgetCenter.shared.reloadAllTimelines() }
         call.resolve()
+    }
+}
+
+// MARK: - Sounds
+
+/// `Sound.play({ name })` from JS (apps/web/app/utils/sound.ts): plays a short
+/// bundled sound (e.g. "germi_done.caf"). The audio session is `.ambient`
+/// mixed with others, so the silent switch mutes it and music keeps playing.
+@objc(SoundPlugin)
+public class SoundPlugin: CAPPlugin, CAPBridgedPlugin {
+    public let identifier = "SoundPlugin"
+    public let jsName = "Sound"
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "play", returnType: CAPPluginReturnPromise)
+    ]
+    private var players: [String: AVAudioPlayer] = [:]
+
+    @objc func play(_ call: CAPPluginCall) {
+        guard let name = call.getString("name") else {
+            call.reject("Missing sound name")
+            return
+        }
+        DispatchQueue.main.async {
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.ambient, options: [.mixWithOthers])
+                try AVAudioSession.sharedInstance().setActive(true)
+                let player: AVAudioPlayer
+                if let cached = self.players[name] {
+                    player = cached
+                } else {
+                    guard let url = Bundle.main.url(forResource: name, withExtension: nil) else {
+                        call.reject("Sound not found: \(name)")
+                        return
+                    }
+                    player = try AVAudioPlayer(contentsOf: url)
+                    player.prepareToPlay()
+                    self.players[name] = player
+                }
+                player.currentTime = 0
+                player.play()
+                call.resolve()
+            } catch {
+                call.reject(error.localizedDescription)
+            }
+        }
     }
 }

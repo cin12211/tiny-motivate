@@ -15,6 +15,8 @@ const textFor = (lang: string) => REMINDER_TEXT[lang === 'en' ? 'en' : 'vi']
 const fill = (s: string, vars: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m))
 
 const REMINDER_ID = 1001
+/** "Mầm nảy": bundled in the iOS app (ios/App/App/germi_notify.caf). */
+const NOTIFY_SOUND = 'germi_notify.caf'
 
 /**
  * Daily "tick your goals" reminder. Uses native local notifications inside
@@ -42,6 +44,7 @@ export async function scheduleReminder(settings: Pick<UserSettings, 'notify' | '
         title: text.title,
         body: text.body,
         schedule: { on: { hour, minute }, allowWhileIdle: true },
+        sound: NOTIFY_SOUND,
       }],
     })
   }
@@ -137,6 +140,7 @@ export async function scheduleGoalReminders(goals: Goal[], settings: Pick<UserSe
           title: goalReminderTitle(settings.lang),
           body: goalReminderBody(g, settings.lang, n),
           schedule: { at, allowWhileIdle: true },
+          sound: NOTIFY_SOUND,
           extra: { goalId: g.id },
         })
         count++

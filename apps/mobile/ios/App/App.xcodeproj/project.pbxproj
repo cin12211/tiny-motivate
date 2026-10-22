@@ -10,6 +10,7 @@
 		1442EB8631E17E676C2B5B5D /* TinyMotivateWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AAE07AF397EBF618170EA6 /* TinyMotivateWidget.swift */; };
 		2899218EFC587584CA107B6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68FF8753BF9406526B5B94B9 /* Assets.xcassets */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
+		35455A357DDB617F50C243B1 /* germi_notify.caf in Resources */ = {isa = PBXBuildFile; fileRef = 7D4FE3C961719275676D41FC /* germi_notify.caf */; };
 		500F171CFF101028FBE620A8 /* TinyMotivateWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4A861F941802B4834733EE32 /* TinyMotivateWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		50379B232058CBB4000EE86E /* capacitor.config.json in Resources */ = {isa = PBXBuildFile; fileRef = 50379B222058CBB4000EE86E /* capacitor.config.json */; };
 		504EC3081FED79650016851F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504EC3071FED79650016851F /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 		7A1C0E2B2F00000000A0B002 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 7A1C0E2B2F00000000A0B001 /* PrivacyInfo.xcprivacy */; };
 		A084ECDBA7D38E1E42DFC39D /* Pods_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF277DCFFFF123FFC6DF26C7 /* Pods_App.framework */; };
 		A63F1B3A3C742F98347A7D63 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 124D8196C2C1B93E5630D1AC /* Foundation.framework */; };
+		F90008018D02DF023903839B /* germi_done.caf in Resources */ = {isa = PBXBuildFile; fileRef = 82B99A54BE3963D5A8683700 /* germi_done.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,8 @@
 		5C1E530EA55C412F97B6B084 /* TinyMotivateWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = TinyMotivateWidget.entitlements; sourceTree = "<group>"; };
 		68FF8753BF9406526B5B94B9 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A1C0E2B2F00000000A0B001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		7D4FE3C961719275676D41FC /* germi_notify.caf */ = {isa = PBXFileReference; includeInIndex = 1; path = germi_notify.caf; sourceTree = "<group>"; };
+		82B99A54BE3963D5A8683700 /* germi_done.caf */ = {isa = PBXFileReference; includeInIndex = 1; path = germi_done.caf; sourceTree = "<group>"; };
 		AC85F274174D163C4539A732 /* TinyMotivateWidget-macOS.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = "TinyMotivateWidget-macOS.entitlements"; sourceTree = "<group>"; };
 		AF277DCFFFF123FFC6DF26C7 /* Pods_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF51FD2D460BCFE21FA515B2 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
@@ -145,6 +149,8 @@
 				2FAD9762203C412B000D30F8 /* config.xml */,
 				50B271D01FEDC1A000F3C39B /* public */,
 				5878958001EE062E09AAA8A2 /* App-macOS.entitlements */,
+				7D4FE3C961719275676D41FC /* germi_notify.caf */,
+				82B99A54BE3963D5A8683700 /* germi_done.caf */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -262,6 +268,8 @@
 				50379B232058CBB4000EE86E /* capacitor.config.json in Resources */,
 				504EC30D1FED79650016851F /* Main.storyboard in Resources */,
 				2FAD9763203C412B000D30F8 /* config.xml in Resources */,
+				35455A357DDB617F50C243B1 /* germi_notify.caf in Resources */,
+				F90008018D02DF023903839B /* germi_done.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,9 +20,11 @@ const name = computed(() => user.value?.name || t('home.you'))
       </Button>
     </div>
 
-    <!-- phones: small sprout beside the greeting; web: bigger sprout above it -->
-    <div class="flex items-center justify-center gap-3.5 pt-3.5 pb-3.5 text-left md:flex-col md:gap-1 md:pt-5 md:pb-4 md:text-center">
-      <GardenIcon icon="gm-idle" class="size-14 shrink-0 text-indigo md:size-[72px]" />
+    <!-- phones: greeting + garden as one focus block (v64) -->
+    <div class="max-md:pt-[max(24px,5vh)]">
+    <!-- Germi on its own line above the centred greeting (phones 64px, web 72px) -->
+    <div class="flex flex-col items-center gap-1 pb-2 text-center md:pt-5 md:pb-4">
+      <GardenIcon icon="gm-idle" class="size-16 shrink-0 text-indigo md:size-[72px]" />
       <!-- the user's name in Caveat (v59g) -->
       <TypographyH1 class="hidden md:block"><i18n-t keypath="home.hello" tag="span" scope="global"><template #name><span class="font-hand text-[1.6em] leading-none font-bold text-indigo">{{ name }}</span></template></i18n-t></TypographyH1>
       <TypographyLead class="max-md:text-[13px] max-md:leading-normal">
@@ -40,6 +42,7 @@ const name = computed(() => user.value?.name || t('home.you'))
     <!-- 60-day garden on phones, 120-day forest on the web (only render the active one) -->
     <Forest v-if="!isDesktop" :goals="goals" />
     <Forest v-else :goals="goals" web />
+    </div>
 
     <section class="flex flex-col pt-1.5 md:pt-1">
       <Badge class="mb-1 self-center md:mb-2.5">{{ $t('home.yourGoals') }}</Badge>

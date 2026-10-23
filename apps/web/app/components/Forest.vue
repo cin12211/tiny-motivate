@@ -73,6 +73,8 @@ const grown = computed(() => cells.value.filter(c => c.done).length)
 const dense = computed(() => (props.web ? months.value === 12 : months.value === 6))
 /** Mobile 6 months: 20px cells, so smaller dots (v61e). */
 const tinyDots = computed(() => !props.web && dense.value)
+/** Mobile 1 month: a week per row, 7 big cells filling the width (v64f). */
+const week = computed(() => !props.web && months.value === 1)
 
 /**
  * Square cells, as many per row as fit the width, centred (v49f). Every second
@@ -81,21 +83,26 @@ const tinyDots = computed(() => !props.web && dense.value)
  * padding. Uses `left` (not a transform) to keep the hover scale / tooltip
  * transforms intact. The column count is measured from the grid width, so the
  * stagger always matches the real rows (recomputed on resize / months change).
- *   mobile: 28px cells (20px for 6 months), no gaps
+ *   mobile: 28px cells (20px for 6 months), no gaps; 1 month: 7 columns
+ *   filling the width (cell = width / 7.25, the quarter cell is the stagger)
  *   web: 30px cells, 2px column gap (24px / 1px for 12 months)
  */
 const grid = ref<HTMLElement>()
 // content width = grid width minus the quarter-cell right padding
 const gridWidth = ref(0)
+const fullWidth = ref(0)
 function measure() {
   const el = grid.value
-  if (el) gridWidth.value = el.clientWidth - Number.parseFloat(getComputedStyle(el).paddingRight || '0')
+  if (!el) return
+  fullWidth.value = el.clientWidth
+  gridWidth.value = el.clientWidth - Number.parseFloat(getComputedStyle(el).paddingRight || '0')
 }
 useResizeObserver(grid, measure)
 // the web / mobile copies swap visibility at the md breakpoint: re-measure on window resize too
 useEventListener('resize', measure)
 onMounted(() => nextTick(measure))
 const layout = computed(() => {
+  if (week.value && fullWidth.value > 0) return { cell: Math.floor((fullWidth.value / 7.25) * 10) / 10, gap: 0, cols: 7 }
   const { cell, gap } = props.web
     ? (dense.value ? { cell: 24, gap: 1 } : { cell: 30, gap: 2 })
     : (dense.value ? { cell: 20, gap: 0 } : { cell: 28, gap: 0 })
@@ -175,7 +182,7 @@ function openDay(iso: string) {
           <i
             v-else
             class="block rounded-full transition-transform group-hover:scale-[1.6]"
-            :class="c.isToday ? ['bg-indigo', tinyDots ? 'size-[3.5px]' : 'size-[7px]'] : ['bg-indigo', tinyDots ? 'size-[2px]' : 'size-[3px]', c.future ? 'opacity-30' : 'opacity-60']"
+            :class="c.isToday ? ['bg-indigo', tinyDots ? 'size-[3.5px]' : week ? 'size-2' : 'size-[7px]'] : ['bg-indigo', tinyDots ? 'size-[2px]' : week ? 'size-[5px]' : 'size-[3px]', c.future ? 'opacity-30' : 'opacity-60']"
           />
         </span>
         <b v-if="web && c.monthLabel && !c.done" class="absolute -top-0.5 left-1/2 -translate-x-1/2 text-[9px] font-medium whitespace-nowrap text-muted-foreground">{{ c.monthLabel }}</b>

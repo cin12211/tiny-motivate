@@ -73,7 +73,7 @@ const grown = computed(() => cells.value.filter(c => c.done).length)
 const dense = computed(() => (props.web ? months.value === 12 : months.value === 6))
 /** Mobile 6 months: 20px cells, so smaller dots (v61e). */
 const tinyDots = computed(() => !props.web && dense.value)
-/** Mobile 1 month: a week per row, 7 big cells filling the width (v64f). */
+/** Mobile 1 month: big cells (~45px) that fill the whole width (v64f). */
 const week = computed(() => !props.web && months.value === 1)
 
 /**
@@ -83,8 +83,9 @@ const week = computed(() => !props.web && months.value === 1)
  * padding. Uses `left` (not a transform) to keep the hover scale / tooltip
  * transforms intact. The column count is measured from the grid width, so the
  * stagger always matches the real rows (recomputed on resize / months change).
- *   mobile: 28px cells (20px for 6 months), no gaps; 1 month: 7 columns
- *   filling the width (cell = width / 7.25, the quarter cell is the stagger)
+ *   mobile: 28px cells (20px for 6 months), no gaps; 1 month: as many ~45px
+ *   columns as fit, then stretched so the row (plus the quarter-cell stagger)
+ *   fills the width exactly - 7 on a 390px phone, more on wider screens
  *   web: 30px cells, 2px column gap (24px / 1px for 12 months)
  */
 const grid = ref<HTMLElement>()
@@ -102,7 +103,10 @@ useResizeObserver(grid, measure)
 useEventListener('resize', measure)
 onMounted(() => nextTick(measure))
 const layout = computed(() => {
-  if (week.value && fullWidth.value > 0) return { cell: Math.floor((fullWidth.value / 7.25) * 10) / 10, gap: 0, cols: 7 }
+  if (week.value && fullWidth.value > 0) {
+    const cols = Math.max(5, Math.round(fullWidth.value / 45 - 0.25))
+    return { cell: Math.floor((fullWidth.value / (cols + 0.25)) * 10) / 10, gap: 0, cols }
+  }
   const { cell, gap } = props.web
     ? (dense.value ? { cell: 24, gap: 1 } : { cell: 30, gap: 2 })
     : (dense.value ? { cell: 20, gap: 0 } : { cell: 28, gap: 0 })

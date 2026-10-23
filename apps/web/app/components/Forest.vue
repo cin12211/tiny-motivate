@@ -68,7 +68,8 @@ const cells = computed(() => {
     }
   })
 })
-const grown = computed(() => cells.value.filter(c => c.done).length)
+// "đã mọc x cây": every plant ever grown in the garden, not only the shown range
+const grown = computed(() => doneDatesMap.value.size)
 
 const dense = computed(() => (props.web ? months.value === 12 : months.value === 6))
 /** Mobile 6 months: 20px cells, so smaller dots (v61e). */

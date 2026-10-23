@@ -22,9 +22,9 @@ const name = computed(() => user.value?.name || t('home.you'))
 
     <!-- phones: greeting + garden as one focus block (v64) -->
     <div class="max-md:pt-[max(24px,5vh)]">
-    <!-- Germi on its own line above the centred greeting (phones 64px, web 72px) -->
+    <!-- Germi on its own line above the centred greeting (phones 88px, web 96px) -->
     <div class="flex flex-col items-center gap-1 pb-2 text-center md:pt-5 md:pb-4">
-      <GardenIcon icon="gm-idle" class="size-16 shrink-0 text-indigo md:size-[72px]" />
+      <GardenIcon icon="gm-idle" class="size-[88px] shrink-0 text-indigo md:size-24" />
       <!-- the user's name in Caveat (v59g) -->
       <TypographyH1 class="hidden md:block"><i18n-t keypath="home.hello" tag="span" scope="global"><template #name><span class="font-hand text-[1.6em] leading-none font-bold text-indigo">{{ name }}</span></template></i18n-t></TypographyH1>
       <TypographyLead class="max-md:text-[13px] max-md:leading-normal">

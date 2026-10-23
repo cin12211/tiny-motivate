@@ -22,13 +22,13 @@ const onSettings = computed(() => route.path === '/settings')
 <template>
   <div class="min-h-dvh bg-background">
 
-    <main class="mx-auto w-full max-w-[920px] px-[22px] pt-[max(env(safe-area-inset-top),0px)] pb-[150px] md:px-7 md:pb-16 max-[860px]:md:px-4">
+    <main class="mx-auto w-full max-w-[920px] px-[22px] pt-[max(env(safe-area-inset-top),0px)] pb-[138px] md:px-7 md:pb-16 max-[860px]:md:px-4">
       <slot />
     </main>
 
     <nav
       v-if="showSwitch"
-      class="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col items-center gap-2.5 bg-gradient-to-t from-background from-60% to-transparent pt-[30px] pb-[calc(20px+env(safe-area-inset-bottom))] md:hidden"
+      class="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex flex-col items-center gap-2.5 bg-gradient-to-t from-background from-60% to-transparent pt-[30px] pb-[calc(8px+env(safe-area-inset-bottom,0px))] md:hidden"
       :aria-label="$t('common.nav')"
     >
       <div class="pointer-events-auto flex gap-1 rounded-[10px] border border-line bg-surface p-1">

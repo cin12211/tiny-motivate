@@ -107,7 +107,8 @@ export async function deleteGoal(userId: string, goalId: string) {
  * Ticking "done" is only allowed for today — that's the core rule of the app.
  */
 export async function updateDay(userId: string, goalId: string, day: number, body: UpdateDayInput): Promise<Goal> {
-  const current = await getGoal(userId, goalId)
+  // read from the cached goal list (the app ticks often; no need to hit the DB twice)
+  const current = (await listGoals(userId)).find(g => g.id === goalId) ?? await getGoal(userId, goalId)
   if (!Number.isInteger(day) || day < 1 || day > current.totalDays)
     throw createError({ statusCode: 400, statusMessage: 'Ngày không hợp lệ' })
   const today = dayNumberOf(current.startDate)
@@ -128,14 +129,20 @@ export async function updateDay(userId: string, goalId: string, day: number, bod
     next.doneAt = body.done ? new Date() : null
   }
 
+  const updatedAt = new Date()
   await useDb().insert(goalDay)
-    .values({ goalId, day, ...next, updatedAt: new Date() })
-    .onConflictDoUpdate({ target: [goalDay.goalId, goalDay.day], set: { ...next, updatedAt: new Date() } })
-  await invalidate(goalsKey(userId))
-  // the garden lives apart from goals (deleting a goal keeps its plants)
-  if (next.done !== (prev?.done ?? false))
-    await syncGardenDay(userId, addDays(current.startDate, day - 1), next.done)
-  return getGoal(userId, goalId)
+    .values({ goalId, day, ...next, updatedAt })
+    .onConflictDoUpdate({ target: [goalDay.goalId, goalDay.day], set: { ...next, updatedAt } })
+  await Promise.all([
+    invalidate(goalsKey(userId)),
+    // the garden lives apart from goals (deleting a goal keeps its plants)
+    next.done !== (prev?.done ?? false) ? syncGardenDay(userId, addDays(current.startDate, day - 1), next.done) : undefined,
+  ])
+  // answer with the goal as it is now, without reading it back from the DB
+  return {
+    ...current,
+    days: { ...current.days, [String(day)]: { journal: next.journal, mood: next.mood, done: next.done, doneAt: next.doneAt ? next.doneAt.toISOString() : null, updatedAt: updatedAt.toISOString() } },
+  }
 }
 
 /** Mark an unlocked reward as opened (the "open gift" moment). */

@@ -58,7 +58,6 @@ function onMood(value: MoodId | null | undefined) {
 }
 
 /* ---------- tick done + rewards ---------- */
-const ticking = ref(false)
 const rewardOpen = ref(false)
 const unlockedReward = ref<Reward | null>(null)
 
@@ -67,8 +66,8 @@ const unlockedReward = ref<Reward | null>(null)
  * runs in the background and an error puts the day back (and says so).
  */
 async function toggleDone() {
-  if (!isToday.value || ticking.value) return
-  ticking.value = true
+  // never blocked by a save in flight: the change shows at once and saves queue up
+  if (!isToday.value) return
   const before = s.value.unlocked.length
   const saving = updateDay(goal.value!.id, selected.value, { journal: draft.value, done: !entry.value?.done })
   const g = goal.value!
@@ -92,9 +91,6 @@ async function toggleDone() {
   catch (err) {
     rewardOpen.value = false
     toast(errorMessage(err, t('goal.errTick')))
-  }
-  finally {
-    ticking.value = false
   }
 }
 
@@ -147,13 +143,13 @@ async function onDelete() {
           variant="soft"
           size="sm"
           class="h-10 px-[18px] text-[13px]"
-          :disabled="!isToday || ticking"
+          :disabled="!isToday"
           :title="isToday ? $t('goal.untickHint') : undefined"
           @click="toggleDone"
         >
           <HandIcon name="checkmark-circle-02" /> {{ $t('goal.done') }}
         </Button>
-        <Button v-else variant="hand" class="h-10 px-[18px] text-[22px]" :disabled="ticking" @click="toggleDone">done</Button>
+        <Button v-else variant="hand" class="h-10 px-[18px] text-[22px]" @click="toggleDone">done</Button>
       </template>
     </JournalEditor>
 

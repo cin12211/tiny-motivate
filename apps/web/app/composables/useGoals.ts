@@ -42,9 +42,17 @@ export function useGoals() {
 
   /**
    * Optimistic: the change shows up at once (the patch is applied before the
-   * first await), the server's answer replaces it, and a failed request puts
-   * the goal back the way it was before rethrowing.
+   * first await) and never waits for the network.
+   * - Saves of the same goal go out one after another, so the server sees
+   *   them in the order they were made (tick, untick, tick…).
+   * - Only the answer to the latest change is applied; older answers would
+   *   flash an outdated state.
+   * - A failed save puts the goal back the way it was before that change
+   *   (unless a newer change came after it), then rethrows.
    */
+  const queues = new Map<string, Promise<unknown>>()
+  const latest = new Map<string, number>()
+  let seq = 0
   function optimistic(id: string, patch: (g: Goal) => void, send: () => Promise<Goal>) {
     const before = goals.value.find(g => g.id === id)
     if (before) {
@@ -52,8 +60,15 @@ export function useGoals() {
       patch(draft)
       replace(draft)
     }
-    return send().then(replace, (err) => {
-      if (before) replace(before)
+    const mine = ++seq
+    latest.set(id, mine)
+    const run = (queues.get(id) ?? Promise.resolve()).catch(() => {}).then(send)
+    queues.set(id, run)
+    return run.then((goal) => {
+      if (latest.get(id) === mine) replace(goal)
+      return goal
+    }, (err) => {
+      if (before && latest.get(id) === mine) replace(before)
       throw err
     })
   }

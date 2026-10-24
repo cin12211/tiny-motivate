@@ -14,7 +14,9 @@ const stats = computed(() => overallStats(goals.value))
 
 // "Today" opens the first goal still waiting for a tick (or the first goal).
 const todayGoal = computed(() => stats.value.pending[0] ?? goals.value[0])
-const showSwitch = computed(() => !route.path.startsWith('/goals/new'))
+// the plant book has its own bars (back / contents on top, page arrows at the bottom)
+const onBook = computed(() => route.path === '/bach-khoa')
+const showSwitch = computed(() => !route.path.startsWith('/goals/new') && !onBook.value)
 const onHome = computed(() => route.path === '/' || route.path.startsWith('/day/'))
 const onSettings = computed(() => route.path === '/settings')
 </script>
@@ -22,7 +24,7 @@ const onSettings = computed(() => route.path === '/settings')
 <template>
   <div class="min-h-dvh bg-background">
 
-    <main class="mx-auto w-full max-w-[920px] px-[22px] pt-[max(env(safe-area-inset-top),0px)] pb-[126px] md:px-7 md:pb-16 max-[860px]:md:px-4">
+    <main class="mx-auto w-full max-w-[920px] px-[22px] pt-[max(env(safe-area-inset-top),0px)] md:px-7 md:pb-16 max-[860px]:md:px-4" :class="onBook ? 'pb-0' : 'pb-[126px]'">
       <slot />
     </main>
 

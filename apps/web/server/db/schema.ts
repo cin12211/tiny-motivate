@@ -101,6 +101,19 @@ export const goalDay = pgTable('goal_day', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 }, t => [primaryKey({ columns: [t.goalId, t.day] })])
 
+/**
+ * The user's garden, kept apart from goals so deleting a goal never takes
+ * plants out of the garden: one plant per date with at least one tick, with
+ * the icon that grew there (fixed once grown).
+ */
+export const gardenPlant = pgTable('garden_plant', {
+  userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+  /** local date, YYYY-MM-DD */
+  date: date('date', { mode: 'string' }).notNull(),
+  icon: text('icon').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, t => [primaryKey({ columns: [t.userId, t.date] })])
+
 export const goalRelations = relations(goal, ({ many }) => ({
   rewards: many(reward),
   days: many(goalDay),

@@ -1,6 +1,6 @@
 import { Capacitor, registerPlugin } from '@capacitor/core'
-import { gardenIcons } from '@motivation/garden'
-import type { Goal, UserSettings } from '#shared/types'
+import { plantIconFor } from '@motivation/garden'
+import type { Garden, Goal, UserSettings } from '#shared/types'
 import { ACCENTS } from '#shared/utils/settings'
 import { addDays, toISODate } from '#shared/utils/dates'
 
@@ -15,9 +15,10 @@ export const widgetSupported = () => !import.meta.server && Capacitor.getPlatfor
  * The widget's tick button calls the API itself, so it also gets the API base
  * and the session token.
  */
-export function widgetSnapshot(goals: Goal[], settings: UserSettings, auth: { apiBase: string, token: string, jwt: string | null }) {
+export function widgetSnapshot(goals: Goal[], garden: Garden, settings: UserSettings, auth: { apiBase: string, token: string, jwt: string | null }) {
   const today = toISODate()
-  const doneMap = goalsDoneDateMap(goals)
+  // plants come from the garden (kept apart from goals)
+  const plants = new Map(garden.plants.map(p => [p.date, p.icon]))
   const accent = ACCENTS[settings.accent] ?? ACCENTS[0]!
 
   const running = goals
@@ -37,14 +38,15 @@ export function widgetSnapshot(goals: Goal[], settings: UserSettings, auth: { ap
 
   // days in a row with a tick, ending yesterday (the widget adds today itself)
   let streakBase = 0
-  for (let d = addDays(today, -1); doneMap.get(d); d = addDays(d, -1)) streakBase++
+  for (let d = addDays(today, -1); plants.has(d); d = addDays(d, -1)) streakBase++
 
   // today − 39 … today + 31: the whole current month (large widget), and the
   // widget can move on into the next month by itself
-  const iconFor = gardenIcons(doneMap.keys())
-  const garden = Array.from({ length: 71 }, (_, i) => {
+  // a day not grown yet shows the icon it would grow next
+  const next = (d: string) => plantIconFor(garden.plants.filter(p => p.date < d).length, d)
+  const cells = Array.from({ length: 71 }, (_, i) => {
     const d = addDays(today, i - 39)
-    return { d, i: iconFor(d), done: d < today && !!doneMap.get(d) }
+    return { d, i: plants.get(d) ?? next(d), done: d < today && plants.has(d) }
   })
 
   return {
@@ -56,7 +58,7 @@ export function widgetSnapshot(goals: Goal[], settings: UserSettings, auth: { ap
     ...auth,
     goals: running,
     streakBase,
-    garden,
+    garden: cells,
   }
 }
 

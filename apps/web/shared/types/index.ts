@@ -72,6 +72,12 @@ export interface CreateGoalInput {
   rewards: Array<Pick<Reward, 'day' | 'title' | 'icon' | 'image'>>
 }
 
+/** The user's garden (kept apart from goals). */
+export interface Garden {
+  /** one plant per date with at least one tick; icon fixed once grown */
+  plants: Array<{ date: string, icon: string }>
+}
+
 export interface UpdateGoalInput {
   remind?: string | null
 }

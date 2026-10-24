@@ -726,6 +726,15 @@ export function growIconForGoal(goalId: string, nth: number) {
  * pick (growIconForDate). `doneDates` are the dates with at least one tick.
  * Dates not ticked yet get the icon they would grow next.
  */
+/**
+ * Icon for a new plant in a garden that already has `count` plants: the first
+ * 15 plants are p1..p15 in order, after that the date's own seeded pick. The
+ * server stores it when the plant grows, so it never changes afterwards.
+ */
+export function plantIconFor(count: number, date: string) {
+  return count < FIRST_PLANTS ? FIRST_IDS[count]! : growIconForDate(date)
+}
+
 export function gardenIcons(doneDates: Iterable<string>) {
   const sorted = [...doneDates].sort()
   const first = new Map(sorted.slice(0, FIRST_PLANTS).map((d, i) => [d, FIRST_IDS[i]!]))

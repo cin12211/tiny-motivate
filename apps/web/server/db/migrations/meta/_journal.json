@@ -15,6 +15,20 @@
       "when": 1792547986716,
       "tag": "0001_numerous_joshua_kane",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792802601303,
+      "tag": "0002_safe_mystique",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792807215916,
+      "tag": "0003_dusty_ghost_rider",
+      "breakpoints": true
     }
   ]
 }

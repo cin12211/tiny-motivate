@@ -29,6 +29,7 @@ export function useAuth() {
     if (!sessionToken) throw new Error('missing session token')
     setToken(sessionToken)
     useGoals().reset()
+    useGarden().reset()
     await fetchMe()
   }
 
@@ -79,6 +80,7 @@ export function useAuth() {
       if (!sessionToken) throw new Error('missing session token')
       setToken(sessionToken)
       useGoals().reset()
+    useGarden().reset()
       await fetchMe()
       return
     }
@@ -97,6 +99,7 @@ export function useAuth() {
   async function acceptToken(sessionToken: string) {
     setToken(sessionToken)
     useGoals().reset()
+    useGarden().reset()
     return fetchMe()
   }
 
@@ -108,6 +111,7 @@ export function useAuth() {
     setToken(null)
     user.value = null
     useGoals().reset()
+    useGarden().reset()
     await navigateTo('/login')
   }
 

@@ -1,0 +1,1 @@
+DROP TABLE "garden_mood" CASCADE;

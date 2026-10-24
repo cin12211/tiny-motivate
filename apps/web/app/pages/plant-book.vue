@@ -19,10 +19,11 @@ const bookItem = (id: string) => bookItemIn(id, locale.value)
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 const isWeb = useMediaQuery('(min-width: 768px)')
-const { goals } = useGoals()
 const { user } = useAuth()
 const owner = computed(() => user.value?.name || 'bạn')
-const growth = computed(() => bookGrowth(goals.value))
+const { garden } = useGarden()
+const { goals } = useGoals()
+const growth = computed(() => bookGrowth(garden.value, goals.value))
 
 /* ---------- page box + pagination ---------- */
 const CELL = computed(() => (isWeb.value ? 48 : 50))

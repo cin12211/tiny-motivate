@@ -10,8 +10,9 @@ useHead({ title: () => `${t('settings.pageTitle')} · Tiny Motivate` })
 
 const { settings, update } = useSettings()
 const { logout } = useAuth()
+const { garden } = useGarden()
 const { goals } = useGoals()
-const bookSown = computed(() => bookGrowth(goals.value).size)
+const bookSown = computed(() => bookGrowth(garden.value, goals.value).size)
 type Panel = 'color' | 'logo' | 'lang'
 const open = ref<Panel | null>(null)
 

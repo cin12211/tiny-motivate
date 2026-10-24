@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onKeyStroke } from '@vueuse/core'
-import { gardenIcons } from '@motivation/garden'
 import { addDays, dayNumberOf, toISODate } from '#shared/utils/dates'
 
 /**
@@ -60,11 +59,12 @@ function centerActive(behavior: ScrollBehavior) {
 onMounted(() => nextTick(() => centerActive('instant')))
 watch(date, () => nextTick(() => centerActive('smooth')))
 
-const doneDatesMap = computed(() => goalsDoneDateMap(goals.value))
-const iconFor = computed(() => gardenIcons(doneDatesMap.value.keys()))
+// plants come from the garden (kept apart from goals)
+const { plantMap } = useGarden()
+const iconFor = (iso: string) => plantMap.value.get(iso) ?? ''
 
 function doneOn(iso: string) {
-  return (doneDatesMap.value.get(iso) || 0) > 0
+  return plantMap.value.has(iso)
 }
 
 /* ---------- change day: keys (web) + swipe (mobile) ---------- */

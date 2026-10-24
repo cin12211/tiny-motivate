@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useEventListener, useLocalStorage, useResizeObserver } from '@vueuse/core'
-import { gardenIcons } from '@motivation/garden'
 import type { Goal } from '#shared/types'
 import { addDays, dayNumberOf, parseISODate, toISODate } from '#shared/utils/dates'
 
@@ -40,9 +39,11 @@ const range = computed(() => {
   return { from, to, days: dayNumberOf(from, to) }
 })
 
+// how many goals were ticked each day (for the tooltip)
 const doneDatesMap = computed(() => goalsDoneDateMap(props.goals))
-/** first 15 ticked dates grow p1..p15, later dates a seeded pick */
-const iconFor = computed(() => gardenIcons(doneDatesMap.value.keys()))
+// the plants themselves come from the garden, stored apart from goals
+// (deleting a goal keeps its plants; each plant keeps the icon it grew with)
+const { plantMap, garden } = useGarden()
 
 const cells = computed(() => {
   const doneMap = doneDatesMap.value
@@ -50,14 +51,14 @@ const cells = computed(() => {
   const viewedVal = viewed.value
   return Array.from({ length: days }, (_, i) => {
     const iso = addDays(from, i)
-    const done = doneMap.get(iso) || 0
+    const plant = plantMap.value.get(iso)
+    const done = plant ? Math.max(1, doneMap.get(iso) || 0) : 0
     const isToday = iso === today
     const future = iso > today
     const label = dotShort(iso)
     return {
       iso,
-      // first 15 ticked dates: p1..p15; later: random from the pool, seeded by the date (same on the day page)
-      grow: iconFor.value(iso),
+      grow: plant ?? '',
       done,
       isToday,
       future,
@@ -69,7 +70,7 @@ const cells = computed(() => {
   })
 })
 // "đã mọc x cây": every plant ever grown in the garden, not only the shown range
-const grown = computed(() => doneDatesMap.value.size)
+const grown = computed(() => garden.value.plants.length)
 
 const dense = computed(() => (props.web ? months.value === 12 : months.value === 6))
 /** Mobile 6 months: 22px cells, so smaller dots (v61e). */
@@ -130,7 +131,7 @@ const chipLabel = computed(() =>
 
 /** Any goal ticked on this date (calendar dots). */
 function doneOn(iso: string) {
-  return (doneDatesMap.value.get(iso) || 0) > 0
+  return plantMap.value.has(iso)
 }
 
 /** Today and past cells open the day page. */

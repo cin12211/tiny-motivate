@@ -1,7 +1,7 @@
 import { and, asc, eq, inArray } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import type { CreateGoalInput, DayEntry, Goal, MoodId, UpdateDayInput, UpdateGoalInput } from '#shared/types'
-import { dayNumberOf, toISODate } from '#shared/utils/dates'
+import { addDays, dayNumberOf, toISODate } from '#shared/utils/dates'
 import { schema, useDb } from '../db'
 
 const { goal, goalDay, reward } = schema
@@ -132,6 +132,9 @@ export async function updateDay(userId: string, goalId: string, day: number, bod
     .values({ goalId, day, ...next, updatedAt: new Date() })
     .onConflictDoUpdate({ target: [goalDay.goalId, goalDay.day], set: { ...next, updatedAt: new Date() } })
   await invalidate(goalsKey(userId))
+  // the garden lives apart from goals (deleting a goal keeps its plants)
+  if (next.done !== (prev?.done ?? false))
+    await syncGardenDay(userId, addDays(current.startDate, day - 1), next.done)
   return getGoal(userId, goalId)
 }
 

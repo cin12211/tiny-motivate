@@ -1,5 +1,5 @@
-import { FARM_ICONS, MOODS, PLANTS, PRO_PLANTS, TIP_PLANT, growIconForGoal } from '@motivation/garden'
-import type { Goal } from '#shared/types'
+import { FARM_ICONS, MOODS, PLANTS, PRO_PLANTS, TIP_PLANT } from '@motivation/garden'
+import type { Garden, Goal } from '#shared/types'
 import { addDays } from '#shared/utils/dates'
 import { EN_CHAPTERS, EN_FARM, EN_FARM_DESC, EN_HINT, EN_LINES, EN_MOOD_DESC, EN_MOODS, EN_PLANTS, EN_PRO_LINE, EN_TIP_LINE } from './plant-book-en'
 
@@ -113,13 +113,12 @@ export const bookHint = (kind: BookKind, lang: string) => (lang === 'en' ? EN_HI
 export interface BookGrowth { first: string, n: number }
 
 /**
- * Which species have grown, with the first date and how many times, across
- * every goal: an everyday plant or farm icon when a ticked day grew exactly
- * that icon (the k-th tick of a goal grows its k-th icon), a mood flower when
- * that mood was picked in a day's journal. Pro / tip plants have no way to
- * grow yet (no subscription / tip), so they stay unsown.
+ * Which species have grown, with the first date and how many times: every
+ * plant in the garden (stored apart from goals, so deleting a goal keeps
+ * them) and every mood picked in a goal's journal (goal_day). Pro / tip
+ * plants have no way to grow yet (no subscription / tip), so they stay unsown.
  */
-export function bookGrowth(goals: Goal[]): Map<string, BookGrowth> {
+export function bookGrowth(garden: Garden, goals: Goal[]): Map<string, BookGrowth> {
   const m = new Map<string, BookGrowth>()
   const put = (id: string, d: string) => {
     const x = m.get(id)
@@ -129,14 +128,10 @@ export function bookGrowth(goals: Goal[]): Map<string, BookGrowth> {
       if (d < x.first) x.first = d
     }
   }
+  for (const p of garden.plants) put(p.icon, p.date)
   for (const g of goals) {
-    let nth = 0
-    for (let n = 1; n <= g.totalDays; n++) {
-      const e = g.days[String(n)]
-      if (!e) continue
-      const date = addDays(g.startDate, n - 1)
-      if (e.done) put(growIconForGoal(g.id, ++nth), date)
-      if (e.mood) put(e.mood, date)
+    for (const [n, e] of Object.entries(g.days)) {
+      if (e.mood) put(e.mood, addDays(g.startDate, Number(n) - 1))
     }
   }
   return m

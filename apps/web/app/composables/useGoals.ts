@@ -58,8 +58,17 @@ export function useGoals() {
     })
   }
 
+  /** the garden follows ticks: optimistic now, the server copy once saved */
+  function syncGarden(id: string, day: number, done: boolean | undefined, saving: Promise<unknown>) {
+    const goal = goals.value.find(g => g.id === id)
+    if (!goal || done === undefined) return
+    const garden = useGarden()
+    garden.applyDay(goals.value, goal, day, { done })
+    saving.finally(() => garden.refresh().catch(() => {}))
+  }
+
   function updateDay(id: string, day: number, input: UpdateDayInput) {
-    return optimistic(id, (g) => {
+    const saving = optimistic(id, (g) => {
       const prev = g.days[String(day)]
       g.days[String(day)] = {
         journal: input.journal ?? prev?.journal ?? '',
@@ -69,6 +78,8 @@ export function useGoals() {
         updatedAt: new Date().toISOString(),
       }
     }, () => useApi()<Goal>(`/api/goals/${id}/days/${day}`, { method: 'PUT', body: input }))
+    syncGarden(id, day, input.done, saving)
+    return saving
   }
 
   /**
@@ -88,8 +99,9 @@ export function useGoals() {
     else if (g) {
       g.days[key] = { journal: input.journal ?? '', mood: input.mood ?? null, done: false, doneAt: null, updatedAt: new Date().toISOString() }
     }
+    const send = useApi()<Goal>(`/api/goals/${id}/days/${day}`, { method: 'PUT', body: input })
     try {
-      await useApi()<Goal>(`/api/goals/${id}/days/${day}`, { method: 'PUT', body: input })
+      await send
     }
     catch (err) {
       const cur = g?.days[key]

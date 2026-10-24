@@ -140,7 +140,11 @@ function openDay(iso: string) {
 </script>
 
 <template>
-  <section class="flex flex-col items-center" :class="web ? 'gap-3 pt-1 pb-5' : 'gap-2 pb-3.5'">
+  <section class="relative flex flex-col items-center" :class="web ? 'gap-3 pt-1 pb-5' : 'gap-2 pb-3.5'">
+    <!-- the plant book (Bách khoa, v66) -->
+    <NuxtLink to="/plant-book" class="absolute top-0 right-0 grid size-9 place-items-center rounded-[10px] text-indigo" :aria-label="$t('book.title')">
+      <HandIcon name="books-01" />
+    </NuxtLink>
     <!-- viewed date + calendar (and how many months to show) -->
     <CalendarChip v-model="viewed" :label="chipLabel" :marked="doneOn">
       <div class="flex flex-col gap-1.5 pt-2 dashed-top">

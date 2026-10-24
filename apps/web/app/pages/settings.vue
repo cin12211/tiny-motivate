@@ -2,6 +2,7 @@
 import { toast } from 'vue-sonner'
 import { useEventListener } from '@vueuse/core'
 import { ACCENTS, LANGS, LOGOS, THEMES } from '#shared/utils/settings'
+import { BOOK_TOTAL, bookGrowth } from '~/utils/plant-book'
 import type { UserSettings } from '#shared/types'
 
 const { t } = useI18n()
@@ -9,6 +10,8 @@ useHead({ title: () => `${t('settings.pageTitle')} · Tiny Motivate` })
 
 const { settings, update } = useSettings()
 const { logout } = useAuth()
+const { goals } = useGoals()
+const bookSown = computed(() => bookGrowth(goals.value).size)
 type Panel = 'color' | 'logo' | 'lang'
 const open = ref<Panel | null>(null)
 
@@ -194,6 +197,17 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
         <TypographyMuted class="text-[11px]">{{ $t('settings.logoNoteNative') }}</TypographyMuted>
       </div>
 
+      <!-- plant book (Bách khoa, v66) -->
+      <div class="flex items-center justify-between gap-4 py-4">
+        <div>
+          <TypographyH2 :class="rowTitle">{{ $t('book.title') }}</TypographyH2>
+          <TypographySmall as="p" :class="rowDesc">{{ $t('book.settingsDesc') }}<br>{{ $t('book.sown', { n: bookSown, total: BOOK_TOTAL }) }}</TypographySmall>
+        </div>
+        <NuxtLink to="/plant-book" :class="[tile, pressable, 'border-line']" :aria-label="$t('book.open')">
+          <HandIcon name="books-01" />
+        </NuxtLink>
+      </div>
+
       <!-- review -->
       <div class="flex items-center justify-between gap-4 py-4">
         <div>
@@ -216,7 +230,7 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
         </a>
       </div>
 
-      <Button variant="ghost" size="sm" class="mx-auto mt-[22px] flex text-[11.5px]" @click="logout">
+      <Button variant="ghost" class="mx-auto mt-[22px] flex h-auto gap-2 px-4 py-2.5 text-sm" @click="logout">
         <HandIcon name="logout-03" /> {{ $t('common.logout') }}
       </Button>
     </div>

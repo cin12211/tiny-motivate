@@ -14,7 +14,10 @@ const name = computed(() => user.value?.name || t('home.you'))
 <template>
   <div class="relative">
     <!-- web: settings link top right (phones use the bottom bar) -->
-    <div class="hidden md:absolute md:top-[18px] md:right-0 md:flex">
+    <div class="hidden md:absolute md:top-[18px] md:right-0 md:flex md:gap-2">
+      <Button as-child variant="link" size="xs" class="gap-1.5 px-1.5 text-xs">
+        <NuxtLink to="/plant-book"><HandIcon name="books-01" />{{ $t('book.title') }}</NuxtLink>
+      </Button>
       <Button as-child variant="link" size="xs" class="-mr-1.5 gap-1.5 px-1.5 text-xs">
         <NuxtLink to="/settings"><HandIcon name="settings-01" />{{ $t('common.settings') }}</NuxtLink>
       </Button>

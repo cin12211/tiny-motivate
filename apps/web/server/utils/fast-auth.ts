@@ -14,7 +14,14 @@ import type { H3Event } from 'h3'
  *    requests without a valid JWT.
  * Otherwise Better Auth checks the session (Upstash, then Neon).
  */
-export interface FastUser { id: string, name: string, email: string, createdAt: string | Date }
+export interface FastUser {
+  id: string
+  name: string
+  email: string
+  role: string
+  banned?: boolean
+  createdAt: string | Date
+}
 
 const JWT_TTL = 30 * 24 * 60 * 60 // seconds (30 days)
 const JWT_RECHECK = 24 * 60 * 60 // seconds: re-check the session once a day
@@ -37,7 +44,14 @@ export async function signJwt(user: FastUser) {
   const header = b64url(enc.encode(JSON.stringify({ alg: 'HS256', typ: 'JWT' })))
   const now = Math.floor(Date.now() / 1000)
   const payload = b64url(enc.encode(JSON.stringify({
-    sub: user.id, name: user.name, email: user.email, createdAt: new Date(user.createdAt).toISOString(), iat: now, exp: now + JWT_TTL,
+    sub: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role || 'user',
+    banned: user.banned ?? false,
+    createdAt: new Date(user.createdAt).toISOString(),
+    iat: now,
+    exp: now + JWT_TTL,
   })))
   const sig = await crypto.subtle.sign('HMAC', await hmacKey(), enc.encode(`${header}.${payload}`))
   return `${header}.${payload}.${b64url(sig)}`
@@ -51,7 +65,15 @@ export async function verifyJwt(token: string): Promise<(FastUser & { iat?: numb
     if (!ok) return null
     const claims = JSON.parse(new TextDecoder().decode(fromB64url(payload)))
     if (typeof claims.exp !== 'number' || claims.exp * 1000 < Date.now()) return null
-    return { id: claims.sub, name: claims.name, email: claims.email, createdAt: claims.createdAt, iat: claims.iat }
+    return {
+      id: claims.sub,
+      name: claims.name,
+      email: claims.email,
+      role: claims.role || 'user',
+      banned: claims.banned ?? false,
+      createdAt: claims.createdAt,
+      iat: claims.iat,
+    }
   }
   catch {
     return null

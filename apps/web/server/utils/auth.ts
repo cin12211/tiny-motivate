@@ -3,6 +3,7 @@ import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { hashPassword, verifyPassword } from 'better-auth/crypto'
 import { bearer } from 'better-auth/plugins'
+import { eq } from 'drizzle-orm'
 import type { H3Event } from 'h3'
 import { schema, useDb } from '../db'
 
@@ -84,11 +85,35 @@ export type AuthUser = ReturnType<typeof createAuth>['$Infer']['Session']['user'
 export async function requireUser(event: H3Event): Promise<FastUser> {
   return timed(event, 'auth', async () => {
     const fast = await fastUser(event)
-    if (fast) return fast
+    if (fast) {
+      if (fast.banned) {
+        throw createError({ statusCode: 403, statusMessage: 'Tài khoản đã bị khóa' })
+      }
+      return fast
+    }
     const session = await useServerAuth().api.getSession({ headers: event.headers })
     if (!session) throw createError({ statusCode: 401, statusMessage: 'Bạn cần đăng nhập' })
     const { id, name, email, createdAt } = session.user
-    const user = { id, name, email, createdAt }
+    const rawUser = session.user as Record<string, any>
+    let role = rawUser.role || 'user'
+    const banned = Boolean(rawUser.banned)
+
+    if (banned) {
+      throw createError({ statusCode: 403, statusMessage: 'Tài khoản đã bị khóa' })
+    }
+
+    // Auto-promote if configured in ADMIN_EMAILS
+    const adminEmails = (process.env.ADMIN_EMAILS || '')
+      .split(',')
+      .map(e => e.trim().toLowerCase())
+      .filter(Boolean)
+    if (role !== 'admin' && adminEmails.includes(email.toLowerCase())) {
+      role = 'admin'
+      const db = useDb()
+      await db.update(schema.user).set({ role: 'admin' }).where(eq(schema.user.id, id))
+    }
+
+    const user: FastUser = { id, name, email, role, banned, createdAt }
     await rememberUser(event, user)
     return user
   })

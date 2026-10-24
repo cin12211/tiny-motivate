@@ -58,6 +58,10 @@ export interface User {
   id: string
   name: string
   email: string
+  role: string
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: string | null
   createdAt: string
   settings: UserSettings
 }

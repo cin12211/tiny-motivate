@@ -3,7 +3,6 @@ import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { hashPassword, verifyPassword } from 'better-auth/crypto'
 import { admin, bearer } from 'better-auth/plugins'
-import { eq } from 'drizzle-orm'
 import type { H3Event } from 'h3'
 import { schema, useDb } from '../db'
 
@@ -93,7 +92,7 @@ export async function requireUser(event: H3Event): Promise<FastUser> {
     const fast = await fastUser(event)
     if (fast) {
       if (fast.banned) {
-        throw createError({ statusCode: 403, statusMessage: 'Tài khoản đã bị khóa' })
+        throw createError({ statusCode: 403, statusMessage: 'Tài khoản đã bị khóa', data: { code: 'BANNED' } })
       }
       return fast
     }
@@ -109,7 +108,7 @@ export async function requireUser(event: H3Event): Promise<FastUser> {
     if (isBanActive) {
       forgetSession(event)
       setHeader(event, 'x-auth-jwt', '')
-      throw createError({ statusCode: 403, statusMessage: rawUser.banReason || 'Tài khoản đã bị khóa' })
+      throw createError({ statusCode: 403, statusMessage: rawUser.banReason || 'Tài khoản đã bị khóa', data: { code: 'BANNED' } })
     }
 
     // Auto-promote if configured in ADMIN_EMAILS
@@ -119,8 +118,9 @@ export async function requireUser(event: H3Event): Promise<FastUser> {
       .filter(Boolean)
     if (role !== 'admin' && adminEmails.includes(email.toLowerCase())) {
       role = 'admin'
-      const db = useDb()
-      await db.update(schema.user).set({ role: 'admin' }).where(eq(schema.user.id, id))
+      // through Better Auth so the cached sessions (Upstash) pick up the new role too
+      const ctx = await useServerAuth().$context
+      await ctx.internalAdapter.updateUser(id, { role: 'admin' })
     }
 
     const user: FastUser = { id, name, email, role, banned, createdAt }

@@ -5,6 +5,9 @@ import { schema, useDb } from '../db'
 /** The signed-in user with their settings. */
 export default defineEventHandler(async (event): Promise<User> => {
   const user = await requireUser(event)
+  // role / ban state straight from the DB (the JWT copy can be a day old); settings load alongside
+  const settingsLoad = timed(event, 'settings', () => getSettings(user.id))
+  settingsLoad.catch(() => {}) // awaited below; a ban answer may return first
   const [dbUser] = await useDb()
     .select({
       role: schema.user.role,
@@ -21,7 +24,7 @@ export default defineEventHandler(async (event): Promise<User> => {
     if (isBanActive) {
       forgetSession(event)
       setHeader(event, 'x-auth-jwt', '')
-      throw createError({ statusCode: 403, statusMessage: dbUser.banReason || 'Tài khoản đã bị khóa' })
+      throw createError({ statusCode: 403, statusMessage: dbUser.banReason || 'Tài khoản đã bị khóa', data: { code: 'BANNED' } })
     }
   }
 
@@ -34,6 +37,6 @@ export default defineEventHandler(async (event): Promise<User> => {
     banReason: dbUser?.banReason ?? null,
     banExpires: dbUser?.banExpires ? new Date(dbUser.banExpires).toISOString() : null,
     createdAt: new Date(user.createdAt).toISOString(),
-    settings: await timed(event, 'settings', () => getSettings(user.id)),
+    settings: await settingsLoad,
   }
 })

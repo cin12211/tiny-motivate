@@ -17,7 +17,8 @@
     "build:cloudflare": "NITRO_PRESET=cloudflare_module nuxt build",
     "deploy:cloudflare": "pnpm build:cloudflare && wrangler deploy",
     "preview:cloudflare": "pnpm build:cloudflare && wrangler dev",
-    "db:backfill-garden": "node server/db/backfill-garden.ts"
+    "db:backfill-garden": "node server/db/backfill-garden.ts",
+    "db:make-admin": "node --import tsx/esm scripts/make-admin.ts"
   },
   "dependencies": {
     "@capacitor-community/apple-sign-in": "6.0.0",
@@ -63,6 +64,7 @@
     "@types/canvas-confetti": "^1.9.0",
     "dotenv": "^18.0.8",
     "drizzle-kit": "^0.31.11",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "wrangler": "^4.151.0"
   }

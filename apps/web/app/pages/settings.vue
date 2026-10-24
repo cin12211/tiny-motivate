@@ -9,7 +9,7 @@ const { t } = useI18n()
 useHead({ title: () => `${t('settings.pageTitle')} · Tiny Motivate` })
 
 const { settings, update } = useSettings()
-const { logout } = useAuth()
+const { user, logout } = useAuth()
 const { garden } = useGarden()
 const { goals } = useGoals()
 const bookSown = computed(() => bookGrowth(garden.value, goals.value).size)
@@ -231,6 +231,20 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
         <a href="mailto:hello@motivation.app?subject=Tiny%20Motivate" :class="[tile, pressable, 'border-line']" :aria-label="$t('settings.helpAria')">
           <GardenIcon icon="p4" class="size-[34px]" />
         </a>
+      </div>
+
+      <!-- Admin Dashboard (only visible to admins) -->
+      <div v-if="user?.role === 'admin'" class="flex items-center justify-between gap-4 py-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <TypographyH2 :class="rowTitle">Admin Dashboard</TypographyH2>
+            <span class="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold text-primary border border-primary/20">ADMIN</span>
+          </div>
+          <TypographySmall as="p" :class="rowDesc">Quản lý người dùng, vai trò và phân quyền</TypographySmall>
+        </div>
+        <NuxtLink to="/admin" :class="[tile, pressable, 'border-line border-primary/40 bg-primary/5']" aria-label="Admin Dashboard">
+          <HandIcon name="lock-password" class="text-primary" />
+        </NuxtLink>
       </div>
 
       <Button variant="ghost" class="mx-auto mt-[22px] flex h-auto gap-2 px-4 py-2.5 text-sm" @click="logout">

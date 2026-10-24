@@ -45,5 +45,6 @@ useHead({ htmlAttrs: { lang: () => settings.value.lang } })
   <Transition leave-active-class="transition-opacity duration-300" leave-to-class="opacity-0">
     <SplashScreen v-if="splash" />
   </Transition>
-  <Toaster position="bottom-center" />
+  <!-- toasts at the top, below the notch / status bar -->
+  <Toaster position="top-center" :offset="{ top: 'calc(env(safe-area-inset-top, 0px) + 12px)' }" :mobile-offset="{ top: 'calc(env(safe-area-inset-top, 0px) + 12px)' }" />
 </template>

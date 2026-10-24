@@ -137,6 +137,7 @@
     "delete": "Xoá mục tiêu",
     "confirmDelete": "Xoá mục tiêu \"{title}\"? Không thể hoàn tác.",
     "deleted": "Đã xoá mục tiêu",
+    "errDelete": "Chưa xoá được mục tiêu, thử lại nhé",
     "planted": "Đã trồng thêm một mầm. Chuỗi {n} ngày :)",
     "errSave": "Không lưu được nhật ký",
     "errTick": "Không tick được",

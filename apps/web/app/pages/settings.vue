@@ -26,9 +26,11 @@ onMounted(checkBlocked)
 useEventListener(document, 'visibilitychange', () => document.visibilityState === 'visible' && checkBlocked())
 
 async function save(patch: Partial<UserSettings>, message?: () => string) {
+  // optimistic: update() applies the change before its first await, so confirm right away
+  const saving = update(patch)
+  if (message) toast(message())
   try {
-    await update(patch)
-    if (message) toast(message())
+    await saving
   }
   catch (err) {
     toast(errorMessage(err, t('settings.errSave')))

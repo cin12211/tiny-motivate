@@ -97,9 +97,11 @@ async function toggleDone() {
 async function onDelete() {
   // eslint-disable-next-line no-alert
   if (!confirm(t('goal.confirmDelete', { title: goal.value!.title }))) return
-  await remove(goal.value!.id)
+  const { id } = goal.value!
+  // optimistic: leave at once; the goal comes back if the delete fails
+  navigateTo('/')
   toast(t('goal.deleted'))
-  await navigateTo('/')
+  remove(id).catch(err => toast(errorMessage(err, t('goal.errDelete'))))
 }
 </script>
 

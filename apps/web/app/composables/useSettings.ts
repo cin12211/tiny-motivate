@@ -23,8 +23,15 @@ export function useSettings() {
   async function update(patch: Partial<UserSettings>) {
     const next = sanitizeSettings(patch, settings.value)
     const reminderChanged = 'notify' in patch || 'time' in patch
+    const before = settings.value
     apply(next, reminderChanged) // optimistic; the server echoes the stored value
-    apply(await useApi()<UserSettings>('/api/settings', { method: 'PUT', body: patch }))
+    try {
+      apply(await useApi()<UserSettings>('/api/settings', { method: 'PUT', body: patch }))
+    }
+    catch (err) {
+      apply(before)
+      throw err
+    }
   }
 
   return { settings, apply, update }

@@ -35,9 +35,18 @@ export function useGoals() {
     return replace(await useApi()<Goal>('/api/goals', { method: 'POST', body: input }))
   }
 
+  /** Optimistic: gone from the list at once, put back where it was if the server says no. */
   async function remove(id: string) {
-    await useApi()(`/api/goals/${id}`, { method: 'DELETE' })
+    const at = goals.value.findIndex(g => g.id === id)
+    const gone = goals.value[at]
     goals.value = goals.value.filter(g => g.id !== id)
+    try {
+      await useApi()(`/api/goals/${id}`, { method: 'DELETE' })
+    }
+    catch (err) {
+      if (gone && !goals.value.some(g => g.id === id)) goals.value = [...goals.value.slice(0, at), gone, ...goals.value.slice(at)]
+      throw err
+    }
   }
 
   /**

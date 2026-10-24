@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useEventListener } from '@vueuse/core'
 import { toast } from 'vue-sonner'
 
 /**
@@ -7,7 +8,7 @@ import { toast } from 'vue-sonner'
  */
 const props = defineProps<{ mode: 'login' | 'signup' }>()
 const up = computed(() => props.mode === 'signup')
-const { login, signup, loginWithGoogle, loginWithApple, user } = useAuth()
+const { login, signup, loginWithGoogle, loginWithApple, user, busy } = useAuth()
 const { t } = useI18n()
 
 const name = ref('')
@@ -16,7 +17,6 @@ const password = ref(up.value ? '' : 'mochi1234')
 const remember = ref(true)
 const showPw = ref(false)
 const error = ref('')
-const busy = ref(false)
 
 async function submit() {
   error.value = up.value && !name.value.trim()
@@ -26,8 +26,8 @@ async function submit() {
         : password.value.length < 8
           ? t('auth.errPw')
           : ''
-  if (error.value) return
-  busy.value = true
+  if (error.value || busy.value) return
+  busy.value = 'email'
   try {
     if (up.value) {
       await signup(name.value.trim(), email.value.trim(), password.value)
@@ -44,24 +44,49 @@ async function submit() {
     error.value = authErrorMessage(err)
   }
   finally {
-    busy.value = false
+    busy.value = null
   }
 }
 
 const soon = (what: string) => toast(t('common.soon', { what }))
 
+/** Google: the browser takes over; the button spins until we're back and in. */
+async function onGoogle() {
+  if (busy.value) return
+  busy.value = 'google'
+  try {
+    await loginWithGoogle()
+  }
+  catch (err) {
+    busy.value = null
+    toast(authErrorMessage(err))
+  }
+}
+
 /** Apple: native sheet on iOS (then straight in), Apple's page in the browser elsewhere. */
 async function onApple() {
+  if (busy.value) return
+  busy.value = 'apple'
   try {
     await loginWithApple()
     if (user.value) await navigateTo('/')
   }
   catch (err: any) {
     // closing the Apple sheet is not an error
-    if (/cancel|1001/i.test(String(err?.message ?? err?.code ?? ''))) return
-    toast(authErrorMessage(err))
+    if (!/cancel|1001/i.test(String(err?.message ?? err?.code ?? ''))) toast(authErrorMessage(err))
+  }
+  finally {
+    busy.value = null
   }
 }
+
+// a sign-in left half way (page re-shown, sheet dismissed) never keeps the form locked
+onMounted(() => {
+  busy.value = null
+})
+useEventListener('pageshow', (e: PageTransitionEvent) => {
+  if (e.persisted) busy.value = null
+})
 </script>
 
 <template>
@@ -76,11 +101,11 @@ async function onApple() {
     </div>
 
     <div class="flex flex-col gap-2.5">
-      <Button type="button" variant="outline" size="sm" class="h-11" @click="loginWithGoogle">
-        <HandIcon name="google" /> {{ $t('auth.continueGoogle') }}
+      <Button type="button" variant="outline" size="sm" class="h-11" :class="busy === 'google' && 'disabled:opacity-100'" :disabled="!!busy" :aria-busy="busy === 'google'" @click="onGoogle">
+        <HandIcon :name="busy === 'google' ? 'loading-03' : 'google'" :class="busy === 'google' && 'animate-spin'" /> {{ $t('auth.continueGoogle') }}
       </Button>
-      <Button type="button" variant="outline" size="sm" class="h-11" @click="onApple">
-        <HandIcon name="apple" /> {{ $t('auth.continueApple') }}
+      <Button type="button" variant="outline" size="sm" class="h-11" :class="busy === 'apple' && 'disabled:opacity-100'" :disabled="!!busy" :aria-busy="busy === 'apple'" @click="onApple">
+        <HandIcon :name="busy === 'apple' ? 'loading-03' : 'apple'" :class="busy === 'apple' && 'animate-spin'" /> {{ $t('auth.continueApple') }}
       </Button>
     </div>
     <div class="flex items-center gap-3 text-[11px] text-muted-foreground before:flex-1 before:border-t before:border-dashed before:border-faint after:flex-1 after:border-t after:border-dashed after:border-faint">
@@ -115,9 +140,10 @@ async function onApple() {
 
       <TypographySmall v-if="error" as="p" class="rounded-md border border-dashed border-indigo px-2.5 py-2 text-indigo" role="alert">{{ error }}</TypographySmall>
 
-      <Button type="submit" class="group mt-1 font-semibold" :disabled="busy">
-        <span>{{ busy ? (up ? $t('auth.busySignup') : $t('auth.busyLogin')) : (up ? $t('auth.submitSignup') : $t('auth.submitLogin')) }}</span>
-        <HandIcon name="arrow-right-01" class="transition-transform group-hover:translate-x-[3px]" />
+      <Button type="submit" class="group mt-1 font-semibold" :class="busy === 'email' && 'disabled:opacity-100'" :disabled="!!busy" :aria-busy="busy === 'email'">
+        <HandIcon v-if="busy === 'email'" name="loading-03" class="animate-spin" />
+        <span>{{ busy === 'email' ? (up ? $t('auth.busySignup') : $t('auth.busyLogin')) : (up ? $t('auth.submitSignup') : $t('auth.submitLogin')) }}</span>
+        <HandIcon v-if="busy !== 'email'" name="arrow-right-01" class="transition-transform group-hover:translate-x-[3px]" />
       </Button>
     </form>
 

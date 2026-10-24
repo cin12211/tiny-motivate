@@ -10,6 +10,8 @@ export function useAuth() {
   const api = useApi()
   const { token, setToken } = useToken()
   const user = useState<User | null>('auth-user', () => null)
+  /** sign-in in flight (spinner on that button, the others locked) */
+  const busy = useState<'email' | 'google' | 'apple' | null>('auth-busy', () => null)
 
   async function fetchMe() {
     if (!token.value) return null
@@ -53,6 +55,14 @@ export function useAuth() {
       return
     }
     const { Browser } = await import('@capacitor/browser')
+    busy.value = 'google'
+    // closed the sheet without signing in: unlock (a real sign-in sets the token first)
+    const done = await Browser.addListener('browserFinished', () => {
+      done.remove()
+      setTimeout(() => {
+        if (busy.value === 'google' && !token.value) busy.value = null
+      }, 800)
+    })
     await Browser.open({ url, presentationStyle: 'popover' })
   }
 
@@ -103,11 +113,10 @@ export function useAuth() {
     return fetchMe()
   }
 
+  /** Optimistic: signed out on the device at once, the server is told in the background. */
   async function logout() {
-    try {
-      await api('/api/auth/sign-out', { method: 'POST', body: {} })
-    }
-    catch {}
+    const headers = token.value ? { Authorization: `Bearer ${token.value}` } : undefined
+    api('/api/auth/sign-out', { method: 'POST', body: {}, headers }).catch(() => {})
     setToken(null)
     user.value = null
     useGoals().reset()
@@ -115,7 +124,7 @@ export function useAuth() {
     await navigateTo('/login')
   }
 
-  return { user, token, fetchMe, login, signup, loginWithGoogle, loginWithApple, acceptToken, logout }
+  return { user, token, busy, fetchMe, login, signup, loginWithGoogle, loginWithApple, acceptToken, logout }
 }
 
 /** Friendly message for Better Auth error codes (falls back to the server message). */

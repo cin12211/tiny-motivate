@@ -23,8 +23,10 @@ export function useNativeShell() {
       const { Browser } = await import('@capacitor/browser')
       Browser.close().catch(() => {})
       const token = params.get('token')
+      auth.busy.value = 'google'
       const user = token ? await auth.acceptToken(token) : null
       await router.replace(user ? '/' : '/login')
+      auth.busy.value = null
     })
 
     App.addListener('backButton', ({ canGoBack }) => {

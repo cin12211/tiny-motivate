@@ -137,6 +137,7 @@
     "delete": "Delete goal",
     "confirmDelete": "Delete \"{title}\"? This can't be undone.",
     "deleted": "Goal deleted",
+    "errDelete": "Couldn't delete the goal, please try again",
     "planted": "One more sprout planted. {n}-day streak :)",
     "errSave": "Couldn't save the journal",
     "errTick": "Couldn't tick",

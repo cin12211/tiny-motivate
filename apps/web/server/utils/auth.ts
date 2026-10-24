@@ -2,7 +2,7 @@ import { scryptSync, timingSafeEqual } from 'node:crypto'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { hashPassword, verifyPassword } from 'better-auth/crypto'
-import { bearer } from 'better-auth/plugins'
+import { admin, bearer } from 'better-auth/plugins'
 import { eq } from 'drizzle-orm'
 import type { H3Event } from 'h3'
 import { schema, useDb } from '../db'
@@ -37,7 +37,13 @@ function createAuth() {
       password: { hash: hashPassword, verify },
     },
     // The Capacitor app has no cookies across origins: it sends the session as a bearer token.
-    plugins: [bearer()],
+    plugins: [
+      bearer(),
+      admin({
+        defaultRole: 'user',
+        adminRole: 'admin',
+      }),
+    ],
     socialProviders: {
       ...(process.env.GOOGLE_CLIENT_ID && {
         google: {

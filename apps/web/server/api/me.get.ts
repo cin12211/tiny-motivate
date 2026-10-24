@@ -16,6 +16,15 @@ export default defineEventHandler(async (event): Promise<User> => {
     .where(eq(schema.user.id, user.id))
     .limit(1)
 
+  if (dbUser?.banned) {
+    const isBanActive = !dbUser.banExpires || new Date(dbUser.banExpires) > new Date()
+    if (isBanActive) {
+      forgetSession(event)
+      setHeader(event, 'x-auth-jwt', '')
+      throw createError({ statusCode: 403, statusMessage: dbUser.banReason || 'Tài khoản đã bị khóa' })
+    }
+  }
+
   return {
     id: user.id,
     name: user.name,

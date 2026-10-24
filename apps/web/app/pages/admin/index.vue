@@ -263,7 +263,7 @@ const totalPages = computed(() => Math.max(1, Math.ceil(total.value / limit)))
             </Button>
 
             <Button
-              v-if="!u.banned"
+              v-if="!u.banned && u.id !== currentUser?.id"
               variant="outline"
               size="sm"
               :disabled="actionPending"
@@ -273,7 +273,7 @@ const totalPages = computed(() => Math.max(1, Math.ceil(total.value / limit)))
               Khóa
             </Button>
             <Button
-              v-else
+              v-else-if="u.banned"
               variant="outline"
               size="sm"
               :disabled="actionPending"

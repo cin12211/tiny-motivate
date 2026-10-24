@@ -69,8 +69,9 @@ export function useApi() {
       if (fresh && token.value) setJwt(fresh)
     },
     async onResponseError({ response, request }) {
-      if (response.status === 401 && !String(request).includes('/api/auth/')) {
+      if ((response.status === 401 || response.status === 403) && !String(request).includes('/api/auth/')) {
         setToken(null)
+        setJwt(null)
         await navigateTo('/login')
       }
     },

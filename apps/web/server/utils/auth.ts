@@ -41,7 +41,7 @@ function createAuth() {
       bearer(),
       admin({
         defaultRole: 'user',
-        adminRole: 'admin',
+        adminRoles: ['admin'],
       }),
     ],
     socialProviders: {
@@ -103,9 +103,13 @@ export async function requireUser(event: H3Event): Promise<FastUser> {
     const rawUser = session.user as Record<string, any>
     let role = rawUser.role || 'user'
     const banned = Boolean(rawUser.banned)
+    const banExpires = rawUser.banExpires ? new Date(rawUser.banExpires) : null
+    const isBanActive = banned && (!banExpires || banExpires > new Date())
 
-    if (banned) {
-      throw createError({ statusCode: 403, statusMessage: 'Tài khoản đã bị khóa' })
+    if (isBanActive) {
+      forgetSession(event)
+      setHeader(event, 'x-auth-jwt', '')
+      throw createError({ statusCode: 403, statusMessage: rawUser.banReason || 'Tài khoản đã bị khóa' })
     }
 
     // Auto-promote if configured in ADMIN_EMAILS

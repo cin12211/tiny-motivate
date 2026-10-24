@@ -21,12 +21,14 @@ export function useAdmin() {
     limit?: number
     offset?: number
     searchValue?: string
+    searchField?: 'name' | 'email'
   } = {}): Promise<ListUsersResponse> {
     const query = new URLSearchParams()
     if (params.limit) query.set('limit', String(params.limit))
     if (params.offset) query.set('offset', String(params.offset))
     if (params.searchValue) {
-      query.set('searchField', 'email')
+      const field = params.searchField || (params.searchValue.includes('@') ? 'email' : 'name')
+      query.set('searchField', field)
       query.set('searchOperator', 'contains')
       query.set('searchValue', params.searchValue)
     }

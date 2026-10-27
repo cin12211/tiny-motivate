@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useResizeObserver } from '@vueuse/core'
 import { growIconForGoal } from '@motivation/garden'
 import type { Goal } from '#shared/types'
 
@@ -54,6 +55,8 @@ function center(behavior: ScrollBehavior = 'smooth') {
 
 onMounted(() => nextTick(() => center('instant')))
 watch(selected, () => nextTick(() => center()))
+// fold / unfold, rotate, split view: keep the selected day in the middle
+useResizeObserver(scroller, () => center('instant'))
 </script>
 
 <template>

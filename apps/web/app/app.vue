@@ -57,6 +57,10 @@ watch(
   { immediate: true },
 );
 useHead({ htmlAttrs: { lang: () => settings.value.lang } });
+
+const inset = (px: number, side: string) => `calc(${px}px + env(safe-area-inset-${side}, 0px))`
+const toastOffset = { top: inset(24, 'top'), right: inset(24, 'right'), left: inset(24, 'left') }
+const toastMobileOffset = { right: inset(16, 'right'), left: inset(16, 'left') }
 </script>
 
 <template>
@@ -69,6 +73,7 @@ useHead({ htmlAttrs: { lang: () => settings.value.lang } });
   >
     <SplashScreen v-if="splash" />
   </Transition>
-  <!-- toasts at the top, below the notch / status bar -->
-  <Toaster position="top-right" />
+  <!-- toasts at the top, clear of the notch / status bar on any edge
+       (phones get the top inset from vue-sonner itself) -->
+  <Toaster position="top-right" :offset="toastOffset" :mobile-offset="toastMobileOffset" />
 </template>

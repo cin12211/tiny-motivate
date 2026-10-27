@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onKeyStroke } from '@vueuse/core'
+import { onKeyStroke, useResizeObserver } from '@vueuse/core'
 import { addDays, dayNumberOf, toISODate } from '#shared/utils/dates'
 
 /**
@@ -58,6 +58,8 @@ function centerActive(behavior: ScrollBehavior) {
 }
 onMounted(() => nextTick(() => centerActive('instant')))
 watch(date, () => nextTick(() => centerActive('smooth')))
+// fold / unfold, rotate, split view: keep today's day in the middle
+useResizeObserver(strip, () => centerActive('instant'))
 
 // plants come from the garden (kept apart from goals)
 const { plantMap } = useGarden()

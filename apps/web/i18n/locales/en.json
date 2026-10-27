@@ -309,7 +309,6 @@
     "noteSame": "Same time as the general reminder ({time}) in Settings, so only the general one is sent.",
     "noteOn": "Every day at {time} for {n} days, except days you have ticked.",
     "noteTicked": "You ticked today, so Germi will not nudge you.",
-    "another": "See another message",
     "now": "now",
     "errSave": "Could not save the reminder, try again",
     "otherShort": "Other time"

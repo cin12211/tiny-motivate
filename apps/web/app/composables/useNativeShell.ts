@@ -3,7 +3,7 @@ import { Capacitor } from '@capacitor/core'
 /**
  * Small native touches when running inside the Capacitor app:
  * light status bar, Android back button, and the motivation:// deep link
- * that finishes Google sign-in. No-ops in a normal browser.
+ * that finishes Google sign-in (and widget taps). No-ops in a normal browser.
  */
 export function useNativeShell() {
   if (import.meta.server || !Capacitor.isNativePlatform()) return
@@ -18,6 +18,8 @@ export function useNativeShell() {
 
     // Google sign-in comes back as motivation://auth?token=… (see /api/oauth/done)
     App.addListener('appUrlOpen', async ({ url }) => {
+      // tapping a widget (home or Lock Screen) opens the home screen
+      if (url.startsWith('motivation://home')) return router.replace('/')
       if (!url.startsWith('motivation://auth')) return
       const params = new URL(url.replace('motivation://', 'https://app/')).searchParams
       const { Browser } = await import('@capacitor/browser')

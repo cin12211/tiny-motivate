@@ -309,7 +309,6 @@
     "noteSame": "Trùng giờ nhắc chung ({time}) trong cài đặt, nên chỉ gửi thông báo chung.",
     "noteOn": "Mỗi ngày lúc {time} trong {n} ngày, trừ hôm đã tick.",
     "noteTicked": "Hôm nay bạn tick rồi nên Germi không nhắc.",
-    "another": "Xem câu nhắc khác",
     "now": "bây giờ",
     "errSave": "Chưa lưu được giờ nhắc, thử lại nhé",
     "otherShort": "Giờ khác"

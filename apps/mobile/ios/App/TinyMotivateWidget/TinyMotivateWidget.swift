@@ -4,7 +4,8 @@ import WidgetKit
 
 /*
  * Home-screen widget (design v53): today's ticks, streak, the last 40 days of
- * the garden and a tick button per goal. The app writes a JSON snapshot into
+ * the garden and a tick button per goal. Lock Screen widgets (v68): progress
+ * ring, streak, today's summary and a one-line version, all read-only. The app writes a JSON snapshot into
  * the shared App Group after every change (apps/web/app/utils/widget.ts →
  * WidgetPlugin in AppDelegate.swift); the widget only reads it, except for the
  * tick button, which calls the same API as the app and updates the snapshot.
@@ -151,6 +152,15 @@ struct Texts {
     func left(_ n: Int) -> String { vi ? "Còn \(n) mục tiêu" : "\(n) \(n == 1 ? "goal" : "goals") left" }
     func streak(_ n: Int) -> String { vi ? "Chuỗi \(n) ngày" : "\(n)-day streak" }
     func reward(_ n: Int, _ title: String) -> String { vi ? "Còn \(n) ngày nữa tới \(title)" : "\(n) \(n == 1 ? "day" : "days") to \(title)" }
+
+    // Lock Screen (v68)
+    var days: String { vi ? "ngày" : "days" }
+    var notTicked: String { vi ? "chưa tick" : "not ticked" }
+    var allDoneLower: String { vi ? "xong hết rồi :)" : "all done :)" }
+    func todayCount(_ x: Int, _ y: Int) -> String { vi ? "hôm nay \(x)/\(y)" : "today \(x)/\(y)" }
+    func toReward(_ n: Int) -> String { vi ? "còn \(n) ngày tới quà" : "\(n) \(n == 1 ? "day" : "days") to your reward" }
+    func streakLower(_ n: Int) -> String { vi ? "chuỗi \(n) ngày" : "streak \(n) \(n == 1 ? "day" : "days")" }
+    func inline(_ x: Int, _ y: Int, _ n: Int) -> String { vi ? "\(x)/\(y) mục tiêu · chuỗi \(n) ngày" : "\(x)/\(y) goals · streak \(n) \(n == 1 ? "day" : "days")" }
 }
 
 // MARK: - Tick intent
@@ -179,6 +189,8 @@ struct ToggleDoneIntent: AppIntent {
         snap.goals[i].doneCount += done ? 1 : -1
         if let n = snap.goals[i].rewardIn { snap.goals[i].rewardIn = n + (done ? -1 : 1) }
         snap.save()
+        // the tick also shows on the Lock Screen widgets
+        WidgetCenter.shared.reloadAllTimelines()
 
         var req = URLRequest(url: url)
         req.httpMethod = "PUT"
@@ -243,6 +255,15 @@ struct Palette {
     let ink: Color
     let muted: Color
     let bg: Color
+
+    /** StandBy / no container background: light strokes on black, no accent colour. */
+    static let onBlack = Palette(ink: .white, muted: .white.opacity(0.62), bg: .black)
+
+    init(ink: Color, muted: Color, bg: Color) {
+        self.ink = ink
+        self.muted = muted
+        self.bg = bg
+    }
 
     init(_ snap: Snapshot?, scheme: ColorScheme) {
         let theme = snap?.theme ?? "system"
@@ -456,9 +477,11 @@ struct WidgetView: View {
     let entry: Entry
     @Environment(\.widgetFamily) var family
     @Environment(\.colorScheme) var scheme
+    @Environment(\.showsWidgetContainerBackground) var showsBackground
 
     var body: some View {
-        let p = Palette(entry.snapshot, scheme: scheme)
+        // StandBy removes the background: the accent colour would vanish on black
+        let p = showsBackground ? Palette(entry.snapshot, scheme: scheme) : .onBlack
         let t = Texts(vi: (entry.snapshot?.lang ?? "vi") == "vi")
         Group {
             if let snap = entry.snapshot {
@@ -481,11 +504,168 @@ struct WidgetView: View {
     }
 }
 
+let homeURL = URL(string: "motivation://home")!
+
+// MARK: - Lock Screen (v68)
+
+#if !targetEnvironment(macCatalyst)
+/** Ring of goals ticked today / goals running today, Germi and x/y inside. */
+struct LockProgressView: View {
+    let snap: Snapshot
+    var body: some View {
+        let total = snap.goals.count
+        let frac = total > 0 ? CGFloat(snap.doneCount) / CGFloat(total) : 0
+        ZStack {
+            Circle().stroke(.primary.opacity(0.25), lineWidth: 5)
+            Circle().trim(from: 0, to: frac)
+                .stroke(.primary, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+            VStack(spacing: 0) {
+                IconView(id: "gm-idle", size: 22)
+                Text("\(snap.doneCount)/\(total)").font(.system(size: 11, weight: .semibold, design: mono))
+            }
+        }
+        .padding(3)
+    }
+}
+
+/** Mầm đôi, the current streak and "ngày". */
+struct LockStreakView: View {
+    let snap: Snapshot
+    let t: Texts
+    var body: some View {
+        ZStack {
+            AccessoryWidgetBackground()
+            VStack(spacing: -1) {
+                IconView(id: "p2", size: 22)
+                Text("\(snap.streak)").font(.system(size: 15, weight: .bold, design: mono))
+                Text(t.days).font(.system(size: 9, design: mono))
+            }
+        }
+    }
+}
+
+/** Today x/y, the first goal not ticked yet, the next reward (or the streak). */
+struct LockTodayView: View {
+    let snap: Snapshot
+    let t: Texts
+    var body: some View {
+        VStack(alignment: .leading, spacing: 1) {
+            HStack(spacing: 4) {
+                IconView(id: "gm-idle", size: 18)
+                Text(t.todayCount(snap.doneCount, snap.goals.count)).font(.system(size: 13, weight: .bold, design: mono))
+            }
+            Group {
+                if snap.goals.isEmpty { Text(t.noGoals) }
+                else if let g = snap.goals.first(where: { !$0.done }) { Text("\(g.title) · \(t.notTicked)") }
+                else { Text(t.allDoneLower) }
+            }
+            .font(.system(size: 12, design: mono)).lineLimit(1).truncationMode(.tail)
+            Text(snap.nextReward.map { t.toReward($0.days) } ?? t.streakLower(snap.streak))
+                .font(.system(size: 11, design: mono)).lineLimit(1).opacity(0.7)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+/** Above the clock: the template mầm đôi and one line of text. */
+struct LockInlineView: View {
+    let snap: Snapshot
+    let t: Texts
+    var body: some View {
+        Label {
+            Text(t.inline(snap.doneCount, snap.goals.count, snap.streak))
+        } icon: {
+            inlineIcon("plant-p2")
+        }
+    }
+}
+
+/** Inline widgets draw images at their own size: hand them a symbol-sized template. */
+func inlineIcon(_ name: String, size: CGFloat = 16) -> Image {
+    guard let ui = UIImage(named: name) else { return Image(systemName: "leaf") }
+    let small = UIGraphicsImageRenderer(size: CGSize(width: size, height: size)).image { _ in
+        ui.draw(in: CGRect(x: 0, y: 0, width: size, height: size))
+    }
+    return Image(uiImage: small.withRenderingMode(.alwaysTemplate))
+}
+
+enum LockKind { case progress, streak, today, inline }
+
+struct LockView: View {
+    let entry: Entry
+    let kind: LockKind
+    var body: some View {
+        let t = Texts(vi: (entry.snapshot?.lang ?? "vi") == "vi")
+        Group {
+            if let snap = entry.snapshot {
+                switch kind {
+                case .progress: LockProgressView(snap: snap)
+                case .streak: LockStreakView(snap: snap, t: t)
+                case .today: LockTodayView(snap: snap, t: t)
+                case .inline: LockInlineView(snap: snap, t: t)
+                }
+            } else if kind == .inline {
+                Label { Text("Tiny Motivate") } icon: { inlineIcon("plant-p2") }
+            } else {
+                ZStack {
+                    if kind != .today { AccessoryWidgetBackground() }
+                    IconView(id: "gm-idle", size: 26)
+                }
+            }
+        }
+        .containerBackground(.clear, for: .widget)
+        .widgetURL(homeURL)
+    }
+}
+
+func lockConfiguration(_ kind: String, _ lock: LockKind, _ family: WidgetFamily, _ name: LocalizedStringKey, _ about: LocalizedStringKey) -> some WidgetConfiguration {
+    StaticConfiguration(kind: kind, provider: Provider()) { entry in
+        LockView(entry: entry, kind: lock)
+    }
+    .configurationDisplayName(name)
+    .description(about)
+    .supportedFamilies([family])
+}
+
+struct LockProgressWidget: Widget {
+    var body: some WidgetConfiguration {
+        lockConfiguration("TinyMotivateLockProgress", .progress, .accessoryCircular, "Tiến độ hôm nay", "Hôm nay đã tick bao nhiêu mục tiêu.")
+    }
+}
+
+struct LockStreakWidget: Widget {
+    var body: some WidgetConfiguration {
+        lockConfiguration("TinyMotivateLockStreak", .streak, .accessoryCircular, "Chuỗi ngày", "Chuỗi ngày hiện tại của bạn.")
+    }
+}
+
+struct LockTodayWidget: Widget {
+    var body: some WidgetConfiguration {
+        lockConfiguration("TinyMotivateLockToday", .today, .accessoryRectangular, "Hôm nay", "Mục tiêu còn lại và phần quà sắp tới.")
+    }
+}
+
+struct LockInlineWidget: Widget {
+    var body: some WidgetConfiguration {
+        lockConfiguration("TinyMotivateLockInline", .inline, .accessoryInline, "Một dòng", "Tóm tắt hôm nay ngay trên đồng hồ.")
+    }
+}
+#endif
+
 // MARK: - Widget
 
 @main
 struct TinyMotivateWidgetBundle: WidgetBundle {
-    var body: some Widget { TinyMotivateWidget() }
+    var body: some Widget {
+        TinyMotivateWidget()
+        #if !targetEnvironment(macCatalyst)
+        LockProgressWidget()
+        LockStreakWidget()
+        LockTodayWidget()
+        LockInlineWidget()
+        #endif
+    }
 }
 
 struct TinyMotivateWidget: Widget {

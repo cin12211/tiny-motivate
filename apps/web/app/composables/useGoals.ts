@@ -217,14 +217,35 @@ export function rewardAt(goal: Goal, day: number) {
   return goal.rewards.find(r => r.day === day)
 }
 
-/** Totals across every goal. */
-export function overallStats(goals: Goal[]) {
-  let bestStreak = 0
+/**
+ * Longest run of calendar days in a row with at least one tick, ever. The
+ * garden keeps one plant per ticked day (deleted goals included), so it is
+ * the record; the goals' own ticks fill in until the garden has loaded.
+ */
+export function longestStreak(goals: Goal[], plantDates: Iterable<string> = []) {
+  const days = new Set(plantDates)
+  for (const g of goals) {
+    for (const [n, d] of Object.entries(g.days)) {
+      if (d.done) days.add(addDays(g.startDate, Number(n) - 1))
+    }
+  }
+  let best = 0
+  for (const d of days) {
+    if (days.has(addDays(d, -1))) continue // not the start of a run
+    let run = 1
+    while (days.has(addDays(d, run))) run++
+    best = Math.max(best, run)
+  }
+  return best
+}
+
+/** Totals across every goal (pass the garden's plant dates for the longest streak). */
+export function overallStats(goals: Goal[], plantDates?: Iterable<string>) {
+  const bestStreak = longestStreak(goals, plantDates)
   let rewardsUnlocked = 0
   const pending: Goal[] = []
   for (const g of goals) {
     const s = goalStats(g)
-    bestStreak = Math.max(bestStreak, s.streak)
     rewardsUnlocked += s.unlocked.length
     if (s.active && !s.todayDone) pending.push(g)
   }

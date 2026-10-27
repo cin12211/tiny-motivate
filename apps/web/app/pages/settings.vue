@@ -233,17 +233,17 @@ const rowDesc = 'max-w-[190px] leading-normal text-indigo opacity-85'
         </a>
       </div>
 
-      <!-- Admin Dashboard (only visible to admins) -->
+      <!-- admin (v70), only admins see it -->
       <div v-if="user?.role === 'admin'" class="flex items-center justify-between gap-4 py-4">
         <div>
-          <div class="flex items-center gap-2">
-            <TypographyH2 :class="rowTitle">Admin Dashboard</TypographyH2>
-            <span class="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold text-primary border border-primary/20">ADMIN</span>
-          </div>
-          <TypographySmall as="p" :class="rowDesc">Quản lý người dùng, vai trò và phân quyền</TypographySmall>
+          <TypographyH2 :class="rowTitle">
+            {{ $t('admin.entry') }}
+            <span class="ml-1 inline-flex h-[18px] -translate-y-0.5 items-center rounded-[5px] border border-indigo bg-indigo px-1.5 align-middle text-[10.5px] leading-none font-medium text-on-indigo">admin</span>
+          </TypographyH2>
+          <TypographySmall as="p" :class="rowDesc">{{ $t('admin.entryDesc1') }}<br>{{ $t('admin.entryDesc2') }}</TypographySmall>
         </div>
-        <NuxtLink to="/admin" :class="[tile, pressable, 'border-line border-primary/40 bg-primary/5']" aria-label="Admin Dashboard">
-          <HandIcon name="lock-password" class="text-primary" />
+        <NuxtLink to="/admin" :class="[tile, pressable, 'border-line']" :aria-label="$t('admin.open')">
+          <HandIcon name="shield-user" class="size-7" />
         </NuxtLink>
       </div>
 

@@ -406,6 +406,7 @@
     "submit": "Lưu thay đổi",
     "busy": "Đang lưu…",
     "saved": "Đã lưu thay đổi",
-    "errSave": "Chưa lưu được thay đổi"
+    "errSave": "Chưa lưu được thay đổi",
+    "startLocked": "không đổi được"
   }
 }

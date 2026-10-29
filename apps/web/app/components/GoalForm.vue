@@ -195,10 +195,14 @@ const pick = (base: string, on: boolean) => cn(base, on && chipOn)
           </div>
         </div>
 
-        <!-- start date: new goals only for now (editing it waits on a decision) -->
-        <div v-if="!editing" class="mb-[22px]">
+        <!-- start date: set when creating, never changed afterwards -->
+        <div class="mb-[22px]">
           <Label for="c-start" class="mb-2 block"><TypographyH3 as="span">{{ $t('create.start') }}</TypographyH3></Label>
-          <Input id="c-start" v-model="startDate" type="date" />
+          <div v-if="editing" id="c-start" class="flex h-[42px] items-center gap-2 rounded-lg border border-dashed border-line px-3 text-[13px] text-indigo opacity-75">
+            <HandIcon name="square-lock-02" class="size-4" />
+            <span>{{ dotDate(startDate) }} · {{ $t('edit.startLocked') }}</span>
+          </div>
+          <Input v-else id="c-start" v-model="startDate" type="date" />
         </div>
 
         <div class="mb-[22px]">

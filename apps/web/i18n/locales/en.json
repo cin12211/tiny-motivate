@@ -406,6 +406,7 @@
     "submit": "Save changes",
     "busy": "Saving…",
     "saved": "Changes saved",
-    "errSave": "Couldn't save the changes"
+    "errSave": "Couldn't save the changes",
+    "startLocked": "can't be changed"
   }
 }

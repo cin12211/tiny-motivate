@@ -151,11 +151,6 @@
   "journal": {
     "placeholder": "Ghi lại một chút về hôm nay...",
     "label": "Nhật ký",
-    "format": "Định dạng",
-    "bold": "In đậm",
-    "italic": "In nghiêng",
-    "underline": "Gạch chân",
-    "list": "Danh sách",
     "moodQ": "Hôm nay thấy thế nào?",
     "moodAria": "Hôm nay bạn thấy thế nào"
   },
@@ -326,8 +321,7 @@
     "germiHelp": "Germi ở đây để giúp bạn",
     "germiList1": "Chăm khu vườn: mỗi ngày bạn tick xong một mục tiêu là một hạt được gieo",
     "germiList2": "Nhắc bạn nhẹ nhàng đúng giờ bạn chọn",
-    "germiList3": "Giữ bí mật phần quà cho tới ngày bạn mở",
-    "germiList4": "Ghi nhớ cảm xúc và nhật ký từng ngày",
+    "germiList3": "Ghi nhớ cảm xúc và nhật ký từng ngày",
     "germiOutro": "Cuốn sách này ghi lại mọi loài cây đã mọc trong vườn bạn. Trang nào còn dấu {q} là hạt chưa gieo, cứ chăm vườn đều rồi nó sẽ hiện ra.",
     "toc": "Mục lục",
     "chapter": "Chương {n}",
@@ -396,5 +390,22 @@
     "toastUnlocked": "đã mở khoá {name}",
     "errLoad": "chưa tải được, thử lại nha",
     "errSave": "chưa lưu được, thử lại nha"
+  },
+  "edit": {
+    "title": "Sửa mục tiêu",
+    "open": "Sửa mục tiêu",
+    "back": "Quay lại mục tiêu",
+    "lead1": "Sửa lại mục tiêu của bạn.",
+    "lead2": "Quà đã nhận được giữ nguyên.",
+    "leadWeb1": "Sửa lại tên, số ngày, giờ nhắc hay các chặng quà.",
+    "leadWeb2": "Quà bạn đã nhận được giữ nguyên.",
+    "lockedHint": "Chặng có ổ khoá là quà bạn đã nhận, không sửa hay xoá được.",
+    "received": "Quà đã nhận",
+    "minDays": "Bạn đã làm được {n} ngày nên không giảm dưới {m} ngày.",
+    "errFrom": "Bạn đã làm được {n} ngày, chặng mới phải từ ngày {next} trở đi.",
+    "submit": "Lưu thay đổi",
+    "busy": "Đang lưu…",
+    "saved": "Đã lưu thay đổi",
+    "errSave": "Chưa lưu được thay đổi"
   }
 }

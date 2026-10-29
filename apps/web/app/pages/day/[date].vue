@@ -34,7 +34,7 @@ const rows = computed(() => goals.value
   .map((g) => {
     const day = dayNumberOf(g.startDate, date.value)
     const entry = g.days[String(day)]
-    const text = (entry?.journal ?? '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim()
+    const text = journalText(entry?.journal).replace(/\s+/g, ' ').trim()
     return { goal: g, day, entry, text: text.length > 140 ? `${text.slice(0, 140)}…` : text }
   })
   .filter(r => r.day >= 1 && r.day <= r.goal.totalDays))

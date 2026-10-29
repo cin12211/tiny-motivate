@@ -16,7 +16,7 @@ const stats = computed(() => overallStats(goals.value))
 const todayGoal = computed(() => stats.value.pending[0] ?? goals.value[0])
 // the plant book has its own bars (back / contents on top, page arrows at the bottom)
 const onBook = computed(() => route.path === '/plant-book')
-const showSwitch = computed(() => !route.path.startsWith('/goals/new') && !onBook.value)
+const showSwitch = computed(() => !route.path.startsWith('/goals/new') && !route.path.startsWith('/goals/edit') && !onBook.value)
 const onHome = computed(() => route.path === '/' || route.path.startsWith('/day/'))
 const onSettings = computed(() => route.path === '/settings')
 </script>

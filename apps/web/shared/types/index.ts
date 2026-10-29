@@ -82,8 +82,17 @@ export interface Garden {
   plants: Array<{ date: string, icon: string }>
 }
 
+/**
+ * Changes to a goal; every field is optional (the detail page only sends
+ * `remind`). `rewards` is the whole list: received ones are kept as they
+ * are whatever is sent, `id` marks a milestone that already exists.
+ */
 export interface UpdateGoalInput {
+  title?: string
+  icon?: string
+  totalDays?: number
   remind?: string | null
+  rewards?: Array<Pick<Reward, 'day' | 'title' | 'icon' | 'image'> & { id?: string }>
 }
 
 export interface UpdateDayInput {

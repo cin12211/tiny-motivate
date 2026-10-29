@@ -139,6 +139,19 @@ export function useGoals() {
   function updateGoal(id: string, input: UpdateGoalInput) {
     return optimistic(id, (g) => {
       if (input.remind !== undefined) g.remind = input.remind
+      if (input.title !== undefined) g.title = input.title
+      if (input.icon !== undefined) g.icon = input.icon
+      if (input.totalDays !== undefined) g.totalDays = input.totalDays
+      if (input.rewards) {
+        // received rewards stay (the server keeps them too); the rest follow the list
+        const { doneCount } = goalStats(g)
+        const kept = g.rewards.filter(r => r.day <= doneCount)
+        const old = new Map(g.rewards.map(r => [r.id, r]))
+        g.rewards = [...kept, ...input.rewards
+          .filter(r => !r.id || !kept.some(k => k.id === r.id))
+          .map(r => ({ id: r.id ?? `tmp-${Math.random().toString(36).slice(2, 8)}`, day: r.day, title: r.title, icon: r.icon, image: r.image, openedAt: (r.id && old.get(r.id)?.openedAt) || null }))]
+          .sort((a, b) => a.day - b.day)
+      }
     }, () => useApi()<Goal>(`/api/goals/${id}`, { method: 'PATCH', body: input }))
   }
 

@@ -185,19 +185,6 @@
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
-
-  /* Rich-text journal (TipTap) — borderless, indigo ink */
-  .journal-prose {
-    @apply min-h-36 md:min-h-24 text-[14.5px] leading-[1.55] text-indigo outline-none;
-  }
-  .journal-prose p { @apply my-0.5; }
-  .journal-prose ul { @apply my-1 list-disc pl-5; }
-  .journal-prose ol { @apply my-1 list-decimal pl-5; }
-  .journal-prose mark { @apply rounded-sm bg-faint px-0.5 text-inherit; }
-  .journal-prose p.is-editor-empty:first-child::before {
-    content: attr(data-placeholder);
-    @apply pointer-events-none float-left h-0 text-muted-foreground;
-  }
 }
 
 /*

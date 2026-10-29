@@ -151,11 +151,6 @@
   "journal": {
     "placeholder": "Jot down a little about today...",
     "label": "Journal",
-    "format": "Formatting",
-    "bold": "Bold",
-    "italic": "Italic",
-    "underline": "Underline",
-    "list": "List",
     "moodQ": "How did today feel?",
     "moodAria": "How did today feel"
   },
@@ -326,8 +321,7 @@
     "germiHelp": "Germi is here to help you",
     "germiList1": "Look after the garden: each day you tick a goal, a seed is sown",
     "germiList2": "Nudge you gently at the time you choose",
-    "germiList3": "Keep your rewards secret until the day you open them",
-    "germiList4": "Remember your moods and journal every day",
+    "germiList3": "Remember your moods and journal every day",
     "germiOutro": "This book records every kind of plant that has grown in your garden. A page with a {q} is a seed not sown yet. Keep looking after your garden and it will appear.",
     "toc": "Contents",
     "chapter": "Chapter {n}",
@@ -396,5 +390,22 @@
     "toastUnlocked": "unlocked {name}",
     "errLoad": "couldn't load, try again",
     "errSave": "couldn't save, try again"
+  },
+  "edit": {
+    "title": "Edit goal",
+    "open": "Edit goal",
+    "back": "Back to goal",
+    "lead1": "Change your goal.",
+    "lead2": "Rewards you've received stay as they are.",
+    "leadWeb1": "Change the name, days, reminder or reward milestones.",
+    "leadWeb2": "Rewards you've received stay as they are.",
+    "lockedHint": "Milestones with a padlock are rewards you've received; they can't be changed or removed.",
+    "received": "Reward received",
+    "minDays": "You've done {n} days, so it can't go below {m} days.",
+    "errFrom": "You've done {n} days, new milestones must be from day {next} on.",
+    "submit": "Save changes",
+    "busy": "Saving…",
+    "saved": "Changes saved",
+    "errSave": "Couldn't save the changes"
   }
 }

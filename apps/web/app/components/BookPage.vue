@@ -61,7 +61,7 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
     <i18n-t keypath="book.germiIntro" tag="p" scope="global"><template #germ><i>germ</i></template></i18n-t>
     <p class="font-semibold text-indigo">{{ $t('book.germiHelp') }}</p>
     <ul class="book-list">
-      <li v-for="i in 4" :key="i">{{ $t(`book.germiList${i}`) }}</li>
+      <li v-for="i in 3" :key="i">{{ $t(`book.germiList${i}`) }}</li>
     </ul>
     <i18n-t keypath="book.germiOutro" tag="p" scope="global"><template #q><b class="book-q">?</b></template></i18n-t>
   </div>

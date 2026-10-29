@@ -83,16 +83,61 @@ export async function createGoal(userId: string, body: CreateGoalInput): Promise
   return getGoal(userId, id)
 }
 
-/** Change a goal's settings (for now: its daily reminder time). */
+/**
+ * Change a goal (v72 edit screen; the detail page sends only `remind`).
+ * Rules, the same as the form: rewards already received (ticked days ≥ their
+ * day) stay exactly as they are; other milestones start after the days done;
+ * the goal can't get shorter than max(3, days done, last received reward).
+ */
 export async function updateGoal(userId: string, goalId: string, body: UpdateGoalInput): Promise<Goal> {
-  if (body?.remind !== undefined && body.remind !== null && !isTime(body.remind))
-    throw createError({ statusCode: 400, statusMessage: 'Giờ nhắc không hợp lệ' })
+  const current = await getGoal(userId, goalId)
+  const set: Partial<typeof goal.$inferInsert> = {}
+
   if (body?.remind !== undefined) {
-    const updated = await useDb().update(goal).set({ remind: body.remind })
-      .where(and(eq(goal.id, goalId), eq(goal.userId, userId))).returning({ id: goal.id })
-    if (!updated.length) throw createError({ statusCode: 404, statusMessage: 'Không tìm thấy mục tiêu' })
-    await invalidate(goalsKey(userId))
+    if (body.remind !== null && !isTime(body.remind)) throw createError({ statusCode: 400, statusMessage: 'Giờ nhắc không hợp lệ' })
+    set.remind = body.remind
   }
+  if (body?.title !== undefined) {
+    const title = String(body.title).trim()
+    if (!title) throw createError({ statusCode: 400, statusMessage: 'Cần đặt tên cho mục tiêu' })
+    set.title = title.slice(0, 80)
+  }
+  if (body?.icon !== undefined) set.icon = String(body.icon) || current.icon
+
+  const ticked = Object.values(current.days).filter(d => d.done).length
+  const lastTicked = Math.max(0, ...Object.entries(current.days).filter(([, d]) => d.done).map(([n]) => Number(n)))
+  const received = current.rewards.filter(r => r.day <= ticked)
+  const totalDays = body?.totalDays !== undefined ? Math.floor(Number(body.totalDays)) : current.totalDays
+  const minDays = Math.max(3, ticked, lastTicked, ...received.map(r => r.day))
+  if (!Number.isFinite(totalDays) || totalDays > 365)
+    throw createError({ statusCode: 400, statusMessage: 'Số ngày phải từ 1 đến 365' })
+  if (totalDays < minDays)
+    throw createError({ statusCode: 400, statusMessage: `Bạn đã làm được ${ticked} ngày nên không giảm dưới ${minDays} ngày.` })
+  if (body?.totalDays !== undefined) set.totalDays = totalDays
+
+  let rewards: (typeof reward.$inferInsert)[] | undefined
+  if (body?.rewards) {
+    const keep = new Set(received.map(r => r.id))
+    const mine = new Set(current.rewards.map(r => r.id))
+    rewards = body.rewards
+      .filter(r => !(r.id && keep.has(r.id)) && r.title?.trim())
+      .map((r) => {
+        const day = Math.floor(Number(r.day))
+        if (!Number.isFinite(day) || day < ticked + 1 || day > totalDays)
+          throw createError({ statusCode: 400, statusMessage: `Bạn đã làm được ${ticked} ngày, chặng mới phải từ ngày ${ticked + 1} trở đi.` })
+        return { id: r.id && mine.has(r.id) ? r.id : nanoid(8), goalId, day, title: r.title.trim().slice(0, 60), icon: r.icon || 'gift', image: r.image || null }
+      })
+  }
+
+  const db = useDb()
+  if (Object.keys(set).length) await db.update(goal).set(set).where(and(eq(goal.id, goalId), eq(goal.userId, userId)))
+  if (rewards) {
+    // received rewards are never touched; the open ones are replaced by the new list
+    const open = current.rewards.filter(r => r.day > ticked).map(r => r.id)
+    if (open.length) await db.delete(reward).where(inArray(reward.id, open))
+    if (rewards.length) await db.insert(reward).values(rewards)
+  }
+  await invalidate(goalsKey(userId))
   return getGoal(userId, goalId)
 }
 

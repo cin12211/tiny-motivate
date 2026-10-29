@@ -115,9 +115,10 @@ async function onDelete() {
           <NuxtLink to="/"><HandIcon name="arrow-left-01" /><span class="hidden md:inline">{{ $t('common.allGoals') }}</span></NuxtLink>
         </Button>
         <Badge class="app-header-chip md:absolute md:left-1/2 md:-translate-x-1/2">{{ dayLabel }}</Badge>
-        <span class="app-header-btn grid w-9 place-items-center text-indigo md:invisible">
-          <HandIcon :name="goal.icon" />
-        </span>
+        <!-- edit (v72): the pencil on phones, "pencil + sửa mục tiêu" on the web -->
+        <Button as-child variant="ghost" size="icon" class="app-header-btn text-indigo md:w-auto md:gap-1.5 md:pr-2.5 md:pl-1.5 md:text-[12.5px]" :aria-label="$t('edit.open')">
+          <NuxtLink :to="`/goals/edit/${goal.id}`"><HandIcon name="pencil-edit-02" /><span class="hidden md:inline">{{ $t('edit.open') }}</span></NuxtLink>
+        </Button>
       </div>
     </div>
 
